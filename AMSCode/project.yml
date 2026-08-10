@@ -1,0 +1,74 @@
+name: AMSCode
+options:
+  bundleIdPrefix: com.example.amscode
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+    TARGETED_DEVICE_FAMILY: "1"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+
+targets:
+  AMSCode:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: AMSCode
+      - path: Shared
+    info:
+      path: AMSCode/Info.plist
+      properties:
+        CFBundleDisplayName: AMS Code
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+    entitlements:
+      path: AMSCode/AMSCode.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.example.amscode
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.amscode
+        PRODUCT_NAME: AMS Code
+    dependencies:
+      - target: AMSWidgetsExtension
+        embed: true
+
+  AMSWidgetsExtension:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: AMSWidgets
+      - path: Shared
+    info:
+      path: AMSWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: AMS Code Widgets
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: AMSWidgets/AMSWidgets.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.example.amscode
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.amscode.widgets
+        PRODUCT_NAME: AMS Code Widgets
+        SKIP_INSTALL: false
+
+schemes:
+  AMSCode:
+    build:
+      targets:
+        AMSCode: all
+    run:
+      config: Debug
+    archive:
+      config: Release
