@@ -29,14 +29,34 @@ final class ItemStore: ObservableObject {
             .filter { $0.category == category }
             .sorted { lhs, rhs in
                 if lhs.isDone != rhs.isDone { return !lhs.isDone && rhs.isDone }
+                switch (lhs.dueDate, rhs.dueDate) {
+                case let (l?, r?):
+                    if l != r { return l < r }
+                case (.some, nil):
+                    return true
+                case (nil, .some):
+                    return false
+                case (nil, nil):
+                    break
+                }
                 return lhs.createdAt < rhs.createdAt
             }
     }
 
-    func add(title: String, category: ItemCategory) {
+    func add(title: String, category: ItemCategory, tagID: UUID? = nil, dueDate: Date? = nil) {
         let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
-        items.append(Item(title: trimmed, category: category))
+        items.append(Item(title: trimmed, category: category, tagID: tagID, dueDate: dueDate))
+        persist()
+    }
+
+    func update(id: UUID, title: String, tagID: UUID?, dueDate: Date?) {
+        guard let index = items.firstIndex(where: { $0.id == id }) else { return }
+        let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        items[index].title = trimmed
+        items[index].tagID = tagID
+        items[index].dueDate = dueDate
         persist()
     }
 
@@ -44,6 +64,28 @@ final class ItemStore: ObservableObject {
         guard let index = items.firstIndex(where: { $0.id == id }) else { return }
         items[index].isDone.toggle()
         persist()
+    }
+
+    func setTag(id: UUID, tagID: UUID?) {
+        guard let index = items.firstIndex(where: { $0.id == id }) else { return }
+        items[index].tagID = tagID
+        persist()
+    }
+
+    func setDueDate(id: UUID, dueDate: Date?) {
+        guard let index = items.firstIndex(where: { $0.id == id }) else { return }
+        items[index].dueDate = dueDate
+        persist()
+    }
+
+    /// Clears references to a tag that's about to be deleted.
+    func clearTag(_ tagID: UUID) {
+        var changed = false
+        for index in items.indices where items[index].tagID == tagID {
+            items[index].tagID = nil
+            changed = true
+        }
+        if changed { persist() }
     }
 
     func delete(id: UUID) {

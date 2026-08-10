@@ -3,24 +3,32 @@ import SwiftUI
 
 struct TasksProvider: TimelineProvider {
     func placeholder(in context: Context) -> ItemsEntry {
-        ItemsEntry(date: Date(), items: [
-            Item(title: "Reply to emails", category: .task),
-            Item(title: "Pack gym bag", isDone: true, category: .task)
-        ])
+        ItemsEntry(
+            date: Date(),
+            items: [
+                Item(title: "Reply to emails", category: .task),
+                Item(title: "Pack gym bag", isDone: true, category: .task)
+            ],
+            tags: TagStore.defaultTagsForPreview(in: .task)
+        )
     }
 
     func getSnapshot(in context: Context, completion: @escaping (ItemsEntry) -> Void) {
-        completion(ItemsEntry(date: Date(), items: currentItems()))
+        completion(currentEntry())
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<ItemsEntry>) -> Void) {
-        let entry = ItemsEntry(date: Date(), items: currentItems())
-        completion(Timeline(entries: [entry], policy: .never))
+        completion(Timeline(entries: [currentEntry()], policy: .never))
     }
 
-    private func currentItems() -> [Item] {
+    private func currentEntry() -> ItemsEntry {
         ItemStore.shared.refresh()
-        return ItemStore.shared.items(in: .task)
+        TagStore.shared.refresh()
+        return ItemsEntry(
+            date: Date(),
+            items: ItemStore.shared.items(in: .task),
+            tags: TagStore.shared.tags(in: .task)
+        )
     }
 }
 
@@ -31,8 +39,8 @@ struct TasksWidgetEntryView: View {
     private var maxCount: Int {
         switch family {
         case .systemSmall: return 3
-        case .systemMedium: return 5
-        default: return 8
+        case .systemMedium: return 3
+        default: return 6
         }
     }
 
@@ -48,7 +56,7 @@ struct TasksWidgetEntryView: View {
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(entry.items.prefix(maxCount)) { item in
-                    ChecklistRow(item: item)
+                    ChecklistRow(item: item, availableTags: entry.tags)
                 }
             }
             Spacer(minLength: 0)
@@ -66,7 +74,7 @@ struct TasksWidget: Widget {
             TasksWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("Tasks Checklist")
-        .description("Track your to-dos and check them off.")
+        .description("Track your to-dos, tag them, and check them off.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

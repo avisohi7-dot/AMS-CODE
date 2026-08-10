@@ -3,24 +3,32 @@ import SwiftUI
 
 struct StudyProvider: TimelineProvider {
     func placeholder(in context: Context) -> ItemsEntry {
-        ItemsEntry(date: Date(), items: [
-            Item(title: "Review chapter 4", category: .study),
-            Item(title: "Flashcards: vocab", isDone: true, category: .study)
-        ])
+        ItemsEntry(
+            date: Date(),
+            items: [
+                Item(title: "Review chapter 4", category: .study),
+                Item(title: "Flashcards: vocab", isDone: true, category: .study)
+            ],
+            tags: TagStore.defaultTagsForPreview(in: .study)
+        )
     }
 
     func getSnapshot(in context: Context, completion: @escaping (ItemsEntry) -> Void) {
-        completion(ItemsEntry(date: Date(), items: currentItems()))
+        completion(currentEntry())
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<ItemsEntry>) -> Void) {
-        let entry = ItemsEntry(date: Date(), items: currentItems())
-        completion(Timeline(entries: [entry], policy: .never))
+        completion(Timeline(entries: [currentEntry()], policy: .never))
     }
 
-    private func currentItems() -> [Item] {
+    private func currentEntry() -> ItemsEntry {
         ItemStore.shared.refresh()
-        return ItemStore.shared.items(in: .study)
+        TagStore.shared.refresh()
+        return ItemsEntry(
+            date: Date(),
+            items: ItemStore.shared.items(in: .study),
+            tags: TagStore.shared.tags(in: .study)
+        )
     }
 }
 
@@ -31,8 +39,8 @@ struct StudyWidgetEntryView: View {
     private var maxCount: Int {
         switch family {
         case .systemSmall: return 3
-        case .systemMedium: return 5
-        default: return 8
+        case .systemMedium: return 3
+        default: return 6
         }
     }
 
@@ -48,7 +56,7 @@ struct StudyWidgetEntryView: View {
                     .foregroundStyle(.secondary)
             } else {
                 ForEach(entry.items.prefix(maxCount)) { item in
-                    ChecklistRow(item: item)
+                    ChecklistRow(item: item, availableTags: entry.tags)
                 }
             }
             Spacer(minLength: 0)
@@ -66,7 +74,7 @@ struct StudyWidget: Widget {
             StudyWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("Study Checklist")
-        .description("Track your study items and check them off.")
+        .description("Track your study items, tag them, and check them off.")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

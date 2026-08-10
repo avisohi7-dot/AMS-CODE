@@ -1,4 +1,5 @@
 import AppIntents
+import Foundation
 
 /// Runs inside the widget extension process when a checkbox is tapped
 /// directly on the Home Screen, so the app never has to launch.
