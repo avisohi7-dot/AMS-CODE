@@ -5,12 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Focus Flow</title>
 <link rel="stylesheet" href="style.css">
+<script>
+  (function () {
+    var saved = localStorage.getItem("focusFlow.theme");
+    var theme = saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>Focus Flow</h1>
-      <p class="streak" id="streak">🔥 0 day streak</p>
+      <div>
+        <h1>Focus Flow</h1>
+        <p class="streak" id="streak">🔥 0 day streak</p>
+      </div>
+      <button id="themeToggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
     </header>
 
     <section class="timer-card">

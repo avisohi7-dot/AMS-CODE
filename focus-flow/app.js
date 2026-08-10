@@ -30,7 +30,27 @@ const el = {
   sessionLog: document.getElementById("sessionLog"),
   sessionCount: document.getElementById("sessionCount"),
   streak: document.getElementById("streak"),
+  themeToggle: document.getElementById("themeToggle"),
 };
+
+const THEME_KEY = "focusFlow.theme";
+
+function currentTheme() {
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+}
+
+function renderThemeToggle() {
+  el.themeToggle.textContent = currentTheme() === "dark" ? "☀️" : "🌙";
+}
+
+el.themeToggle.addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem(THEME_KEY, next);
+  renderThemeToggle();
+});
+
+renderThemeToggle();
 
 function loadState() {
   try {
