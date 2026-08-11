@@ -1252,6 +1252,87 @@
   .settings-profile-row.current { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
   .settings-profile-row .name { flex: 1; font-size: 12.5px; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .settings-profile-row .tag { font-size: 10px; font-weight: 700; color: var(--accent-strong); }
+
+  /* ---------- Home banners (missed sessions / weekly review) ---------- */
+  .home-banner { display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); margin-bottom: 14px; }
+  .home-banner.missed { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 8%, var(--surface)); }
+  .home-banner.review { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
+  .home-banner-icon { width: 32px; height: 32px; border-radius: 9px; flex: none; display: flex; align-items: center; justify-content: center; background: var(--surface-2); }
+  .home-banner-body { flex: 1; min-width: 0; }
+  .home-banner-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .home-banner-sub { font-size: 12px; color: var(--ink-soft); line-height: 1.45; }
+  .home-banner-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .missed-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .missed-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 6px 8px; border-radius: 8px; background: var(--surface-2); }
+  .missed-row .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+  .missed-row button { flex: none; }
+
+  /* ---------- toggle switch (Settings boolean prefs) ---------- */
+  .switch { position: relative; display: inline-block; width: 38px; height: 22px; flex: none; }
+  .switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .switch-track { position: absolute; inset: 0; background: var(--surface-3); border-radius: 999px; transition: background 150ms; pointer-events: none; }
+  .switch-track::before { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: var(--surface); border-radius: 50%; box-shadow: var(--shadow); transition: transform 150ms; }
+  .switch input:checked + .switch-track { background: var(--accent); }
+  .switch input:checked + .switch-track::before { transform: translateX(16px); }
+
+  /* ---------- supportive line ---------- */
+  .supportive-line { font-size: 12.5px; color: var(--accent-strong); font-weight: 600; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+  .fc-due-widget {
+    display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+    padding: 11px 13px; border-radius: 11px; border: 1px solid var(--line); background: var(--surface);
+    margin-bottom: 12px; cursor: pointer;
+  }
+  .fc-due-widget:hover { border-color: var(--accent); }
+  .fc-due-icon { width: 28px; height: 28px; border-radius: 8px; flex: none; display: flex; align-items: center; justify-content: center; background: color-mix(in srgb, var(--accent) 16%, var(--surface)); color: var(--accent-strong); }
+  .fc-due-text { flex: 1; }
+  .fc-due-title { font-size: 12.5px; font-weight: 700; }
+  .fc-due-sub { font-size: 11px; color: var(--ink-faint); }
+  .tt-focus {
+    flex: none; width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid transparent; background: none;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-faint); opacity: 0.6;
+  }
+  .tt-focus:hover, .tt-focus:focus-visible { opacity: 1; color: var(--accent-strong); border-color: var(--accent); background: var(--surface-3); }
+
+  /* ---------- Flashcards page ---------- */
+  .fc-tabs { display: flex; gap: 4px; background: var(--surface-2); border-radius: 9px; padding: 3px; width: fit-content; margin-bottom: 16px; }
+  .fc-tabs button { border: none; background: none; padding: 7px 16px; border-radius: 7px; font-size: 12.5px; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
+  .fc-tabs button.active { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+  .fc-manage-layout { display: grid; grid-template-columns: minmax(260px, 340px) 1fr; gap: 16px; align-items: start; }
+  @media (max-width: 900px) { .fc-manage-layout { grid-template-columns: 1fr; } }
+  .fc-form-row { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .fc-form-row label { font-size: 11px; font-weight: 700; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.03em; }
+  .fc-form-row textarea, .fc-form-row select, .fc-form-row input[type="text"] {
+    padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink); font-size: 13px; font-family: inherit; resize: vertical;
+  }
+  .fc-card-list { display: flex; flex-direction: column; gap: 8px; }
+  .fc-card-row { display: flex; align-items: flex-start; gap: 10px; padding: 11px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); }
+  .fc-card-row .swatch-dot { margin-top: 4px; }
+  .fc-card-body { flex: 1; min-width: 0; }
+  .fc-card-front { font-size: 12.5px; font-weight: 700; }
+  .fc-card-back { font-size: 11.5px; color: var(--ink-soft); margin-top: 2px; }
+  .fc-card-meta { font-size: 10px; color: var(--ink-faint); margin-top: 4px; font-weight: 600; }
+
+  .fc-review-wrap { max-width: 480px; margin: 0 auto; text-align: center; }
+  .fc-review-progress { font-size: 11.5px; color: var(--ink-faint); font-weight: 600; margin-bottom: 14px; }
+  .fc-review-card {
+    position: relative; min-height: 220px; border-radius: 18px; border: 1px solid var(--line); background: var(--surface);
+    display: flex; align-items: center; justify-content: center; padding: 28px 24px; cursor: pointer;
+    box-shadow: var(--shadow); font-size: 17px; font-weight: 600; line-height: 1.5;
+  }
+  .fc-review-face-label { font-size: 10px; font-weight: 700; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.04em; position: absolute; top: 14px; left: 18px; }
+  .fc-review-hint { font-size: 11.5px; color: var(--ink-faint); margin-top: 10px; }
+  .fc-grade-btns { display: flex; gap: 10px; margin-top: 16px; }
+  .fc-grade-btns .btn { flex: 1; justify-content: center; }
+
+  /* ---------- Focus timer ---------- */
+  .focus-modal .modal-card { max-width: 360px; text-align: center; }
+  .focus-topic { font-size: 12.5px; font-weight: 700; color: var(--ink-soft); margin-bottom: 4px; }
+  .focus-phase { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-strong); margin-bottom: 12px; }
+  .focus-clock { font-family: ui-serif, "New York", Georgia, serif; font-size: 56px; font-weight: 600; letter-spacing: -0.02em; margin: 8px 0 18px; font-variant-numeric: tabular-nums; }
+  .focus-controls { display: flex; gap: 10px; justify-content: center; }
+  .focus-cycles { font-size: 11px; color: var(--ink-faint); margin-top: 14px; font-weight: 600; }
 </style>
 <script>
 (function () {
@@ -1305,6 +1386,10 @@
         <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><path d="M3 2.5H13V13.5H3V2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.5 6H10.5M5.5 8.5H10.5M5.5 11H8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         <span class="nav-label">Study Plan</span>
       </button>
+      <button type="button" class="page-nav-item" id="navFlashcards" data-view="flashcards" title="Flashcards">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><rect x="2" y="4.5" width="10.5" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 3.5H13.5C14.05 3.5 14.5 3.95 14.5 4.5V10.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M4.5 8.5H10M4.5 10.5H8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="nav-label">Flashcards</span>
+      </button>
       <button type="button" class="page-nav-item" id="navProgress" data-view="progress" title="Progress">
         <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><path d="M2 13.5H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><rect x="3.5" y="8" width="2.4" height="5.5" rx="0.6" stroke="currentColor" stroke-width="1.2"/><rect x="7" y="4.5" width="2.4" height="9" rx="0.6" stroke="currentColor" stroke-width="1.2"/><rect x="10.5" y="2" width="2.4" height="11.5" rx="0.6" stroke="currentColor" stroke-width="1.2"/></svg>
         <span class="nav-label">Progress</span>
@@ -1345,6 +1430,7 @@
         <p class="sub" id="subToday" style="display:none">A quick look at what's on today — tap through to Notion for the full detail.</p>
         <p class="sub" id="subCalendar">Pick a topic as your pen — <span class="pen-name" id="activePenLabel">none selected</span> — then click for a 30-min session or drag for a custom length. Click a block to check it off, drag its edge to resize.</p>
         <p class="sub" id="subPlan" style="display:none">Pick an exam to check how you're tracking, topic by topic.</p>
+        <p class="sub" id="subFlashcards" style="display:none">Capture what you need to remember, then drill it with spaced review.</p>
         <p class="sub" id="subProgress" style="display:none">See how far you've come across your whole study plan.</p>
         <p class="sub" id="subSettings" style="display:none">Manage your profile, appearance, and data.</p>
       </div>
@@ -1379,6 +1465,7 @@
   </header>
 
   <div id="viewHome" style="display:none">
+    <div id="homeBanners"></div>
     <div class="home-hero">
       <svg class="home-hero-logo" viewBox="0 0 512 512" role="img" aria-label="Study Ledger">
         <defs>
@@ -1418,9 +1505,17 @@
         <div class="th-date" id="todayPageDate">—</div>
       </div>
       <div class="th-progress" id="todayPageProgress"></div>
+      <div class="supportive-line" id="todaySupportiveLine" style="display:none"></div>
     </div>
     <section class="card rail-section">
       <h2>Today's tasks</h2>
+      <button type="button" class="fc-due-widget" id="fcDueWidget" style="display:none">
+        <span class="fc-due-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="4.5" width="10.5" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 3.5H13.5C14.05 3.5 14.5 3.95 14.5 4.5V10.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+        <span class="fc-due-text">
+          <span class="fc-due-title" id="fcDueTitle">Flashcards due</span>
+          <span class="fc-due-sub">Tap to review now</span>
+        </span>
+      </button>
       <div id="todayTaskList"></div>
     </section>
   </div>
@@ -1512,6 +1607,52 @@
     </div>
   </div>
 
+  <div id="viewFlashcards" style="display:none">
+    <div class="fc-tabs" id="fcTabs">
+      <button type="button" data-mode="manage" class="active">Manage</button>
+      <button type="button" data-mode="review">Review</button>
+    </div>
+    <div id="fcManagePane">
+      <div class="fc-manage-layout">
+        <section class="card rail-section">
+          <h2>Add a card</h2>
+          <div class="fc-form-row">
+            <label for="fcTopicSelect">Topic</label>
+            <select id="fcTopicSelect"></select>
+          </div>
+          <div class="fc-form-row">
+            <label for="fcFrontInput">Front (the prompt)</label>
+            <textarea id="fcFrontInput" rows="2" maxlength="300" placeholder="e.g. What's the postal rule?"></textarea>
+          </div>
+          <div class="fc-form-row">
+            <label for="fcBackInput">Back (the answer)</label>
+            <textarea id="fcBackInput" rows="3" maxlength="500" placeholder="e.g. Acceptance is effective the moment the letter is posted, not when it's received."></textarea>
+          </div>
+          <button type="button" class="btn btn-primary" id="fcAddBtn" disabled>+ Add card</button>
+        </section>
+        <section class="card rail-section">
+          <h2>Your cards</h2>
+          <p class="rail-hint">Every session's Notion notes end with a flashcard prompt — this is where they live.</p>
+          <div class="fc-card-list" id="fcCardList"></div>
+        </section>
+      </div>
+    </div>
+    <div id="fcReviewPane" style="display:none">
+      <div class="fc-review-wrap">
+        <div class="fc-review-progress" id="fcReviewProgress"></div>
+        <div class="fc-review-card" id="fcReviewCard">
+          <span class="fc-review-face-label" id="fcReviewFaceLabel">Front</span>
+          <span id="fcReviewText"></span>
+        </div>
+        <p class="fc-review-hint" id="fcReviewHint">Tap the card to reveal the answer</p>
+        <div class="fc-grade-btns" id="fcGradeBtns" style="display:none">
+          <button type="button" class="btn btn-outline" id="fcGradeAgain">Still learning</button>
+          <button type="button" class="btn btn-primary" id="fcGradeGood">Got it</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="viewProgress" style="display:none">
     <div class="card progress-hero">
       <div class="ph-label">Overall progress</div>
@@ -1561,6 +1702,16 @@
             <button type="button" data-theme="dark">Dark</button>
             <button type="button" data-theme="system">System</button>
           </div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Supportive messages</div>
+            <div class="settings-row-sub">A few encouraging words on Today and Home, based on how things are going.</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="supportiveToggle" checked>
+            <span class="switch-track"></span>
+          </label>
         </div>
       </section>
 
@@ -1638,6 +1789,27 @@
         <input type="file" accept="image/*" id="wallpaperUpload" hidden>
       </label>
       <p class="wallpaper-note">Photos are resized and saved locally on this Mac — never uploaded anywhere.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop focus-modal" id="focusModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><h3>Focus session</h3></div>
+      <button class="modal-close" id="focusModalClose" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" style="white-space:normal">
+      <div class="focus-topic" id="focusTopic">—</div>
+      <div class="focus-phase" id="focusPhase">Focus</div>
+      <div class="focus-clock" id="focusClock">25:00</div>
+      <div class="focus-controls">
+        <button type="button" class="btn btn-primary" id="focusStartPause">Start</button>
+        <button type="button" class="btn btn-outline" id="focusReset">Reset</button>
+      </div>
+      <div class="focus-cycles" id="focusCycles">0 focus rounds completed</div>
     </div>
   </div>
 </div>
@@ -1796,6 +1968,11 @@
   state.exams = state.exams || [];
   state.currentView = state.currentView || "home";
   state.selectedExamId = state.selectedExamId || null;
+  state.flashcards = state.flashcards || [];
+  state.focusTimer = state.focusTimer || null;
+  state.lastWeeklyReviewAt = state.lastWeeklyReviewAt || null;
+  state.supportiveMessages = state.supportiveMessages !== false;
+  state.dismissedMissedBanner = state.dismissedMissedBanner || null;
   var weekStart = mondayOf(new Date());
   var calendarViewMode = state.calendarViewMode || (window.innerWidth < 720 ? "day" : "week");
   var dayViewIndex = (new Date().getDay() + 6) % 7;
@@ -2155,6 +2332,8 @@
     var doneCount = sessions.filter(function (s) { return isCompleted(s, todayStr); }).length + (planItem && !linkedSession && planItem.status === "Done" ? 1 : 0);
     var progressEl = document.getElementById("todayPageProgress");
     progressEl.innerHTML = totalCount ? "<strong>" + doneCount + " of " + totalCount + "</strong> complete" : "Nothing scheduled today";
+    renderTodaySupportiveLine(doneCount, totalCount);
+    renderTodayFcWidget();
 
     if (examToday) {
       var exRow = document.createElement("div");
@@ -2198,9 +2377,11 @@
         (linkedPlan ? '<a class="tt-link-inline" href="' + linkedPlan.url + '" target="_blank" rel="noopener">Open in Notion &#8599;</a>' : "") +
         "</div>" +
         '<div class="tt-actions">' +
+        '<button type="button" class="tt-focus" aria-label="Start focus timer" title="Start focus timer"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5.5V8.5L10 10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 1.5H10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button>' +
         '<button type="button" class="tt-check" aria-label="Mark complete"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M2.5 8.5L6 12L13.5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
         '<button type="button" class="tt-del" aria-label="Remove session" title="Remove"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>' +
         "</div>";
+      row.querySelector(".tt-focus").addEventListener("click", function () { openFocusModal(s); });
       row.querySelector(".tt-check").addEventListener("click", function () { toggleTodaySessionComplete(s, todayStr); });
       row.querySelector(".tt-del").addEventListener("click", function () { removeSession(s.id); });
       list.appendChild(row);
@@ -2212,8 +2393,8 @@
   }
 
   /* ---------- page nav sidebar ---------- */
-  var PAGE_TITLES = { home: "Home", today: "Today", calendar: "Full Calendar", plan: "Study Plan", progress: "Progress", settings: "Settings" };
-  var VIEWS = ["home", "today", "calendar", "plan", "progress", "settings"];
+  var PAGE_TITLES = { home: "Home", today: "Today", calendar: "Full Calendar", plan: "Study Plan", flashcards: "Flashcards", progress: "Progress", settings: "Settings" };
+  var VIEWS = ["home", "today", "calendar", "plan", "flashcards", "progress", "settings"];
   document.querySelectorAll(".page-nav-item").forEach(function (btn) {
     btn.addEventListener("click", function () { setView(btn.dataset.view); });
   });
@@ -2237,6 +2418,7 @@
     if (view === "home") renderHomeView();
     if (view === "today") renderTodayPage();
     if (view === "plan") renderStudyPlanView();
+    if (view === "flashcards") renderFlashcardsView();
     if (view === "progress") renderProgressView();
     if (view === "settings") renderSettingsView();
     if (typeof closeRail === "function") closeRail();
@@ -2400,6 +2582,11 @@
   }
 
   function renderHomeView() {
+    var bannersEl = document.getElementById("homeBanners");
+    bannersEl.innerHTML = "";
+    renderMissedBanner(bannersEl);
+    renderWeeklyReviewBanner(bannersEl);
+
     var profiles = getProfiles();
     var profile = profiles.find(function (p) { return p.id === ACTIVE_PROFILE_ID; }) || { name: "Study Ledger" };
     document.getElementById("homeGreeting").textContent = homeGreetingWord();
@@ -2598,6 +2785,7 @@
   /* ---------- Settings page ---------- */
   function renderSettingsView() {
     renderProfileChrome();
+    document.getElementById("supportiveToggle").checked = state.supportiveMessages;
     var themeVal = getTheme();
     document.querySelectorAll("#themeToggle button").forEach(function (btn) {
       btn.classList.toggle("active", btn.dataset.theme === themeVal);
@@ -2648,11 +2836,411 @@
   setTheme(getTheme());
   renderProfileChrome();
 
+  /* ---------- flashcards + spaced review ---------- */
+  var FC_INTERVALS = [1, 2, 4, 7, 14];
+  var fcMode = "manage";
+  var fcReviewQueue = [];
+  var fcReviewIndex = 0;
+  var fcReviewRevealed = false;
+
+  function dueFlashcards() {
+    var todayStr = fmtDate(new Date());
+    return state.flashcards.filter(function (c) { return c.nextReview <= todayStr; });
+  }
+
+  function gradeFlashcard(card, grade) {
+    card.box = grade === "again" ? 1 : Math.min(FC_INTERVALS.length, (card.box || 1) + 1);
+    card.nextReview = fmtDate(addDays(new Date(), FC_INTERVALS[card.box - 1]));
+    save();
+  }
+
+  function removeFlashcard(id) {
+    state.flashcards = state.flashcards.filter(function (c) { return c.id !== id; });
+    save();
+    renderFlashcardsView();
+    renderTodayFcWidget();
+  }
+
+  function updateFcAddBtnState() {
+    var front = document.getElementById("fcFrontInput").value.trim();
+    var back = document.getElementById("fcBackInput").value.trim();
+    var topic = document.getElementById("fcTopicSelect").value;
+    document.getElementById("fcAddBtn").disabled = !(front && back && topic);
+  }
+
+  function addFlashcardFromForm() {
+    var subjectId = document.getElementById("fcTopicSelect").value;
+    var front = document.getElementById("fcFrontInput").value.trim();
+    var back = document.getElementById("fcBackInput").value.trim();
+    if (!subjectId || !front || !back) return;
+    state.flashcards.push({ id: uid(), subjectId: subjectId, front: front, back: back, box: 1, nextReview: fmtDate(new Date()), createdAt: Date.now() });
+    save();
+    document.getElementById("fcFrontInput").value = "";
+    document.getElementById("fcBackInput").value = "";
+    updateFcAddBtnState();
+    renderFlashcardsView();
+    renderTodayFcWidget();
+    toast("Card added");
+  }
+
+  function setFcMode(mode) {
+    fcMode = mode;
+    document.querySelectorAll("#fcTabs button").forEach(function (b) { b.classList.toggle("active", b.dataset.mode === mode); });
+    document.getElementById("fcManagePane").style.display = mode === "manage" ? "" : "none";
+    document.getElementById("fcReviewPane").style.display = mode === "review" ? "" : "none";
+    if (mode === "review") startFcReview();
+  }
+
+  function startFcReview() {
+    fcReviewQueue = dueFlashcards();
+    fcReviewIndex = 0;
+    fcReviewRevealed = false;
+    renderFcReviewCard();
+  }
+
+  function renderFcReviewCard() {
+    var progEl = document.getElementById("fcReviewProgress");
+    var textEl = document.getElementById("fcReviewText");
+    var labelEl = document.getElementById("fcReviewFaceLabel");
+    var hintEl = document.getElementById("fcReviewHint");
+    var gradeBtns = document.getElementById("fcGradeBtns");
+
+    if (fcReviewQueue.length === 0 || fcReviewIndex >= fcReviewQueue.length) {
+      progEl.textContent = fcReviewQueue.length ? "Session complete" : "";
+      textEl.textContent = fcReviewQueue.length
+        ? "You've reviewed all " + fcReviewQueue.length + " due card" + (fcReviewQueue.length === 1 ? "" : "s") + ". Come back tomorrow for more."
+        : "Nothing due right now — nice work staying on top of it.";
+      labelEl.style.display = "none";
+      hintEl.style.display = "none";
+      gradeBtns.style.display = "none";
+      return;
+    }
+    labelEl.style.display = "";
+    hintEl.style.display = "";
+    var card = fcReviewQueue[fcReviewIndex];
+    progEl.textContent = "Card " + (fcReviewIndex + 1) + " of " + fcReviewQueue.length;
+    labelEl.textContent = fcReviewRevealed ? "Back" : "Front";
+    textEl.textContent = fcReviewRevealed ? card.back : card.front;
+    hintEl.textContent = fcReviewRevealed ? "" : "Tap the card to reveal the answer";
+    gradeBtns.style.display = fcReviewRevealed ? "flex" : "none";
+  }
+
+  function fcGradeCurrentCard(grade) {
+    var card = fcReviewQueue[fcReviewIndex];
+    if (!card) return;
+    gradeFlashcard(card, grade);
+    fcReviewIndex++;
+    fcReviewRevealed = false;
+    renderFcReviewCard();
+    renderTodayFcWidget();
+  }
+
+  function renderFlashcardsView() {
+    var topicSelect = document.getElementById("fcTopicSelect");
+    var prevVal = topicSelect.value;
+    topicSelect.innerHTML = "";
+    state.subjects.forEach(function (s) {
+      var opt = document.createElement("option");
+      opt.value = s.id; opt.textContent = s.name;
+      topicSelect.appendChild(opt);
+    });
+    if (prevVal && state.subjects.some(function (s) { return s.id === prevVal; })) topicSelect.value = prevVal;
+
+    var list = document.getElementById("fcCardList");
+    list.innerHTML = "";
+    if (state.flashcards.length === 0) {
+      list.innerHTML = '<p class="stat-empty">No cards yet — add your first one from today’s session notes.</p>';
+    } else {
+      var todayStr = fmtDate(new Date());
+      function buildRow(c, subj) {
+        var row = document.createElement("div");
+        row.className = "fc-card-row";
+        row.innerHTML =
+          '<span class="swatch-dot" style="--swatch:' + (subj ? subj.color : "var(--ink-faint)") + '"></span>' +
+          '<div class="fc-card-body"><div class="fc-card-front">' + escapeHtml(c.front) + "</div>" +
+          '<div class="fc-card-back">' + escapeHtml(c.back) + "</div>" +
+          '<div class="fc-card-meta">' + escapeHtml(subj ? subj.name : "Topic removed") + (c.nextReview <= todayStr ? " · due now" : " · due " + c.nextReview) + "</div></div>" +
+          '<button type="button" class="tt-del" aria-label="Delete card" title="Delete"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>';
+        row.querySelector(".tt-del").addEventListener("click", function () { removeFlashcard(c.id); });
+        list.appendChild(row);
+      }
+      state.subjects.forEach(function (subj) {
+        state.flashcards.filter(function (c) { return c.subjectId === subj.id; }).forEach(function (c) { buildRow(c, subj); });
+      });
+      state.flashcards.filter(function (c) { return !state.subjects.some(function (s) { return s.id === c.subjectId; }); }).forEach(function (c) { buildRow(c, null); });
+    }
+    updateFcAddBtnState();
+    if (fcMode === "review") startFcReview();
+  }
+
+  function renderTodayFcWidget() {
+    var due = dueFlashcards();
+    var widget = document.getElementById("fcDueWidget");
+    if (due.length === 0) { widget.style.display = "none"; return; }
+    widget.style.display = "flex";
+    document.getElementById("fcDueTitle").textContent = due.length + " flashcard" + (due.length === 1 ? "" : "s") + " due for review";
+  }
+
+  document.getElementById("fcFrontInput").addEventListener("input", updateFcAddBtnState);
+  document.getElementById("fcBackInput").addEventListener("input", updateFcAddBtnState);
+  document.getElementById("fcTopicSelect").addEventListener("change", updateFcAddBtnState);
+  document.getElementById("fcAddBtn").addEventListener("click", addFlashcardFromForm);
+  document.querySelectorAll("#fcTabs button").forEach(function (btn) {
+    btn.addEventListener("click", function () { setFcMode(btn.dataset.mode); });
+  });
+  document.getElementById("fcReviewCard").addEventListener("click", function () {
+    if (fcReviewQueue.length === 0 || fcReviewIndex >= fcReviewQueue.length) return;
+    fcReviewRevealed = !fcReviewRevealed;
+    renderFcReviewCard();
+  });
+  document.getElementById("fcGradeAgain").addEventListener("click", function () { fcGradeCurrentCard("again"); });
+  document.getElementById("fcGradeGood").addEventListener("click", function () { fcGradeCurrentCard("good"); });
+  document.getElementById("fcDueWidget").addEventListener("click", function () {
+    setView("flashcards");
+    setFcMode("review");
+  });
+
+  /* ---------- focus timer (Pomodoro-style, persisted across reloads) ---------- */
+  var FOCUS_SEC = 25 * 60;
+  var BREAK_SEC = 5 * 60;
+  var focusTickHandle = null;
+  var focusModalEl = document.getElementById("focusModal");
+
+  function focusRemainingSec() {
+    var ft = state.focusTimer;
+    if (!ft) return 0;
+    if (ft.running && ft.endsAt) return Math.max(0, Math.round((ft.endsAt - Date.now()) / 1000));
+    return ft.remainingSec;
+  }
+
+  function tickFocusTimer() {
+    var ft = state.focusTimer;
+    if (!ft || !ft.running) return;
+    if (focusRemainingSec() <= 0) {
+      if (ft.phase === "focus") {
+        ft.cyclesDone = (ft.cyclesDone || 0) + 1;
+        ft.phase = "break";
+        ft.remainingSec = BREAK_SEC;
+      } else {
+        ft.phase = "focus";
+        ft.remainingSec = FOCUS_SEC;
+      }
+      ft.endsAt = Date.now() + ft.remainingSec * 1000;
+      save();
+      toast(ft.phase === "break" ? "Nice work — take a 5 minute break." : "Break's over — back to it.");
+    }
+    renderFocusModal();
+  }
+
+  function startFocusTick() {
+    if (focusTickHandle) clearInterval(focusTickHandle);
+    focusTickHandle = setInterval(tickFocusTimer, 1000);
+  }
+
+  function stopFocusTick() {
+    if (focusTickHandle) { clearInterval(focusTickHandle); focusTickHandle = null; }
+  }
+
+  function renderFocusModal() {
+    var ft = state.focusTimer;
+    if (!ft) return;
+    document.getElementById("focusTopic").textContent = ft.topicName;
+    document.getElementById("focusPhase").textContent = ft.phase === "focus" ? "Focus" : "Break";
+    var remaining = focusRemainingSec();
+    var m = Math.floor(remaining / 60), s = remaining % 60;
+    document.getElementById("focusClock").textContent = m + ":" + String(s).padStart(2, "0");
+    var atFullLength = remaining === (ft.phase === "focus" ? FOCUS_SEC : BREAK_SEC);
+    document.getElementById("focusStartPause").textContent = ft.running ? "Pause" : (atFullLength ? "Start" : "Resume");
+    document.getElementById("focusCycles").textContent = (ft.cyclesDone || 0) + " focus round" + (ft.cyclesDone === 1 ? "" : "s") + " completed";
+  }
+
+  function openFocusModal(session) {
+    var subj = subjectById(session.subjectId);
+    if (!state.focusTimer || state.focusTimer.sessionId !== session.id) {
+      state.focusTimer = {
+        sessionId: session.id, subjectId: session.subjectId,
+        topicName: subj ? subj.name : "Study session",
+        phase: "focus", running: false, remainingSec: FOCUS_SEC, endsAt: null, cyclesDone: 0
+      };
+      save();
+    }
+    focusModalEl.classList.add("open");
+    renderFocusModal();
+    startFocusTick();
+  }
+
+  function closeFocusModal() {
+    focusModalEl.classList.remove("open");
+    stopFocusTick();
+  }
+
+  document.getElementById("focusStartPause").addEventListener("click", function () {
+    var ft = state.focusTimer;
+    if (!ft) return;
+    if (ft.running) {
+      ft.remainingSec = focusRemainingSec();
+      ft.running = false;
+      ft.endsAt = null;
+    } else {
+      ft.running = true;
+      ft.endsAt = Date.now() + (ft.remainingSec || FOCUS_SEC) * 1000;
+    }
+    save();
+    renderFocusModal();
+  });
+  document.getElementById("focusReset").addEventListener("click", function () {
+    var ft = state.focusTimer;
+    if (!ft) return;
+    ft.phase = "focus"; ft.running = false; ft.remainingSec = FOCUS_SEC; ft.endsAt = null; ft.cyclesDone = 0;
+    save();
+    renderFocusModal();
+  });
+  document.getElementById("focusModalClose").addEventListener("click", closeFocusModal);
+  focusModalEl.addEventListener("click", function (e) { if (e.target === focusModalEl) closeFocusModal(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeFocusModal(); });
+
+  /* ---------- missed sessions (auto-reschedule) ---------- */
+  function findMissedSessions() {
+    var todayStr = fmtDate(new Date());
+    return state.sessions.filter(function (s) { return !s.recurring && s.date && s.date < todayStr && !isCompleted(s, s.date); });
+  }
+
+  function findNextFreeSlot(session) {
+    var d = addDays(new Date(), 1);
+    for (var i = 0; i < 60; i++) {
+      var dateStr = fmtDate(d);
+      var conflict = state.sessions.some(function (s) {
+        if (s.id === session.id || s.recurring || s.date !== dateStr) return false;
+        return s.startMin < session.endMin && session.startMin < s.endMin;
+      });
+      if (!conflict) return dateStr;
+      d = addDays(d, 1);
+    }
+    return fmtDate(d);
+  }
+
+  function rescheduleSession(session) {
+    var newDate = findNextFreeSlot(session);
+    session.date = newDate;
+    save();
+    renderAll();
+    refreshStudyViews();
+    renderHomeView();
+    toast("Moved to " + new Date(newDate + "T00:00:00").toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }));
+  }
+
+  function renderMissedBanner(container) {
+    var missed = findMissedSessions();
+    if (missed.length === 0) return;
+    var box = document.createElement("div");
+    box.className = "home-banner missed";
+    box.innerHTML =
+      '<span class="home-banner-icon"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 4.5V8.5L10.5 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/></svg></span>' +
+      '<div class="home-banner-body"><div class="home-banner-title">' + missed.length + " missed session" + (missed.length === 1 ? "" : "s") + '</div>' +
+      '<div class="home-banner-sub">Life happens — move them to the next open slot and keep going.</div>' +
+      '<div class="missed-list" id="missedList"></div></div>';
+    container.appendChild(box);
+    var list = box.querySelector("#missedList");
+    missed.slice(0, 6).forEach(function (s) {
+      var subj = subjectById(s.subjectId);
+      var row = document.createElement("div");
+      row.className = "missed-row";
+      row.innerHTML = '<span class="swatch-dot" style="--swatch:' + (subj ? subj.color : "var(--ink-faint)") + '"></span>' +
+        '<span class="name">' + escapeHtml(subj ? subj.name : "Session") + " · " + s.date + "</span>" +
+        '<button type="button" class="btn btn-outline" style="padding:5px 10px;font-size:11px">Reschedule</button>';
+      row.querySelector("button").addEventListener("click", function () { rescheduleSession(s); });
+      list.appendChild(row);
+    });
+  }
+
+  /* ---------- weekly review ritual ---------- */
+  function shouldShowWeeklyReview() {
+    var baseline = state.lastWeeklyReviewAt;
+    if (!baseline) {
+      var profile = getProfiles().find(function (p) { return p.id === ACTIVE_PROFILE_ID; });
+      baseline = profile && profile.createdAt ? fmtDate(new Date(profile.createdAt)) : null;
+    }
+    if (!baseline) return false;
+    var days = Math.floor((new Date(fmtDate(new Date()) + "T00:00:00") - new Date(baseline + "T00:00:00")) / 86400000);
+    return days >= 7;
+  }
+
+  function markWeeklyReviewDone() {
+    state.lastWeeklyReviewAt = fmtDate(new Date());
+    save();
+    renderHomeView();
+  }
+
+  function renderWeeklyReviewBanner(container) {
+    if (!shouldShowWeeklyReview()) return;
+    var weekAgoStr = fmtDate(addDays(new Date(), -7));
+    var todayStr = fmtDate(new Date());
+    var weekSessions = state.sessions.filter(function (s) { return !s.recurring && s.date >= weekAgoStr && s.date <= todayStr; });
+    var weekDone = weekSessions.filter(function (s) { return isCompleted(s, s.date); }).length;
+    var needsWork = state.subjects.filter(function (s) { return s.confidence === "needs_work"; });
+
+    var box = document.createElement("div");
+    box.className = "home-banner review";
+    box.innerHTML =
+      '<span class="home-banner-icon"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="2.5" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 6H14" stroke="currentColor" stroke-width="1.3"/></svg></span>' +
+      '<div class="home-banner-body"><div class="home-banner-title">Time for a weekly review</div>' +
+      "<div class=\"home-banner-sub\">This past week: " + weekDone + " of " + weekSessions.length + " sessions checked off" +
+      (needsWork.length ? ", and " + needsWork.length + " topic" + (needsWork.length === 1 ? "" : "s") + " still marked as needing work" : "") + ".</div>" +
+      '<div class="home-banner-actions"><button type="button" class="btn btn-primary" id="weeklyReviewPlanBtn">Plan the week</button>' +
+      '<button type="button" class="btn btn-outline" id="weeklyReviewDoneBtn">Mark reviewed</button></div></div>';
+    container.appendChild(box);
+    box.querySelector("#weeklyReviewPlanBtn").addEventListener("click", function () { markWeeklyReviewDone(); setView("calendar"); });
+    box.querySelector("#weeklyReviewDoneBtn").addEventListener("click", markWeeklyReviewDone);
+  }
+
+  /* ---------- supportive messages ---------- */
+  var SUPPORTIVE_LINES = {
+    allDone: [
+      "Every task done — that's a real day of progress.",
+      "Nothing left on today's list. Well earned.",
+      "You cleared today's plan. That adds up fast."
+    ],
+    partial: [
+      "Good progress so far — keep the momentum going.",
+      "You're chipping away at it. That's how it gets done.",
+      "Solid start today — the rest is within reach."
+    ],
+    none: [
+      "Nothing checked off yet — even one session moves things forward.",
+      "The list is waiting whenever you're ready to start.",
+      "One small session today still counts."
+    ],
+    empty: [
+      "Nothing scheduled today — a good moment to get ahead, or just rest.",
+      "A quiet day on the calendar. Use it however serves you best."
+    ]
+  };
+
+  function pickSupportiveLine(list) { return list[Math.floor(Math.random() * list.length)]; }
+
+  function renderTodaySupportiveLine(doneCount, totalCount) {
+    var el = document.getElementById("todaySupportiveLine");
+    if (!state.supportiveMessages) { el.style.display = "none"; return; }
+    var list = totalCount === 0 ? SUPPORTIVE_LINES.empty
+      : doneCount === totalCount ? SUPPORTIVE_LINES.allDone
+      : doneCount === 0 ? SUPPORTIVE_LINES.none
+      : SUPPORTIVE_LINES.partial;
+    el.textContent = pickSupportiveLine(list);
+    el.style.display = "";
+  }
+
+  document.getElementById("supportiveToggle").addEventListener("change", function (e) {
+    state.supportiveMessages = e.target.checked;
+    save();
+    if (state.currentView === "today") renderTodayPage();
+  });
+
   function refreshStudyViews() {
     renderExams();
     if (state.currentView === "home") renderHomeView();
     if (state.currentView === "today") renderTodayPage();
     if (state.currentView === "plan") renderStudyPlanView();
+    if (state.currentView === "flashcards") renderFlashcardsView();
     if (state.currentView === "progress") renderProgressView();
     renderTodayWidget();
   }
@@ -3457,5 +4045,16 @@
 
   renderAll();
   setView(state.currentView);
+
+  /* ---------- offline support ----------
+     Only takes effect when this file is served from a real origin (e.g. the
+     GitHub Pages copy) — the Claude artifact preview runs inside a sandboxed
+     frame where service worker registration is a no-op, so this fails
+     silently there rather than erroring. */
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      try { navigator.serviceWorker.register("./sw.js").catch(function () {}); } catch (e) {}
+    });
+  }
 })();
 </script>
