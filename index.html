@@ -1141,7 +1141,126 @@
     font-size: 11px;
     color: var(--ink-faint);
   }
+
+  /* ---------- generic buttons (Home / Settings pages) ---------- */
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 15px; border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer; border: 1px solid transparent; }
+  .btn svg { flex: none; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+  .btn-outline { background: var(--surface); border-color: var(--line-strong); color: var(--ink); }
+  .btn-outline:hover { background: var(--surface-2); }
+  .btn-danger { background: var(--surface); border-color: var(--danger); color: var(--danger); }
+  .btn-danger:hover { background: color-mix(in srgb, var(--danger) 12%, var(--surface)); }
+  .btn:disabled { opacity: 0.45; cursor: default; }
+
+  /* ---------- page-nav footer: profile switcher ---------- */
+  .page-nav-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); position: relative; }
+  .profile-switch-btn {
+    display: flex; align-items: center; gap: 9px; width: 100%;
+    padding: 7px 8px; border-radius: 9px; border: 1px solid var(--line);
+    background: var(--surface-2); cursor: pointer; text-align: left;
+  }
+  .profile-switch-btn:hover { border-color: var(--line-strong); }
+  .profile-avatar {
+    width: 26px; height: 26px; border-radius: 7px; flex: none;
+    background: var(--accent); color: var(--accent-ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; font-family: ui-serif, Georgia, serif;
+  }
+  .profile-switch-text { min-width: 0; flex: 1; }
+  .profile-switch-name { font-size: 12px; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .profile-switch-sub { font-size: 9.5px; color: var(--ink-faint); font-weight: 600; }
+  .profile-switch-caret { flex: none; opacity: 0.6; }
+  .profile-menu {
+    position: absolute; bottom: calc(100% + 8px); left: 0; width: 236px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow); padding: 6px; z-index: 45; display: none;
+  }
+  .profile-menu.open { display: block; }
+  .profile-menu-label { font-size: 10px; font-weight: 700; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.04em; padding: 6px 8px 4px; }
+  .profile-menu-item {
+    display: flex; align-items: center; gap: 9px; width: 100%;
+    padding: 8px; border-radius: 8px; border: none; background: none;
+    cursor: pointer; text-align: left; font-size: 12.5px; color: var(--ink);
+  }
+  .profile-menu-item:hover { background: var(--surface-2); }
+  .profile-menu-item.current { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); font-weight: 700; }
+  .profile-menu-item.add { color: var(--accent-strong); font-weight: 700; }
+  .profile-menu-item .profile-avatar { width: 22px; height: 22px; font-size: 10px; }
+  .profile-menu-divider { height: 1px; background: var(--line); margin: 5px 2px; }
+  @media (max-width: 720px) {
+    .profile-switch-text, .profile-switch-caret { display: none; }
+    .profile-switch-btn { justify-content: center; padding: 8px; }
+    .profile-menu { left: 8px; bottom: calc(100% + 8px); }
+  }
+
+  /* ---------- Home page ---------- */
+  .home-hero {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+    padding: 40px 36px; border-radius: 18px;
+    background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), var(--surface) 65%);
+    border: 1px solid var(--line);
+  }
+  .home-hero-logo { width: 56px; height: 56px; border-radius: 14px; box-shadow: var(--shadow); }
+  .home-hero h1 { font-family: ui-serif, "New York", Georgia, "Times New Roman", serif; font-size: 27px; font-weight: 600; margin: 4px 0 0; letter-spacing: -0.01em; }
+  .home-hero p.home-hero-sub { margin: 0; color: var(--ink-soft); font-size: 14px; max-width: 50ch; line-height: 1.5; }
+  .home-hero-cta { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+  .home-stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
+  .home-stat-tile { padding: 14px 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); }
+  .home-stat-num { font-family: ui-serif, "New York", Georgia, serif; font-size: 24px; font-weight: 600; color: var(--ink); }
+  .home-stat-label { font-size: 11px; color: var(--ink-faint); font-weight: 600; margin-top: 2px; }
+  .home-section-title { font-size: 13px; font-weight: 700; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; margin: 26px 0 12px; }
+  .home-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+  .home-feature-card {
+    padding: 16px; border-radius: 13px; border: 1px solid var(--line); background: var(--surface);
+    cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 8px;
+    transition: border-color 120ms, transform 120ms;
+  }
+  .home-feature-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .home-feature-icon {
+    width: 32px; height: 32px; border-radius: 9px; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    background: color-mix(in srgb, var(--accent) 16%, var(--surface)); color: var(--accent-strong);
+  }
+  .home-feature-title { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+  .home-feature-sub { font-size: 12px; color: var(--ink-soft); line-height: 1.45; }
+
+  /* ---------- Settings page ---------- */
+  .settings-wrap { display: flex; flex-direction: column; gap: 16px; max-width: 680px; }
+  .settings-section h2 { margin: 0 0 2px; }
+  .settings-section .rail-hint { margin-bottom: 4px; }
+  .settings-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row-text { min-width: 0; }
+  .settings-row-label { font-size: 13px; font-weight: 700; color: var(--ink); }
+  .settings-row-sub { font-size: 11.5px; color: var(--ink-faint); margin-top: 2px; }
+  .settings-row input[type="text"], .settings-row input[type="time"] {
+    padding: 7px 10px; border-radius: 7px; border: 1px solid var(--line-strong);
+    background: var(--surface); color: var(--ink); font-size: 12.5px; min-width: 180px;
+  }
+  .theme-toggle { display: flex; gap: 3px; background: var(--surface-2); border-radius: 9px; padding: 3px; }
+  .theme-toggle button { border: none; background: none; padding: 6px 13px; border-radius: 7px; font-size: 12px; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
+  .theme-toggle button.active { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+  .settings-danger-box { border: 1px solid var(--danger); border-radius: 12px; padding: 14px 16px; }
+  .settings-danger-box .settings-row { border-bottom: none; padding: 8px 0; }
+  .settings-danger-box .settings-row-label { color: var(--danger); }
+  .settings-profile-list { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+  .settings-profile-row {
+    display: flex; align-items: center; gap: 10px; padding: 9px 10px;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+  }
+  .settings-profile-row.current { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--surface)); }
+  .settings-profile-row .name { flex: 1; font-size: 12.5px; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .settings-profile-row .tag { font-size: 10px; font-weight: 700; color: var(--accent-strong); }
 </style>
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem("study-ledger-theme");
+    if (t && t !== "system") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+})();
+</script>
 
 <div class="shell">
   <nav class="page-nav">
@@ -1170,6 +1289,10 @@
       </div>
     </div>
     <div class="page-nav-items">
+      <button type="button" class="page-nav-item" id="navHome" data-view="home" title="Home">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><path d="M2 7.5L8 2.5L14 7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 6.5V13H12.5V6.5" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6.5 13V9.5H9.5V13" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        <span class="nav-label">Home</span>
+      </button>
       <button type="button" class="page-nav-item" id="navToday" data-view="today" title="Today">
         <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.5V8L10.3 9.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span class="nav-label">Today</span>
@@ -1186,6 +1309,30 @@
         <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><path d="M2 13.5H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><rect x="3.5" y="8" width="2.4" height="5.5" rx="0.6" stroke="currentColor" stroke-width="1.2"/><rect x="7" y="4.5" width="2.4" height="9" rx="0.6" stroke="currentColor" stroke-width="1.2"/><rect x="10.5" y="2" width="2.4" height="11.5" rx="0.6" stroke="currentColor" stroke-width="1.2"/></svg>
         <span class="nav-label">Progress</span>
       </button>
+      <button type="button" class="page-nav-item" id="navSettings" data-view="settings" title="Settings">
+        <svg width="17" height="17" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M8 2.2V3.6M8 12.4V13.8M13.8 8H12.4M3.6 8H2.2M12 4L11 5M5 11L4 12M12 12L11 11M5 5L4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="nav-label">Settings</span>
+      </button>
+    </div>
+
+    <div class="page-nav-footer" id="pageNavFooter">
+      <button type="button" class="profile-switch-btn" id="profileSwitchBtn">
+        <span class="profile-avatar" id="profileAvatar">S</span>
+        <span class="profile-switch-text">
+          <span class="profile-switch-name" id="profileSwitchName">My Study Plan</span>
+          <span class="profile-switch-sub">Switch profile</span>
+        </span>
+        <svg class="profile-switch-caret" width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M4 10L8 6L12 10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="profile-menu" id="profileMenu">
+        <div class="profile-menu-label">Profiles</div>
+        <div id="profileMenuList"></div>
+        <div class="profile-menu-divider"></div>
+        <button type="button" class="profile-menu-item add" id="profileMenuAdd">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Add profile
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -1194,10 +1341,12 @@
     <div class="wordmark">
       <div class="titles">
         <h1 class="display" id="pageTitle">Full Calendar</h1>
+        <p class="sub" id="subHome" style="display:none">Your study plan, at a glance.</p>
         <p class="sub" id="subToday" style="display:none">A quick look at what's on today — tap through to Notion for the full detail.</p>
         <p class="sub" id="subCalendar">Pick a topic as your pen — <span class="pen-name" id="activePenLabel">none selected</span> — then click for a 30-min session or drag for a custom length. Click a block to check it off, drag its edge to resize.</p>
         <p class="sub" id="subPlan" style="display:none">Pick an exam to check how you're tracking, topic by topic.</p>
         <p class="sub" id="subProgress" style="display:none">See how far you've come across your whole study plan.</p>
+        <p class="sub" id="subSettings" style="display:none">Manage your profile, appearance, and data.</p>
       </div>
     </div>
     <div class="header-controls">
@@ -1228,6 +1377,39 @@
       </div>
     </div>
   </header>
+
+  <div id="viewHome" style="display:none">
+    <div class="home-hero">
+      <svg class="home-hero-logo" viewBox="0 0 512 512" role="img" aria-label="Study Ledger">
+        <defs>
+          <linearGradient id="logoBgHome" x1="30" y1="20" x2="470" y2="500" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#E559A8"/>
+            <stop offset="1" stop-color="#8354F0"/>
+          </linearGradient>
+        </defs>
+        <rect width="512" height="512" rx="112" fill="url(#logoBgHome)"/>
+        <circle cx="256" cy="228" r="140" fill="#FFFFFF"/>
+        <circle cx="196" cy="246" r="54" fill="#8C7DF3"/>
+        <circle cx="316" cy="246" r="54" fill="#8C7DF3"/>
+        <circle cx="196" cy="246" r="23" fill="#171B33"/>
+        <circle cx="316" cy="246" r="23" fill="#171B33"/>
+        <path d="M238 300 L274 300 L256 336 Z" fill="#F7A928"/>
+        <path d="M90 402 C142 386 202 382 248 393 L248 452 C202 441 142 445 90 461 Z" fill="#FFFFFF"/>
+        <path d="M264 393 C310 382 370 386 422 402 L422 461 C370 445 310 441 264 452 Z" fill="#E7E1FA"/>
+        <path d="M256 393 L256 452" stroke="#C9C0EE" stroke-width="4"/>
+      </svg>
+      <h1 id="homeGreeting">Welcome back</h1>
+      <p class="home-hero-sub" id="homeSub">Study Ledger keeps your whole plan — schedule, progress, and confidence — in one place, synced from Notion.</p>
+      <div class="home-hero-cta">
+        <button type="button" class="btn btn-primary" id="homeCtaToday">Go to Today</button>
+        <button type="button" class="btn btn-outline" id="homeCtaCalendar">Open Full Calendar</button>
+      </div>
+      <div class="home-stat-row" id="homeStatRow"></div>
+    </div>
+
+    <div class="home-section-title">Jump to</div>
+    <div class="home-feature-grid" id="homeFeatureGrid"></div>
+  </div>
 
   <div id="viewToday" style="display:none">
     <div class="card today-hero">
@@ -1345,6 +1527,96 @@
     </section>
   </div>
 
+  <div id="viewSettings" style="display:none">
+    <div class="settings-wrap">
+      <section class="card rail-section settings-section">
+        <h2>Profile</h2>
+        <p class="rail-hint">Each profile keeps its own topics, calendar, and exams — handy for tracking more than one plan on this device.</p>
+        <div class="settings-row">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Profile name</div>
+            <div class="settings-row-sub">Shown in the sidebar and on the Home page.</div>
+          </div>
+          <input type="text" id="settingsProfileName" maxlength="40" placeholder="My Study Plan" />
+        </div>
+        <div class="settings-profile-list" id="settingsProfileList"></div>
+        <div class="settings-row">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Add another profile</div>
+            <div class="settings-row-sub">Starts empty — nothing is shared between profiles.</div>
+          </div>
+          <button type="button" class="btn btn-outline" id="settingsAddProfile">+ New profile</button>
+        </div>
+      </section>
+
+      <section class="card rail-section settings-section">
+        <h2>Appearance</h2>
+        <div class="settings-row">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Theme</div>
+            <div class="settings-row-sub">Match system, or fix it to light / dark.</div>
+          </div>
+          <div class="theme-toggle" id="themeToggle">
+            <button type="button" data-theme="light">Light</button>
+            <button type="button" data-theme="dark">Dark</button>
+            <button type="button" data-theme="system">System</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card rail-section settings-section">
+        <h2>Data</h2>
+        <p class="rail-hint">Everything is stored locally in this browser. Export a backup any time, or share your progress with a tutor, parent, or study group.</p>
+        <div class="settings-row">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Progress report</div>
+            <div class="settings-row-sub">A readable summary of every topic and exam, ready to share.</div>
+          </div>
+          <button type="button" class="btn btn-outline" id="exportReportBtn">Export report</button>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Full schedule</div>
+            <div class="settings-row-sub">Every calendar session as a plain-text table.</div>
+          </div>
+          <button type="button" class="btn btn-outline" id="exportScheduleBtn">Export schedule</button>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Backup this profile</div>
+            <div class="settings-row-sub">A JSON file you can import again later, or move to another browser.</div>
+          </div>
+          <button type="button" class="btn btn-outline" id="exportBackupBtn">Export backup</button>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Restore from backup</div>
+            <div class="settings-row-sub">Replaces this profile's data with the contents of a backup file.</div>
+          </div>
+          <label class="btn btn-outline" for="importBackupInput" style="margin:0">Choose file…</label>
+          <input type="file" id="importBackupInput" accept="application/json" hidden />
+        </div>
+      </section>
+
+      <section class="card rail-section settings-danger-box">
+        <div class="settings-row">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Reset this profile</div>
+            <div class="settings-row-sub">Clears all topics, sessions, and exams for the current profile only.</div>
+          </div>
+          <button type="button" class="btn btn-danger" id="resetProfileBtn">Reset data</button>
+        </div>
+        <div class="settings-row" id="deleteProfileRow">
+          <div class="settings-row-text">
+            <div class="settings-row-label">Delete this profile</div>
+            <div class="settings-row-sub">Removes it from the switcher entirely. Can't be undone.</div>
+          </div>
+          <button type="button" class="btn btn-danger" id="deleteProfileBtn">Delete profile</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
   <footer class="meta" id="metaFooter">Saved locally on this Mac — nothing leaves your browser.</footer>
   </div>
 </div>
@@ -1405,7 +1677,9 @@
   var SNAP = 15;
   var DEFAULT_CLICK_MIN = 30;
   var DOW_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  var STORE_KEY = "study-ledger-v1";
+  var BASE_STORE_KEY = "study-ledger-v1";
+  var PROFILES_KEY = "study-ledger-profiles-v1";
+  var ACTIVE_PROFILE_KEY = "study-ledger-active-profile";
 
   var PALETTE = [
     { name: "clay",  c: "#C1613C" },
@@ -1420,6 +1694,96 @@
 
   function uid() { return Math.random().toString(36).slice(2, 10); }
 
+  /* ---------- profiles (local, per-browser — no accounts, no server) ---------- */
+  function profileStoreKey(id) { return id === "default" ? BASE_STORE_KEY : BASE_STORE_KEY + "::" + id; }
+
+  function getProfiles() {
+    var list = [];
+    try { list = JSON.parse(localStorage.getItem(PROFILES_KEY) || "[]"); } catch (e) { list = []; }
+    if (!Array.isArray(list) || list.length === 0) {
+      list = [{ id: "default", name: "My Study Plan", createdAt: Date.now() }];
+      try { localStorage.setItem(PROFILES_KEY, JSON.stringify(list)); } catch (e) {}
+    }
+    return list;
+  }
+
+  function saveProfiles(list) {
+    try { localStorage.setItem(PROFILES_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+
+  function getActiveProfileId() {
+    var id = null;
+    try { id = localStorage.getItem(ACTIVE_PROFILE_KEY); } catch (e) {}
+    var list = getProfiles();
+    if (!id || !list.some(function (p) { return p.id === id; })) {
+      id = list[0].id;
+      try { localStorage.setItem(ACTIVE_PROFILE_KEY, id); } catch (e) {}
+    }
+    return id;
+  }
+
+  function setActiveProfileId(id) {
+    try { localStorage.setItem(ACTIVE_PROFILE_KEY, id); } catch (e) {}
+  }
+
+  var ACTIVE_PROFILE_ID = getActiveProfileId();
+  var STORE_KEY = profileStoreKey(ACTIVE_PROFILE_ID);
+
+  function switchProfile(id) {
+    if (id === ACTIVE_PROFILE_ID) return;
+    save();
+    setActiveProfileId(id);
+    location.reload();
+  }
+
+  function createProfile(name) {
+    var list = getProfiles();
+    var p = { id: uid(), name: (name || "New profile").trim().slice(0, 40) || "New profile", createdAt: Date.now() };
+    list.push(p);
+    saveProfiles(list);
+    switchProfile(p.id);
+  }
+
+  function renameActiveProfile(name) {
+    var list = getProfiles();
+    var p = list.find(function (x) { return x.id === ACTIVE_PROFILE_ID; });
+    if (!p) return;
+    p.name = (name || "").trim().slice(0, 40) || p.name;
+    saveProfiles(list);
+    renderProfileChrome();
+  }
+
+  function deleteProfile(id) {
+    var list = getProfiles();
+    if (list.length <= 1) { toast("Can't delete your only profile"); return; }
+    var p = list.find(function (x) { return x.id === id; });
+    if (!p) return;
+    if (!confirm('Delete profile "' + p.name + '" and everything in it? This can\'t be undone.')) return;
+    list = list.filter(function (x) { return x.id !== id; });
+    saveProfiles(list);
+    try { localStorage.removeItem(profileStoreKey(id)); } catch (e) {}
+    if (id === ACTIVE_PROFILE_ID) {
+      setActiveProfileId(list[0].id);
+      location.reload();
+    } else {
+      renderProfileChrome();
+    }
+  }
+
+  /* ---------- theme (light / dark / system) ---------- */
+  var THEME_KEY = "study-ledger-theme";
+  function getTheme() {
+    try { return localStorage.getItem(THEME_KEY) || "system"; } catch (e) { return "system"; }
+  }
+  function setTheme(value) {
+    try { localStorage.setItem(THEME_KEY, value); } catch (e) {}
+    if (value === "system") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", value);
+    document.querySelectorAll("#themeToggle button").forEach(function (btn) {
+      btn.classList.toggle("active", btn.dataset.theme === value);
+    });
+  }
+
   function loadState() {
     try {
       var raw = localStorage.getItem(STORE_KEY);
@@ -1430,7 +1794,7 @@
 
   var state = loadState();
   state.exams = state.exams || [];
-  state.currentView = state.currentView || "calendar";
+  state.currentView = state.currentView || "home";
   state.selectedExamId = state.selectedExamId || null;
   var weekStart = mondayOf(new Date());
   var calendarViewMode = state.calendarViewMode || (window.innerWidth < 720 ? "day" : "week");
@@ -1848,8 +2212,8 @@
   }
 
   /* ---------- page nav sidebar ---------- */
-  var PAGE_TITLES = { today: "Today", calendar: "Full Calendar", plan: "Study Plan", progress: "Progress" };
-  var VIEWS = ["today", "calendar", "plan", "progress"];
+  var PAGE_TITLES = { home: "Home", today: "Today", calendar: "Full Calendar", plan: "Study Plan", progress: "Progress", settings: "Settings" };
+  var VIEWS = ["home", "today", "calendar", "plan", "progress", "settings"];
   document.querySelectorAll(".page-nav-item").forEach(function (btn) {
     btn.addEventListener("click", function () { setView(btn.dataset.view); });
   });
@@ -1870,9 +2234,11 @@
 
     if (view === "calendar") renderExams();
     else document.getElementById("examStamp").style.display = "none";
+    if (view === "home") renderHomeView();
     if (view === "today") renderTodayPage();
     if (view === "plan") renderStudyPlanView();
     if (view === "progress") renderProgressView();
+    if (view === "settings") renderSettingsView();
     if (typeof closeRail === "function") closeRail();
   }
 
@@ -2025,8 +2391,266 @@
     }
   }
 
+  /* ---------- Home page ---------- */
+  function homeGreetingWord() {
+    var h = new Date().getHours();
+    if (h < 12) return "Good morning";
+    if (h < 18) return "Good afternoon";
+    return "Good evening";
+  }
+
+  function renderHomeView() {
+    var profiles = getProfiles();
+    var profile = profiles.find(function (p) { return p.id === ACTIVE_PROFILE_ID; }) || { name: "Study Ledger" };
+    document.getElementById("homeGreeting").textContent = homeGreetingWord();
+
+    var dated = state.sessions.filter(function (s) { return !s.recurring; });
+    var totalDone = dated.filter(function (s) { return isCompleted(s, s.date); }).length;
+    var pct = dated.length ? Math.round((totalDone / dated.length) * 100) : 0;
+    var upcomingExam = state.exams
+      .filter(function (e) { return daysUntil(e.date) >= 0; })
+      .sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0];
+
+    document.getElementById("homeSub").textContent = upcomingExam
+      ? "“" + profile.name + "” — " + examCountdownLabel(daysUntil(upcomingExam.date)).toLowerCase() + " until " + upcomingExam.name + "."
+      : "Tracking “" + profile.name + "” — schedule, progress, and confidence, all in one place, synced from Notion.";
+
+    var stats = [
+      { num: state.subjects.length, label: state.subjects.length === 1 ? "topic" : "topics" },
+      { num: pct + "%", label: "overall progress" },
+      { num: computeStreakCount(), label: "day streak" }
+    ];
+    if (upcomingExam) {
+      var d = daysUntil(upcomingExam.date);
+      stats.push({ num: d === 0 ? "Today" : d, label: d === 0 ? upcomingExam.name : "days to " + upcomingExam.name });
+    }
+    var row = document.getElementById("homeStatRow");
+    row.innerHTML = "";
+    stats.forEach(function (s) {
+      var el = document.createElement("div");
+      el.className = "home-stat-tile";
+      el.innerHTML = '<div class="home-stat-num">' + s.num + '</div><div class="home-stat-label">' + escapeHtml(String(s.label)) + "</div>";
+      row.appendChild(el);
+    });
+
+    var features = [
+      { view: "today", title: "Today", sub: "See what's on the books today and knock it out.",
+        icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 4.5V8L10.3 9.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+      { view: "calendar", title: "Full Calendar", sub: "Plan, drag, and check off study sessions.",
+        icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="2.5" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6H14.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 1.5V4M11.5 1.5V4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>' },
+      { view: "plan", title: "Study Plan", sub: "Check your confidence, topic by topic.",
+        icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2.5H13V13.5H3V2.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M5.5 6H10.5M5.5 8.5H10.5M5.5 11H8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>' },
+      { view: "progress", title: "Progress", sub: "See how far you've come, at a glance.",
+        icon: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 13.5H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><rect x="3.5" y="8" width="2.4" height="5.5" rx="0.6" stroke="currentColor" stroke-width="1.2"/><rect x="7" y="4.5" width="2.4" height="9" rx="0.6" stroke="currentColor" stroke-width="1.2"/><rect x="10.5" y="2" width="2.4" height="11.5" rx="0.6" stroke="currentColor" stroke-width="1.2"/></svg>' }
+    ];
+    var grid = document.getElementById("homeFeatureGrid");
+    grid.innerHTML = "";
+    features.forEach(function (f) {
+      var el = document.createElement("button");
+      el.type = "button";
+      el.className = "home-feature-card";
+      el.innerHTML = '<div class="home-feature-icon">' + f.icon + '</div><div class="home-feature-title">' + f.title + '</div><div class="home-feature-sub">' + f.sub + "</div>";
+      el.addEventListener("click", function () { setView(f.view); });
+      grid.appendChild(el);
+    });
+  }
+
+  document.getElementById("homeCtaToday").addEventListener("click", function () { setView("today"); });
+  document.getElementById("homeCtaCalendar").addEventListener("click", function () { setView("calendar"); });
+
+  /* ---------- profile chrome (sidebar switcher + Settings profile list) ---------- */
+  function renderProfileChrome() {
+    var profiles = getProfiles();
+    var current = profiles.find(function (p) { return p.id === ACTIVE_PROFILE_ID; }) || profiles[0];
+    var initial = (current.name || "S").trim().charAt(0).toUpperCase() || "S";
+
+    document.getElementById("profileAvatar").textContent = initial;
+    document.getElementById("profileSwitchName").textContent = current.name;
+
+    var nameInput = document.getElementById("settingsProfileName");
+    if (nameInput && document.activeElement !== nameInput) nameInput.value = current.name;
+
+    var menuList = document.getElementById("profileMenuList");
+    menuList.innerHTML = "";
+    profiles.forEach(function (p) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "profile-menu-item" + (p.id === ACTIVE_PROFILE_ID ? " current" : "");
+      btn.innerHTML = '<span class="profile-avatar">' + escapeHtml((p.name || "S").trim().charAt(0).toUpperCase()) + "</span><span>" + escapeHtml(p.name) + "</span>";
+      btn.addEventListener("click", function () { closeProfileMenu(); switchProfile(p.id); });
+      menuList.appendChild(btn);
+    });
+
+    var list = document.getElementById("settingsProfileList");
+    if (list) {
+      list.innerHTML = "";
+      profiles.forEach(function (p) {
+        var row = document.createElement("div");
+        row.className = "settings-profile-row" + (p.id === ACTIVE_PROFILE_ID ? " current" : "");
+        row.innerHTML = '<span class="profile-avatar">' + escapeHtml((p.name || "S").trim().charAt(0).toUpperCase()) + '</span><span class="name">' + escapeHtml(p.name) + "</span>" +
+          (p.id === ACTIVE_PROFILE_ID ? '<span class="tag">Current</span>' : '<button type="button" class="btn btn-outline" style="padding:5px 10px;font-size:11px">Switch</button>');
+        if (p.id !== ACTIVE_PROFILE_ID) {
+          row.querySelector("button").addEventListener("click", function () { switchProfile(p.id); });
+        }
+        list.appendChild(row);
+      });
+    }
+
+    var delRow = document.getElementById("deleteProfileRow");
+    if (delRow) delRow.style.display = profiles.length > 1 ? "" : "none";
+  }
+
+  var profileMenuEl = document.getElementById("profileMenu");
+  function closeProfileMenu() { profileMenuEl.classList.remove("open"); }
+  document.getElementById("profileSwitchBtn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    profileMenuEl.classList.toggle("open");
+  });
+  document.getElementById("profileMenuAdd").addEventListener("click", function () {
+    closeProfileMenu();
+    var name = prompt("Name this profile:", "New profile");
+    if (name === null) return;
+    createProfile(name);
+  });
+  document.addEventListener("click", function (e) {
+    if (!profileMenuEl.contains(e.target) && !document.getElementById("profileSwitchBtn").contains(e.target)) closeProfileMenu();
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeProfileMenu(); });
+
+  /* ---------- exporting (business-report style) ---------- */
+  function fallbackDownload(filename, content, mime) {
+    try {
+      var blob = new Blob([content], { type: mime || "text/plain" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      toast("Saved " + filename);
+    } catch (e) { toast("Couldn't export that file"); }
+  }
+
+  function exportFile(filename, content, mime) {
+    if (window.claude && window.claude.downloads && typeof window.claude.downloads.save === "function") {
+      window.claude.downloads.save({ filename: filename, data: content }).then(function () {
+        toast("Saved " + filename);
+      }).catch(function (err) {
+        if (err && err.code === "declined") return;
+        fallbackDownload(filename, content, mime);
+      });
+    } else {
+      fallbackDownload(filename, content, mime);
+    }
+  }
+
+  function buildProgressReportText() {
+    var profiles = getProfiles();
+    var profile = profiles.find(function (p) { return p.id === ACTIVE_PROFILE_ID; }) || { name: "Study Ledger" };
+    var dated = state.sessions.filter(function (s) { return !s.recurring; });
+    var totalDone = dated.filter(function (s) { return isCompleted(s, s.date); }).length;
+    var pct = dated.length ? Math.round((totalDone / dated.length) * 100) : 0;
+
+    var lines = [];
+    lines.push("STUDY LEDGER — PROGRESS REPORT");
+    lines.push(profile.name);
+    lines.push("Generated " + new Date().toLocaleString());
+    lines.push("");
+    lines.push("Overall progress: " + pct + "% (" + totalDone + " of " + dated.length + " sessions checked off)");
+    lines.push("Current streak: " + computeStreakCount() + " day(s)");
+    lines.push("");
+    lines.push("EXAMS");
+    if (state.exams.length === 0) lines.push("  (none added)");
+    state.exams.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; }).forEach(function (e) {
+      lines.push("  - " + e.name + " — " + e.date + " (" + examCountdownLabel(daysUntil(e.date)) + ")");
+    });
+    lines.push("");
+    lines.push("TOPICS");
+    if (state.subjects.length === 0) lines.push("  (none added)");
+    state.subjects.forEach(function (s) {
+      var prog = topicProgress(s);
+      var conf = s.confidence === "confident" ? "Feeling confident" : s.confidence === "needs_work" ? "Needs more work" : "Not yet rated";
+      lines.push("  - " + s.name + ": " + prog.pct + "% (" + prog.done + "/" + prog.total + " sessions) — " + conf);
+    });
+    return lines.join("\n");
+  }
+
+  function buildScheduleText() {
+    var subjMap = {};
+    state.subjects.forEach(function (s) { subjMap[s.id] = s.name; });
+    var dated = state.sessions.filter(function (s) { return !s.recurring && s.date; }).slice().sort(function (a, b) {
+      if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+      return a.startMin - b.startMin;
+    });
+    var lines = ["DATE\tSTART\tEND\tTOPIC\tDONE"];
+    dated.forEach(function (s) {
+      lines.push([s.date, fmtTime(s.startMin), fmtTime(s.endMin), subjMap[s.subjectId] || "—", isCompleted(s, s.date) ? "Yes" : "No"].join("\t"));
+    });
+    if (dated.length === 0) lines.push("(no scheduled sessions)");
+    return lines.join("\n");
+  }
+
+  function buildBackupJSON() {
+    var profiles = getProfiles();
+    var profile = profiles.find(function (p) { return p.id === ACTIVE_PROFILE_ID; }) || { name: "Study Ledger" };
+    return JSON.stringify({ exportedAt: new Date().toISOString(), profileName: profile.name, state: state }, null, 2);
+  }
+
+  /* ---------- Settings page ---------- */
+  function renderSettingsView() {
+    renderProfileChrome();
+    var themeVal = getTheme();
+    document.querySelectorAll("#themeToggle button").forEach(function (btn) {
+      btn.classList.toggle("active", btn.dataset.theme === themeVal);
+    });
+  }
+
+  document.getElementById("settingsProfileName").addEventListener("change", function (e) { renameActiveProfile(e.target.value); });
+  document.getElementById("settingsAddProfile").addEventListener("click", function () {
+    var name = prompt("Name this profile:", "New profile");
+    if (name === null) return;
+    createProfile(name);
+  });
+  document.querySelectorAll("#themeToggle button").forEach(function (btn) {
+    btn.addEventListener("click", function () { setTheme(btn.dataset.theme); });
+  });
+  document.getElementById("exportReportBtn").addEventListener("click", function () {
+    exportFile("study-ledger-progress-report.txt", buildProgressReportText(), "text/plain");
+  });
+  document.getElementById("exportScheduleBtn").addEventListener("click", function () {
+    exportFile("study-ledger-schedule.txt", buildScheduleText(), "text/plain");
+  });
+  document.getElementById("exportBackupBtn").addEventListener("click", function () {
+    exportFile("study-ledger-backup.json", buildBackupJSON(), "application/json");
+  });
+  document.getElementById("importBackupInput").addEventListener("change", function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      var data;
+      try { data = JSON.parse(String(reader.result)); } catch (err) { toast("That file isn't valid backup JSON"); return; }
+      var payload = data && data.state ? data.state : data;
+      if (!payload || !Array.isArray(payload.subjects) || !Array.isArray(payload.sessions)) { toast("That file isn't a Study Ledger backup"); return; }
+      if (!confirm("Replace this profile's data with the backup? This can't be undone.")) return;
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(payload)); } catch (err) {}
+      location.reload();
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+  document.getElementById("resetProfileBtn").addEventListener("click", function () {
+    if (!confirm("Reset this profile? All topics, sessions, and exams will be cleared. This can't be undone.")) return;
+    try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+    location.reload();
+  });
+  document.getElementById("deleteProfileBtn").addEventListener("click", function () { deleteProfile(ACTIVE_PROFILE_ID); });
+
+  setTheme(getTheme());
+  renderProfileChrome();
+
   function refreshStudyViews() {
     renderExams();
+    if (state.currentView === "home") renderHomeView();
     if (state.currentView === "today") renderTodayPage();
     if (state.currentView === "plan") renderStudyPlanView();
     if (state.currentView === "progress") renderProgressView();
