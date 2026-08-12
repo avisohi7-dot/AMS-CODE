@@ -1,0 +1,11 @@
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+.build/
+.swiftpm/
+App/HealthHub/Info.plist
+App/HealthHub/HealthHub.entitlements
+App/HealthHubWatch/Info.plist
+App/HealthHubWatch/HealthHubWatch.entitlements
+.DS_Store

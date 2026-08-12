@@ -1,0 +1,85 @@
+name: HealthHub
+options:
+  bundleIdPrefix: com.avisohi.healthhub
+  deploymentTarget:
+    iOS: "17.0"
+    watchOS: "10.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  HealthHub:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: App/HealthHub
+      - path: App/Shared
+    dependencies:
+      - target: HealthHubWatch
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.avisohi.healthhub
+        PRODUCT_NAME: HealthHub
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_KEY_UILaunchScreen_Generation: "YES"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+    info:
+      path: App/HealthHub/Info.plist
+      properties:
+        CFBundleDisplayName: HealthHub
+        NSHealthShareUsageDescription: "HealthHub reads your steps, heart rate, sleep, weight, and workouts from Health to build your fitness dashboard and track your goals."
+        NSHealthUpdateUsageDescription: "HealthHub saves gym sessions you log as workouts in Health."
+    entitlements:
+      path: App/HealthHub/HealthHub.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+
+  HealthHubWatch:
+    type: application
+    platform: watchOS
+    deploymentTarget: "10.0"
+    sources:
+      - path: App/HealthHubWatch
+      - path: App/Shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.avisohi.healthhub.watchkitapp
+        PRODUCT_NAME: HealthHubWatch
+        TARGETED_DEVICE_FAMILY: "4"
+        SKIP_INSTALL: "NO"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    info:
+      path: App/HealthHubWatch/Info.plist
+      properties:
+        CFBundleDisplayName: HealthHub
+        WKApplication: true
+        WKCompanionAppBundleIdentifier: com.avisohi.healthhub
+        WKRunsIndependentlyOfCompanionApp: true
+        WKBackgroundModes:
+          - workout-processing
+        NSHealthShareUsageDescription: "HealthHub reads your heart rate and activity to track live workouts."
+        NSHealthUpdateUsageDescription: "HealthHub saves workouts you start on your Watch to Health."
+    entitlements:
+      path: App/HealthHubWatch/HealthHubWatch.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+
+schemes:
+  HealthHub:
+    build:
+      targets:
+        HealthHub: all
+        HealthHubWatch: all
+    run:
+      config: Debug
+    archive:
+      config: Release
