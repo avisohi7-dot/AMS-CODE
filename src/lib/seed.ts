@@ -1,7 +1,9 @@
 import type {
   Area,
   Contact,
+  Exercise,
   FinanceSettings,
+  FoodItem,
   Goal,
   Habit,
   HabitLog,
@@ -9,6 +11,7 @@ import type {
   JournalEntry,
   LearningSphere,
   LifeArea,
+  Meal,
   MediaItem,
   MonthlyReview,
   Note,
@@ -20,6 +23,7 @@ import type {
   Tool,
   Transaction,
   WeeklyFocus,
+  WorkoutDay,
 } from '../types'
 import { makeId, todayISO } from './id'
 import { currentMonthISO, currentWeekStartISO } from './date'
@@ -411,6 +415,85 @@ export function seedPapers(): Paper[] {
     { id: makeId(), title: 'How to Do Great Work', url: 'https://paulgraham.com/greatwork.html', type: 'Essay', area: 'Career', createdAt: daysAgoISO(20) },
     { id: makeId(), title: 'The Psychology of Money', url: 'https://collabfund.com/blog/the-psychology-of-money', type: 'Web article', area: 'Finance', createdAt: daysAgoISO(35) },
     { id: makeId(), title: 'Why Procrastinators Procrastinate', url: 'https://waitbutwhy.com/2013/10/why-procrastinators-procrastinate.html', type: 'Guide', area: 'Personal', createdAt: daysAgoISO(50) },
+  ]
+}
+
+export function seedWorkoutDays(): WorkoutDay[] {
+  return [
+    { id: makeId(), name: 'Push Day', dayOfWeek: 'Monday', createdAt: daysAgoISO(30) },
+    { id: makeId(), name: 'Pull Day', dayOfWeek: 'Tuesday', createdAt: daysAgoISO(30) },
+    { id: makeId(), name: 'Leg Day', dayOfWeek: 'Thursday', createdAt: daysAgoISO(30) },
+    { id: makeId(), name: 'Rest / Mobility', dayOfWeek: 'Sunday', createdAt: daysAgoISO(30) },
+  ]
+}
+
+export function seedExercises(workoutDays: WorkoutDay[]): Exercise[] {
+  const push = workoutDays[0].id
+  const pull = workoutDays[1].id
+  const legs = workoutDays[2].id
+  const rest = workoutDays[3].id
+  const mk = (workoutDayId: string, name: string, sets: number, reps: number, weight: string): Exercise => ({
+    id: makeId(),
+    workoutDayId,
+    name,
+    sets,
+    reps,
+    weight,
+    done: false,
+    createdAt: daysAgoISO(30),
+  })
+  return [
+    mk(push, 'Bench press', 4, 8, '60kg'),
+    mk(push, 'Overhead press', 3, 10, '30kg'),
+    mk(push, 'Incline dumbbell press', 3, 10, '20kg'),
+    mk(push, 'Triceps pushdown', 3, 12, '25kg'),
+    mk(pull, 'Deadlift', 4, 6, '100kg'),
+    mk(pull, 'Pull-ups', 4, 8, 'Bodyweight'),
+    mk(pull, 'Barbell row', 3, 10, '50kg'),
+    mk(pull, 'Bicep curl', 3, 12, '12kg'),
+    mk(legs, 'Squat', 4, 8, '80kg'),
+    mk(legs, 'Romanian deadlift', 3, 10, '60kg'),
+    mk(legs, 'Leg press', 3, 12, '120kg'),
+    mk(legs, 'Calf raise', 4, 15, '40kg'),
+    mk(rest, 'Stretching / foam rolling', 1, 1, '15 min'),
+    mk(rest, 'Walk', 1, 1, '30 min'),
+  ]
+}
+
+export function seedMeals(): Meal[] {
+  return [
+    { id: makeId(), name: 'Breakfast', time: '07:30', createdAt: daysAgoISO(30) },
+    { id: makeId(), name: 'Lunch', time: '12:30', createdAt: daysAgoISO(30) },
+    { id: makeId(), name: 'Dinner', time: '19:00', createdAt: daysAgoISO(30) },
+    { id: makeId(), name: 'Snacks', time: 'Anytime', createdAt: daysAgoISO(30) },
+  ]
+}
+
+export function seedFoodItems(meals: Meal[]): FoodItem[] {
+  const breakfast = meals[0].id
+  const lunch = meals[1].id
+  const dinner = meals[2].id
+  const snacks = meals[3].id
+  const mk = (mealId: string, name: string, calories: number, protein: number): FoodItem => ({
+    id: makeId(),
+    mealId,
+    name,
+    calories,
+    protein,
+    done: false,
+    createdAt: daysAgoISO(30),
+  })
+  return [
+    mk(breakfast, 'Porridge with banana', 350, 12),
+    mk(breakfast, 'Greek yoghurt', 150, 15),
+    mk(lunch, 'Grilled chicken breast', 250, 40),
+    mk(lunch, 'Rice', 200, 4),
+    mk(lunch, 'Mixed vegetables', 80, 3),
+    mk(dinner, 'Salmon fillet', 350, 35),
+    mk(dinner, 'Sweet potato', 180, 3),
+    mk(dinner, 'Broccoli', 55, 4),
+    mk(snacks, 'Protein shake', 150, 25),
+    mk(snacks, 'Almonds (30g)', 170, 6),
   ]
 }
 

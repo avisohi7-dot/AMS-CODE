@@ -192,3 +192,38 @@ export interface Paper {
   area: LifeArea
   createdAt: string
 }
+
+export interface WorkoutDay {
+  id: ID
+  name: string // e.g. "Push Day", "Leg Day", "Rest Day"
+  dayOfWeek: string // e.g. "Monday" (free text)
+  createdAt: string
+}
+
+export interface Exercise {
+  id: ID
+  workoutDayId: ID
+  name: string
+  sets: number
+  reps: number
+  weight: string // free text, e.g. "60kg" or "bodyweight"
+  done: boolean
+  createdAt: string
+}
+
+export interface Meal {
+  id: ID
+  name: string // e.g. "Breakfast"
+  time: string // free text, e.g. "08:00"
+  createdAt: string
+}
+
+export interface FoodItem {
+  id: ID
+  mealId: ID
+  name: string
+  calories: number
+  protein: number // grams
+  done: boolean
+  createdAt: string
+}

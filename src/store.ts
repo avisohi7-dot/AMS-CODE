@@ -3,13 +3,16 @@ import { persist } from 'zustand/middleware'
 import type {
   Area,
   Contact,
+  Exercise,
   FinanceSettings,
+  FoodItem,
   Goal,
   Habit,
   HabitLog,
   InboxItem,
   JournalEntry,
   LearningSphere,
+  Meal,
   MediaItem,
   MonthlyReview,
   Note,
@@ -21,19 +24,23 @@ import type {
   Tool,
   Transaction,
   WeeklyFocus,
+  WorkoutDay,
 } from './types'
 import { makeId } from './lib/id'
 import {
   makeBusinessLawExtras,
   seedAreas,
   seedContacts,
+  seedExercises,
   seedFinanceSettings,
+  seedFoodItems,
   seedGoals,
   seedHabitLogs,
   seedHabits,
   seedInbox,
   seedJournal,
   seedLearningSpheres,
+  seedMeals,
   seedMedia,
   seedMonthlyReviews,
   seedNotes,
@@ -45,6 +52,7 @@ import {
   seedTools,
   seedTransactions,
   seedWeeklyFocus,
+  seedWorkoutDays,
 } from './lib/seed'
 
 interface BrainState {
@@ -68,6 +76,10 @@ interface BrainState {
   learningSpheres: LearningSphere[]
   sphereTopics: SphereTopic[]
   papers: Paper[]
+  workoutDays: WorkoutDay[]
+  exercises: Exercise[]
+  meals: Meal[]
+  foodItems: FoodItem[]
   theme: 'light' | 'dark' | 'system'
 
   setTheme: (t: 'light' | 'dark' | 'system') => void
@@ -146,6 +158,22 @@ interface BrainState {
   updatePaper: (id: string, patch: Partial<Paper>) => void
   deletePaper: (id: string) => void
 
+  addWorkoutDay: (w: Omit<WorkoutDay, 'id' | 'createdAt'>) => void
+  updateWorkoutDay: (id: string, patch: Partial<WorkoutDay>) => void
+  deleteWorkoutDay: (id: string) => void
+
+  addExercise: (e: Omit<Exercise, 'id' | 'createdAt' | 'done'>) => void
+  toggleExercise: (id: string) => void
+  deleteExercise: (id: string) => void
+
+  addMeal: (m: Omit<Meal, 'id' | 'createdAt'>) => void
+  updateMeal: (id: string, patch: Partial<Meal>) => void
+  deleteMeal: (id: string) => void
+
+  addFoodItem: (f: Omit<FoodItem, 'id' | 'createdAt' | 'done'>) => void
+  toggleFoodItem: (id: string) => void
+  deleteFoodItem: (id: string) => void
+
   resetDemoData: () => void
 }
 
@@ -175,6 +203,10 @@ function freshSeed() {
   const learningSpheres = seedLearningSpheres()
   const sphereTopics = seedSphereTopics(learningSpheres)
   const papers = seedPapers()
+  const workoutDays = seedWorkoutDays()
+  const exercises = seedExercises(workoutDays)
+  const meals = seedMeals()
+  const foodItems = seedFoodItems(meals)
   return {
     areas,
     projects,
@@ -196,6 +228,10 @@ function freshSeed() {
     learningSpheres,
     sphereTopics,
     papers,
+    workoutDays,
+    exercises,
+    meals,
+    foodItems,
   }
 }
 
@@ -488,11 +524,67 @@ export const useBrainStore = create<BrainState>()(
         set((s) => ({ papers: s.papers.map((p) => (p.id === id ? { ...p, ...patch } : p)) })),
       deletePaper: (id) => set((s) => ({ papers: s.papers.filter((p) => p.id !== id) })),
 
+      addWorkoutDay: (w) =>
+        set((s) => ({
+          workoutDays: [
+            { ...w, id: makeId(), createdAt: new Date().toISOString() },
+            ...s.workoutDays,
+          ],
+        })),
+      updateWorkoutDay: (id, patch) =>
+        set((s) => ({
+          workoutDays: s.workoutDays.map((w) => (w.id === id ? { ...w, ...patch } : w)),
+        })),
+      deleteWorkoutDay: (id) =>
+        set((s) => ({
+          workoutDays: s.workoutDays.filter((w) => w.id !== id),
+          exercises: s.exercises.filter((e) => e.workoutDayId !== id),
+        })),
+
+      addExercise: (e) =>
+        set((s) => ({
+          exercises: [
+            { ...e, id: makeId(), done: false, createdAt: new Date().toISOString() },
+            ...s.exercises,
+          ],
+        })),
+      toggleExercise: (id) =>
+        set((s) => ({
+          exercises: s.exercises.map((e) => (e.id === id ? { ...e, done: !e.done } : e)),
+        })),
+      deleteExercise: (id) => set((s) => ({ exercises: s.exercises.filter((e) => e.id !== id) })),
+
+      addMeal: (m) =>
+        set((s) => ({
+          meals: [{ ...m, id: makeId(), createdAt: new Date().toISOString() }, ...s.meals],
+        })),
+      updateMeal: (id, patch) =>
+        set((s) => ({ meals: s.meals.map((m) => (m.id === id ? { ...m, ...patch } : m)) })),
+      deleteMeal: (id) =>
+        set((s) => ({
+          meals: s.meals.filter((m) => m.id !== id),
+          foodItems: s.foodItems.filter((f) => f.mealId !== id),
+        })),
+
+      addFoodItem: (f) =>
+        set((s) => ({
+          foodItems: [
+            { ...f, id: makeId(), done: false, createdAt: new Date().toISOString() },
+            ...s.foodItems,
+          ],
+        })),
+      toggleFoodItem: (id) =>
+        set((s) => ({
+          foodItems: s.foodItems.map((f) => (f.id === id ? { ...f, done: !f.done } : f)),
+        })),
+      deleteFoodItem: (id) =>
+        set((s) => ({ foodItems: s.foodItems.filter((f) => f.id !== id) })),
+
       resetDemoData: () => set({ ...freshSeed() }),
     }),
     {
       name: 'second-brain-os-storage',
-      version: 1,
+      version: 2,
       migrate: (persistedState, version) => {
         const state = persistedState as BrainState
         if (version < 1 && Array.isArray(state.projects) && Array.isArray(state.tasks)) {
@@ -502,6 +594,14 @@ export const useBrainStore = create<BrainState>()(
             state.projects = [businessLaw.project, ...state.projects]
             state.tasks = [...businessLaw.tasks, ...state.tasks]
           }
+        }
+        if (version < 2 && !Array.isArray(state.workoutDays)) {
+          const workoutDays = seedWorkoutDays()
+          state.workoutDays = workoutDays
+          state.exercises = seedExercises(workoutDays)
+          const meals = seedMeals()
+          state.meals = meals
+          state.foodItems = seedFoodItems(meals)
         }
         return state
       },

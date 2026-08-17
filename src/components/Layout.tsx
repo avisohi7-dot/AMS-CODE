@@ -5,6 +5,7 @@ import {
   CalendarCheck,
   CalendarDays,
   CalendarRange,
+  Dumbbell,
   FolderKanban,
   GraduationCap,
   Inbox as InboxIcon,
@@ -52,6 +53,7 @@ const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: Luc
       { to: '/tasks', label: 'Tasks', icon: ListTodo },
       { to: '/habits', label: 'Habits', icon: CalendarCheck },
       { to: '/goals', label: 'Goals', icon: Target },
+      { to: '/fitness', label: 'Fitness', icon: Dumbbell },
     ],
   },
   {

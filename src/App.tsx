@@ -18,6 +18,7 @@ import { Contacts } from './pages/Contacts'
 import { Learning } from './pages/Learning'
 import { Papers } from './pages/Papers'
 import { Calendar } from './pages/Calendar'
+import { Fitness } from './pages/Fitness'
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="notes" element={<Notes />} />
         <Route path="habits" element={<Habits />} />
         <Route path="goals" element={<Goals />} />
+        <Route path="fitness" element={<Fitness />} />
         <Route path="media" element={<Media />} />
         <Route path="learning" element={<Learning />} />
         <Route path="papers" element={<Papers />} />
