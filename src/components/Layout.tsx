@@ -3,8 +3,10 @@ import {
   Archive,
   Brain,
   CalendarCheck,
+  CalendarDays,
   CalendarRange,
   FolderKanban,
+  GraduationCap,
   Inbox as InboxIcon,
   LayoutDashboard,
   Library,
@@ -12,10 +14,13 @@ import {
   Moon,
   NotebookText,
   PlayCircle,
+  ScrollText,
   Sparkles,
   Sun,
   Target,
+  Users,
   Wallet,
+  Wrench,
   type LucideIcon,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -29,6 +34,7 @@ const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: Luc
       { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
       { to: '/inbox', label: 'Inbox', icon: InboxIcon, badge: true },
       { to: '/reviews', label: 'Reviews', icon: CalendarRange },
+      { to: '/calendar', label: 'Calendar', icon: CalendarDays },
     ],
   },
   {
@@ -53,11 +59,17 @@ const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: Luc
     items: [
       { to: '/notes', label: 'Notes', icon: NotebookText },
       { to: '/media', label: 'Reading & Watching', icon: PlayCircle },
+      { to: '/learning', label: 'Learning Spheres', icon: GraduationCap },
+      { to: '/papers', label: 'Papers', icon: ScrollText },
+      { to: '/tools', label: 'Useful Tools', icon: Wrench },
     ],
   },
   {
-    label: 'Money',
-    items: [{ to: '/finance', label: 'Finance', icon: Wallet }],
+    label: 'People & Money',
+    items: [
+      { to: '/contacts', label: 'Contacts', icon: Users },
+      { to: '/finance', label: 'Finance', icon: Wallet },
+    ],
   },
 ]
 

@@ -2,36 +2,46 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type {
   Area,
+  Contact,
   FinanceSettings,
   Goal,
   Habit,
   HabitLog,
   InboxItem,
   JournalEntry,
+  LearningSphere,
   MediaItem,
   MonthlyReview,
   Note,
+  Paper,
   Project,
   Resource,
+  SphereTopic,
   Task,
+  Tool,
   Transaction,
   WeeklyFocus,
 } from './types'
 import { makeId } from './lib/id'
 import {
   seedAreas,
+  seedContacts,
   seedFinanceSettings,
   seedGoals,
   seedHabitLogs,
   seedHabits,
   seedInbox,
   seedJournal,
+  seedLearningSpheres,
   seedMedia,
   seedMonthlyReviews,
   seedNotes,
+  seedPapers,
   seedProjects,
   seedResources,
+  seedSphereTopics,
   seedTasks,
+  seedTools,
   seedTransactions,
   seedWeeklyFocus,
 } from './lib/seed'
@@ -52,6 +62,11 @@ interface BrainState {
   media: MediaItem[]
   transactions: Transaction[]
   financeSettings: FinanceSettings
+  tools: Tool[]
+  contacts: Contact[]
+  learningSpheres: LearningSphere[]
+  sphereTopics: SphereTopic[]
+  papers: Paper[]
   theme: 'light' | 'dark' | 'system'
 
   setTheme: (t: 'light' | 'dark' | 'system') => void
@@ -110,6 +125,26 @@ interface BrainState {
   deleteTransaction: (id: string) => void
   updateFinanceSettings: (patch: Partial<FinanceSettings>) => void
 
+  addTool: (t: Omit<Tool, 'id' | 'createdAt'>) => void
+  updateTool: (id: string, patch: Partial<Tool>) => void
+  deleteTool: (id: string) => void
+
+  addContact: (c: Omit<Contact, 'id' | 'createdAt'>) => void
+  updateContact: (id: string, patch: Partial<Contact>) => void
+  deleteContact: (id: string) => void
+
+  addLearningSphere: (s: Omit<LearningSphere, 'id' | 'createdAt'>) => void
+  updateLearningSphere: (id: string, patch: Partial<LearningSphere>) => void
+  deleteLearningSphere: (id: string) => void
+
+  addSphereTopic: (t: Omit<SphereTopic, 'id' | 'createdAt' | 'done'>) => void
+  toggleSphereTopic: (id: string) => void
+  deleteSphereTopic: (id: string) => void
+
+  addPaper: (p: Omit<Paper, 'id' | 'createdAt'>) => void
+  updatePaper: (id: string, patch: Partial<Paper>) => void
+  deletePaper: (id: string) => void
+
   resetDemoData: () => void
 }
 
@@ -129,6 +164,11 @@ function freshSeed() {
   const media = seedMedia()
   const transactions = seedTransactions()
   const financeSettings = seedFinanceSettings()
+  const tools = seedTools()
+  const contacts = seedContacts()
+  const learningSpheres = seedLearningSpheres()
+  const sphereTopics = seedSphereTopics(learningSpheres)
+  const papers = seedPapers()
   return {
     areas,
     projects,
@@ -145,6 +185,11 @@ function freshSeed() {
     media,
     transactions,
     financeSettings,
+    tools,
+    contacts,
+    learningSpheres,
+    sphereTopics,
+    papers,
   }
 }
 
@@ -381,6 +426,61 @@ export const useBrainStore = create<BrainState>()(
         set((s) => ({ transactions: s.transactions.filter((t) => t.id !== id) })),
       updateFinanceSettings: (patch) =>
         set((s) => ({ financeSettings: { ...s.financeSettings, ...patch } })),
+
+      addTool: (t) =>
+        set((s) => ({
+          tools: [{ ...t, id: makeId(), createdAt: new Date().toISOString() }, ...s.tools],
+        })),
+      updateTool: (id, patch) =>
+        set((s) => ({ tools: s.tools.map((t) => (t.id === id ? { ...t, ...patch } : t)) })),
+      deleteTool: (id) => set((s) => ({ tools: s.tools.filter((t) => t.id !== id) })),
+
+      addContact: (c) =>
+        set((s) => ({
+          contacts: [{ ...c, id: makeId(), createdAt: new Date().toISOString() }, ...s.contacts],
+        })),
+      updateContact: (id, patch) =>
+        set((s) => ({ contacts: s.contacts.map((c) => (c.id === id ? { ...c, ...patch } : c)) })),
+      deleteContact: (id) => set((s) => ({ contacts: s.contacts.filter((c) => c.id !== id) })),
+
+      addLearningSphere: (sp) =>
+        set((s) => ({
+          learningSpheres: [
+            { ...sp, id: makeId(), createdAt: new Date().toISOString() },
+            ...s.learningSpheres,
+          ],
+        })),
+      updateLearningSphere: (id, patch) =>
+        set((s) => ({
+          learningSpheres: s.learningSpheres.map((sp) => (sp.id === id ? { ...sp, ...patch } : sp)),
+        })),
+      deleteLearningSphere: (id) =>
+        set((s) => ({
+          learningSpheres: s.learningSpheres.filter((sp) => sp.id !== id),
+          sphereTopics: s.sphereTopics.filter((t) => t.sphereId !== id),
+        })),
+
+      addSphereTopic: (t) =>
+        set((s) => ({
+          sphereTopics: [
+            { ...t, id: makeId(), done: false, createdAt: new Date().toISOString() },
+            ...s.sphereTopics,
+          ],
+        })),
+      toggleSphereTopic: (id) =>
+        set((s) => ({
+          sphereTopics: s.sphereTopics.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
+        })),
+      deleteSphereTopic: (id) =>
+        set((s) => ({ sphereTopics: s.sphereTopics.filter((t) => t.id !== id) })),
+
+      addPaper: (p) =>
+        set((s) => ({
+          papers: [{ ...p, id: makeId(), createdAt: new Date().toISOString() }, ...s.papers],
+        })),
+      updatePaper: (id, patch) =>
+        set((s) => ({ papers: s.papers.map((p) => (p.id === id ? { ...p, ...patch } : p)) })),
+      deletePaper: (id) => set((s) => ({ papers: s.papers.filter((p) => p.id !== id) })),
 
       resetDemoData: () => set({ ...freshSeed() }),
     }),

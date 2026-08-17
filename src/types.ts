@@ -147,3 +147,48 @@ export interface FinanceSettings {
   monthlyBudget: number
   currency: string
 }
+
+export interface Tool {
+  id: ID
+  name: string
+  url: string
+  category: string
+  createdAt: string
+}
+
+export type ContactTag = 'Work' | 'Friends' | 'Family' | 'Relatives' | 'Services'
+
+export interface Contact {
+  id: ID
+  name: string
+  phone: string
+  email: string
+  tag: ContactTag
+  createdAt: string
+}
+
+export interface LearningSphere {
+  id: ID
+  name: string
+  area: LifeArea
+  createdAt: string
+}
+
+export interface SphereTopic {
+  id: ID
+  title: string
+  sphereId: ID
+  done: boolean
+  createdAt: string
+}
+
+export type PaperType = 'Essay' | 'Web article' | 'Guide' | 'Research paper'
+
+export interface Paper {
+  id: ID
+  title: string
+  url: string
+  type: PaperType
+  area: LifeArea
+  createdAt: string
+}

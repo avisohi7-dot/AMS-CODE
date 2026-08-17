@@ -13,6 +13,11 @@ import { InboxPage } from './pages/InboxPage'
 import { Reviews } from './pages/Reviews'
 import { Media } from './pages/Media'
 import { Finance } from './pages/Finance'
+import { Tools } from './pages/Tools'
+import { Contacts } from './pages/Contacts'
+import { Learning } from './pages/Learning'
+import { Papers } from './pages/Papers'
+import { Calendar } from './pages/Calendar'
 
 export default function App() {
   return (
@@ -21,6 +26,7 @@ export default function App() {
         <Route index element={<Dashboard />} />
         <Route path="inbox" element={<InboxPage />} />
         <Route path="reviews" element={<Reviews />} />
+        <Route path="calendar" element={<Calendar />} />
         <Route path="projects" element={<Projects />} />
         <Route path="areas" element={<Areas />} />
         <Route path="resources" element={<Resources />} />
@@ -30,6 +36,10 @@ export default function App() {
         <Route path="habits" element={<Habits />} />
         <Route path="goals" element={<Goals />} />
         <Route path="media" element={<Media />} />
+        <Route path="learning" element={<Learning />} />
+        <Route path="papers" element={<Papers />} />
+        <Route path="tools" element={<Tools />} />
+        <Route path="contacts" element={<Contacts />} />
         <Route path="finance" element={<Finance />} />
       </Route>
     </Routes>

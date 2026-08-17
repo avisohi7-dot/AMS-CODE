@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useMemo, useState } from 'react'
+import { NotebookText } from 'lucide-react'
 import { useBrainStore } from '../store'
 import {
   Card,
@@ -13,10 +14,13 @@ import {
 import { HeroBanner } from '../components/HeroBanner'
 import { ClockWidget } from '../components/ClockWidget'
 import { FastActions } from '../components/FastActions'
+import { PomodoroWidget } from '../components/PomodoroWidget'
+import { ActiveProjectsWidget } from '../components/ActiveProjectsWidget'
+import { WatchingReadingWidget } from '../components/WatchingReadingWidget'
 import { todayISO } from '../lib/id'
 import { currentWeekStartISO, isDateInWeek } from '../lib/date'
 import { LIFE_AREAS } from '../lib/seed'
-import type { LifeArea, Task, TaskPriority } from '../types'
+import type { Habit, HabitLog, LifeArea, Task, TaskPriority } from '../types'
 
 const PRIORITY_RANK: Record<TaskPriority, number> = { high: 0, medium: 1, low: 2 }
 
@@ -26,7 +30,10 @@ export function Dashboard() {
   const habits = useBrainStore((s) => s.habits.filter((h) => !h.archived))
   const habitLogs = useBrainStore((s) => s.habitLogs)
   const goals = useBrainStore((s) => s.goals.filter((g) => g.status !== 'achieved'))
+  const goalsAll = useBrainStore((s) => s.goals)
+  const notes = useBrainStore((s) => s.notes)
   const cycleTaskStatus = useBrainStore((s) => s.cycleTaskStatus)
+  const toggleHabitLog = useBrainStore((s) => s.toggleHabitLog)
 
   const today = todayISO()
   const weekStart = useMemo(() => currentWeekStartISO(), [])
@@ -41,6 +48,11 @@ export function Dashboard() {
 
   const projectTitle = (id: string | null) => projects.find((p) => p.id === id)?.title
 
+  const recentNotes = useMemo(
+    () => [...notes].sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1)).slice(0, 5),
+    [notes]
+  )
+
   return (
     <div>
       <HeroBanner subtitle="Tasks, projects, notes, life areas, habits, and goals — all connected in one workspace." />
@@ -53,12 +65,22 @@ export function Dashboard() {
 
         <TasksThisWeekCard tasks={thisWeekTasks} today={today} projectTitle={projectTitle} cycleTaskStatus={cycleTaskStatus} />
 
-        <HabitsTodayCard habits={habits} habitLogs={habitLogs} today={today} />
+        <HabitsTodayCard habits={habits} habitLogs={habitLogs} today={today} toggleHabitLog={toggleHabitLog} />
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
-        <LifeAreasCard projects={projects} />
+        <LifeAreasCard projects={projects} goals={goalsAll} tasks={tasks} />
         <GoalsThisMonthCard goals={goals} />
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
+        <ActiveProjectsWidget />
+        <PomodoroWidget />
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-[1fr_280px]">
+        <WatchingReadingWidget />
+        <RecentNotesCard notes={recentNotes} />
       </div>
     </div>
   )
@@ -176,58 +198,68 @@ function HabitsTodayCard({
   habits,
   habitLogs,
   today,
+  toggleHabitLog,
 }: {
-  habits: { id: string; name: string; color: string }[]
-  habitLogs: { habitId: string; date: string }[]
+  habits: Habit[]
+  habitLogs: HabitLog[]
   today: string
+  toggleHabitLog: (habitId: string, date: string) => void
 }) {
-  function weeklyRate(habitId: string): number {
-    let count = 0
-    for (let i = 0; i < 7; i++) {
-      const d = new Date()
-      d.setDate(d.getDate() - i)
-      const iso = d.toISOString().slice(0, 10)
-      if (habitLogs.some((l) => l.habitId === habitId && l.date === iso)) count++
-    }
-    return Math.round((count / 7) * 100)
-  }
-
   const doneToday = (habitId: string) => habitLogs.some((l) => l.habitId === habitId && l.date === today)
+  const completedCount = habits.filter((h) => doneToday(h.id)).length
+  const pct = habits.length ? Math.round((completedCount / habits.length) * 100) : 0
 
   return (
     <Card className="p-4">
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-1 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-ink-primary">Habits today</h2>
         <Link to="/habits" className="text-xs font-medium" style={{ color: 'var(--brand-accent)' }}>
           View all
         </Link>
       </div>
+      <div className="mb-3 flex items-center gap-2">
+        <span className="tabular text-xs text-ink-secondary">
+          {completedCount}/{habits.length} · {pct}%
+        </span>
+      </div>
+      <ProgressBar value={pct} accent="var(--status-good)" />
       {habits.length === 0 ? (
         <p className="py-6 text-center text-sm text-ink-secondary">No habits yet.</p>
       ) : (
-        <ul className="space-y-3">
-          {habits.map((h) => (
-            <li key={h.id}>
-              <div className="mb-1 flex items-center justify-between gap-2">
-                <span className="flex items-center gap-1.5 truncate text-sm text-ink-primary">
-                  <span
-                    className="h-1.5 w-1.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: doneToday(h.id) ? 'var(--status-good)' : 'var(--baseline)' }}
+        <ul className="mt-3 space-y-1">
+          {habits.map((h) => {
+            const checked = doneToday(h.id)
+            return (
+              <li key={h.id}>
+                <label className="flex cursor-pointer items-center gap-2.5 rounded-lg px-1 py-1.5 hover:bg-surface-plane">
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => toggleHabitLog(h.id, today)}
+                    className="h-4 w-4 accent-[var(--brand-accent)]"
                   />
-                  {h.name}
-                </span>
-                <span className="tabular shrink-0 text-xs text-ink-secondary">{weeklyRate(h.id)}%</span>
-              </div>
-              <ProgressBar value={weeklyRate(h.id)} accent={h.color} />
-            </li>
-          ))}
+                  <span className={`truncate text-sm ${checked ? 'text-ink-muted line-through' : 'text-ink-primary'}`}>
+                    {h.name}
+                  </span>
+                </label>
+              </li>
+            )
+          })}
         </ul>
       )}
     </Card>
   )
 }
 
-function LifeAreasCard({ projects }: { projects: { area: string; archived: boolean; status: string }[] }) {
+function LifeAreasCard({
+  projects,
+  goals,
+  tasks,
+}: {
+  projects: { area: string; archived: boolean; status: string; id: string }[]
+  goals: { area: string }[]
+  tasks: { projectId: string | null; status: string }[]
+}) {
   return (
     <Card className="p-4">
       <div className="mb-3 flex items-center justify-between">
@@ -238,7 +270,12 @@ function LifeAreasCard({ projects }: { projects: { area: string; archived: boole
       </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {LIFE_AREAS.map((area) => {
-          const count = projects.filter((p) => p.area === area && !p.archived && p.status !== 'done').length
+          const areaProjects = projects.filter((p) => p.area === area && !p.archived)
+          const activeProjects = areaProjects.filter((p) => p.status !== 'done')
+          const goalCount = goals.filter((g) => g.area === area).length
+          const taskCount = tasks.filter(
+            (t) => t.status !== 'done' && areaProjects.some((p) => p.id === t.projectId)
+          ).length
           const accent = areaAccent(area)
           return (
             <Link
@@ -250,8 +287,10 @@ function LifeAreasCard({ projects }: { projects: { area: string; archived: boole
               }}
             >
               <div className="text-sm font-semibold">{area}</div>
-              <div className="mt-4 text-xs text-white/80">
-                {count} active project{count === 1 ? '' : 's'}
+              <div className="mt-3 grid grid-cols-2 gap-x-2 gap-y-0.5 text-[11px] text-white/85">
+                <span>Goals: {goalCount}</span>
+                <span>Projects: {activeProjects.length}</span>
+                <span>Tasks: {taskCount}</span>
               </div>
             </Link>
           )
@@ -285,6 +324,36 @@ function GoalsThisMonthCard({
                 <span className="tabular shrink-0 text-xs text-ink-secondary">{g.progress}%</span>
               </div>
               <ProgressBar value={g.progress} accent={areaAccent(g.area)} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </Card>
+  )
+}
+
+function RecentNotesCard({ notes }: { notes: { id: string; title: string; content: string }[] }) {
+  return (
+    <Card className="p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-sm font-semibold text-ink-primary">Recent notes</h2>
+        <Link to="/notes" className="text-xs font-medium" style={{ color: 'var(--brand-accent)' }}>
+          View all
+        </Link>
+      </div>
+      {notes.length === 0 ? (
+        <p className="py-6 text-center text-sm text-ink-secondary">No notes yet.</p>
+      ) : (
+        <ul className="space-y-1">
+          {notes.map((n) => (
+            <li key={n.id}>
+              <Link
+                to="/notes"
+                className="flex items-center gap-2.5 rounded-lg px-1 py-1.5 hover:bg-surface-plane"
+              >
+                <NotebookText size={14} className="shrink-0 text-ink-muted" />
+                <span className="truncate text-sm text-ink-primary">{n.title}</span>
+              </Link>
             </li>
           ))}
         </ul>

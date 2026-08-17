@@ -1,18 +1,23 @@
 import type {
   Area,
+  Contact,
   FinanceSettings,
   Goal,
   Habit,
   HabitLog,
   InboxItem,
   JournalEntry,
+  LearningSphere,
   LifeArea,
   MediaItem,
   MonthlyReview,
   Note,
+  Paper,
   Project,
   Resource,
+  SphereTopic,
   Task,
+  Tool,
   Transaction,
   WeeklyFocus,
 } from '../types'
@@ -361,6 +366,52 @@ export function seedTransactions(): Transaction[] {
 
 export function seedFinanceSettings(): FinanceSettings {
   return { monthlyBudget: 2400, currency: 'USD' }
+}
+
+export function seedTools(): Tool[] {
+  return [
+    { id: makeId(), name: 'Coolors', url: 'https://coolors.co', category: 'Design', createdAt: daysAgoISO(40) },
+    { id: makeId(), name: 'Noisli', url: 'https://noisli.com', category: 'Focus', createdAt: daysAgoISO(30) },
+    { id: makeId(), name: 'IFTTT', url: 'https://ifttt.com', category: 'Automation', createdAt: daysAgoISO(25) },
+    { id: makeId(), name: 'Deepstash', url: 'https://deepstash.com', category: 'Learning', createdAt: daysAgoISO(15) },
+    { id: makeId(), name: 'Socratic', url: 'https://socratic.org', category: 'Learning', createdAt: daysAgoISO(10) },
+  ]
+}
+
+export function seedContacts(): Contact[] {
+  return [
+    { id: makeId(), name: 'Sam', phone: '+1 555-0134', email: 'sam@example.com', tag: 'Friends', createdAt: daysAgoISO(80) },
+    { id: makeId(), name: 'Mom', phone: '+1 555-0198', email: '', tag: 'Family', createdAt: daysAgoISO(200) },
+    { id: makeId(), name: 'Alex (accountant)', phone: '+1 555-0110', email: 'alex@example.com', tag: 'Services', createdAt: daysAgoISO(60) },
+    { id: makeId(), name: 'Jordan', phone: '+1 555-0177', email: '', tag: 'Work', createdAt: daysAgoISO(20) },
+  ]
+}
+
+export function seedLearningSpheres(): LearningSphere[] {
+  return [
+    { id: makeId(), name: 'Investing', area: 'Finance', createdAt: daysAgoISO(50) },
+    { id: makeId(), name: 'Programming', area: 'Career', createdAt: daysAgoISO(70) },
+    { id: makeId(), name: 'Nutrition', area: 'Health', createdAt: daysAgoISO(35) },
+  ]
+}
+
+export function seedSphereTopics(spheres: LearningSphere[]): SphereTopic[] {
+  const bySlug = (name: string) => spheres.find((s) => s.name === name)?.id ?? ''
+  return [
+    { id: makeId(), title: 'Index fund basics', sphereId: bySlug('Investing'), done: true, createdAt: daysAgoISO(45) },
+    { id: makeId(), title: 'Tax-advantaged accounts', sphereId: bySlug('Investing'), done: false, createdAt: daysAgoISO(30) },
+    { id: makeId(), title: 'TypeScript generics', sphereId: bySlug('Programming'), done: true, createdAt: daysAgoISO(60) },
+    { id: makeId(), title: 'CSS Grid layouts', sphereId: bySlug('Programming'), done: false, createdAt: daysAgoISO(20) },
+    { id: makeId(), title: 'Macro tracking basics', sphereId: bySlug('Nutrition'), done: false, createdAt: daysAgoISO(15) },
+  ]
+}
+
+export function seedPapers(): Paper[] {
+  return [
+    { id: makeId(), title: 'How to Do Great Work', url: 'https://paulgraham.com/greatwork.html', type: 'Essay', area: 'Career', createdAt: daysAgoISO(20) },
+    { id: makeId(), title: 'The Psychology of Money', url: 'https://collabfund.com/blog/the-psychology-of-money', type: 'Web article', area: 'Finance', createdAt: daysAgoISO(35) },
+    { id: makeId(), title: 'Why Procrastinators Procrastinate', url: 'https://waitbutwhy.com/2013/10/why-procrastinators-procrastinate.html', type: 'Guide', area: 'Personal', createdAt: daysAgoISO(50) },
+  ]
 }
 
 export { LIFE_AREAS }
