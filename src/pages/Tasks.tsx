@@ -15,6 +15,7 @@ import {
 } from '../components/ui'
 import { FormRow, Modal, inputClass } from '../components/Modal'
 import { todayISO } from '../lib/id'
+import { useAutoOpenFromQuery } from '../lib/useAutoOpenFromQuery'
 
 type FormState = {
   title: string
@@ -74,6 +75,8 @@ export function Tasks() {
     setOpen(true)
   }
 
+  useAutoOpenFromQuery(openCreate)
+
   function openEdit(t: Task) {
     setEditingId(t.id)
     setForm({
@@ -120,10 +123,10 @@ export function Tasks() {
             onClick={() => setStatusFilter(s)}
             className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
               statusFilter === s
-                ? 'border-transparent text-white'
+                ? 'border-transparent'
                 : 'border-line-border text-ink-secondary hover:text-ink-primary'
             }`}
-            style={statusFilter === s ? { backgroundColor: 'var(--series-1)' } : undefined}
+            style={statusFilter === s ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
           >
             {STATUS_LABEL[s]}
           </button>

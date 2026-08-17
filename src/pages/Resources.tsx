@@ -74,10 +74,10 @@ export function Resources() {
             onClick={() => setActiveTag(null)}
             className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
               activeTag === null
-                ? 'border-transparent text-white'
+                ? 'border-transparent'
                 : 'border-line-border text-ink-secondary hover:text-ink-primary'
             }`}
-            style={activeTag === null ? { backgroundColor: 'var(--series-1)' } : undefined}
+            style={activeTag === null ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
           >
             All
           </button>
@@ -87,10 +87,10 @@ export function Resources() {
               onClick={() => setActiveTag(tag)}
               className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
                 activeTag === tag
-                  ? 'border-transparent text-white'
+                  ? 'border-transparent'
                   : 'border-line-border text-ink-secondary hover:text-ink-primary'
               }`}
-              style={activeTag === tag ? { backgroundColor: 'var(--series-1)' } : undefined}
+              style={activeTag === tag ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
             >
               {tag}
             </button>

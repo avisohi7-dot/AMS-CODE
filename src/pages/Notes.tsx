@@ -4,6 +4,7 @@ import { useBrainStore } from '../store'
 import type { Note } from '../types'
 import { Button, Card, EmptyState, IconButton, PageHeader, TagPill } from '../components/ui'
 import { FormRow, Modal, inputClass } from '../components/Modal'
+import { useAutoOpenFromQuery } from '../lib/useAutoOpenFromQuery'
 
 type FormState = { title: string; content: string; tags: string }
 const EMPTY_FORM: FormState = { title: '', content: '', tags: '' }
@@ -37,6 +38,8 @@ export function Notes() {
     setForm(EMPTY_FORM)
     setOpen(true)
   }
+
+  useAutoOpenFromQuery(openCreate)
 
   function openEdit(n: Note) {
     setEditingId(n.id)
@@ -88,10 +91,10 @@ export function Notes() {
               onClick={() => setActiveTag(null)}
               className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
                 activeTag === null
-                  ? 'border-transparent text-white'
+                  ? 'border-transparent'
                   : 'border-line-border text-ink-secondary hover:text-ink-primary'
               }`}
-              style={activeTag === null ? { backgroundColor: 'var(--series-1)' } : undefined}
+              style={activeTag === null ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
             >
               All
             </button>
@@ -101,10 +104,10 @@ export function Notes() {
                 onClick={() => setActiveTag(tag)}
                 className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
                   activeTag === tag
-                    ? 'border-transparent text-white'
+                    ? 'border-transparent'
                     : 'border-line-border text-ink-secondary hover:text-ink-primary'
                 }`}
-                style={activeTag === tag ? { backgroundColor: 'var(--series-1)' } : undefined}
+                style={activeTag === tag ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
               >
                 {tag}
               </button>

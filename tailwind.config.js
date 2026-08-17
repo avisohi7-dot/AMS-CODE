@@ -35,6 +35,10 @@ export default {
           serious: 'var(--status-serious)',
           critical: 'var(--status-critical)',
         },
+        accent: {
+          DEFAULT: 'var(--brand-accent)',
+          ink: 'var(--brand-accent-ink)',
+        },
       },
       fontFamily: {
         sans: ['system-ui', '-apple-system', '"Segoe UI"', 'sans-serif'],

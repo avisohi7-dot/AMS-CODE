@@ -41,7 +41,7 @@ export function StatTile({
   label,
   value,
   hint,
-  accent = 'var(--series-1)',
+  accent = 'var(--brand-accent)',
 }: {
   label: string
   value: string | number
@@ -60,7 +60,7 @@ export function StatTile({
   )
 }
 
-export function ProgressBar({ value, accent = 'var(--series-1)' }: { value: number; accent?: string }) {
+export function ProgressBar({ value, accent = 'var(--brand-accent)' }: { value: number; accent?: string }) {
   const clamped = Math.max(0, Math.min(100, value))
   return (
     <div
@@ -196,7 +196,7 @@ export function Button({
     'inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors'
   const styles =
     variant === 'primary'
-      ? 'text-white'
+      ? ''
       : variant === 'secondary'
         ? 'border border-line-border text-ink-primary hover:bg-surface-plane'
         : 'text-ink-secondary hover:text-ink-primary'
@@ -205,7 +205,7 @@ export function Button({
       type={type}
       onClick={onClick}
       className={`${base} ${styles} ${className}`}
-      style={variant === 'primary' ? { backgroundColor: 'var(--series-1)' } : undefined}
+      style={variant === 'primary' ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
     >
       {children}
     </button>

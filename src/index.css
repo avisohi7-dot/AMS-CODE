@@ -28,6 +28,12 @@
   --status-critical: #d03b3b;
 
   --success-text: #006300;
+
+  --brand-accent: #d1342e;
+  --brand-accent-ink: #ffffff;
+  --hero-surface: #141210;
+  --hero-glow-strong: rgba(217, 58, 46, 0.55);
+  --hero-glow-soft: rgba(217, 58, 46, 0.18);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -52,6 +58,12 @@
     --series-8: #e66767;
 
     --success-text: #0ca30c;
+
+    --brand-accent: #ff5c52;
+    --brand-accent-ink: #1a0a08;
+    --hero-surface: #0a0908;
+    --hero-glow-strong: rgba(255, 92, 82, 0.55);
+    --hero-glow-soft: rgba(255, 92, 82, 0.16);
   }
 }
 
@@ -76,6 +88,12 @@
   --series-8: #e66767;
 
   --success-text: #0ca30c;
+
+  --brand-accent: #ff5c52;
+  --brand-accent-ink: #1a0a08;
+  --hero-surface: #0a0908;
+  --hero-glow-strong: rgba(255, 92, 82, 0.55);
+  --hero-glow-soft: rgba(255, 92, 82, 0.16);
 }
 
 * {
@@ -97,12 +115,21 @@ body {
 }
 
 ::selection {
-  background: var(--series-1);
+  background: var(--brand-accent);
   color: white;
 }
 
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+.hero-banner {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 100% at 30% -10%, var(--hero-glow-strong), transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 0%, var(--hero-glow-soft), transparent 55%),
+    var(--hero-surface);
 }
 
 /* scrollbar */

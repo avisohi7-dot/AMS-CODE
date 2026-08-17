@@ -154,7 +154,7 @@ export const useBrainStore = create<BrainState>()(
   persist(
     (set) => ({
       ...freshSeed(),
-      theme: 'system',
+      theme: 'dark',
 
       setTheme: (t) => set({ theme: t }),
 

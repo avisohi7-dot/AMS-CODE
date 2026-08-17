@@ -42,7 +42,7 @@ export function QuickCaptureModal({
         }}
         rows={3}
         placeholder="Capture anything — sort it later…"
-        className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-brand-1"
+        className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-accent"
       />
       <p className="mt-1.5 text-xs text-ink-muted">Lands in your Inbox. ⌘/Ctrl + Enter to save.</p>
       <div className="mt-4 flex justify-end gap-2">

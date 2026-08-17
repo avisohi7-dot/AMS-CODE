@@ -120,10 +120,10 @@ export function Media() {
             onClick={() => setTypeFilter(t)}
             className={`rounded-full border px-2.5 py-1 text-xs font-medium capitalize ${
               typeFilter === t
-                ? 'border-transparent text-white'
+                ? 'border-transparent'
                 : 'border-line-border text-ink-secondary hover:text-ink-primary'
             }`}
-            style={typeFilter === t ? { backgroundColor: 'var(--series-1)' } : undefined}
+            style={typeFilter === t ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
           >
             {t === 'all' ? 'All' : TYPE_LABEL[t]}
           </button>

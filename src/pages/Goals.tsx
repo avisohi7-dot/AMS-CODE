@@ -15,6 +15,7 @@ import {
 } from '../components/ui'
 import { FormRow, Modal, inputClass } from '../components/Modal'
 import { LIFE_AREAS } from '../lib/seed'
+import { useAutoOpenFromQuery } from '../lib/useAutoOpenFromQuery'
 
 type FormState = {
   title: string
@@ -52,6 +53,8 @@ export function Goals() {
     setForm(EMPTY_FORM)
     setOpen(true)
   }
+
+  useAutoOpenFromQuery(openCreate)
 
   function openEdit(g: Goal) {
     setEditingId(g.id)
@@ -178,7 +181,7 @@ export function Goals() {
               value={form.progress}
               disabled={form.status === 'achieved'}
               onChange={(e) => setForm({ ...form, progress: Number(e.target.value) })}
-              className="w-full accent-[var(--series-1)]"
+              className="w-full accent-[var(--brand-accent)]"
             />
           </FormRow>
           <FormRow label="Target date">

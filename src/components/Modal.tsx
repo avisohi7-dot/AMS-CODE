@@ -52,4 +52,4 @@ export function FormRow({ label, children }: { label: string; children: ReactNod
 }
 
 export const inputClass =
-  'w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-brand-1'
+  'w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-accent'

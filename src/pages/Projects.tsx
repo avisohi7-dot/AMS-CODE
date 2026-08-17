@@ -13,6 +13,7 @@ import {
 } from '../components/ui'
 import { FormRow, Modal, inputClass } from '../components/Modal'
 import { LIFE_AREAS } from '../lib/seed'
+import { useAutoOpenFromQuery } from '../lib/useAutoOpenFromQuery'
 
 const STATUS_LABEL: Record<ProjectStatus, string> = {
   active: 'Active',
@@ -58,6 +59,8 @@ export function Projects() {
     setForm(EMPTY_FORM)
     setOpen(true)
   }
+
+  useAutoOpenFromQuery(openCreate)
 
   function openEdit(p: Project) {
     setEditingId(p.id)

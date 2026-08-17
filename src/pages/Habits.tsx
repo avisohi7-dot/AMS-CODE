@@ -5,6 +5,7 @@ import type { JournalEntry } from '../types'
 import { Button, Card, EmptyState, IconButton, PageHeader } from '../components/ui'
 import { FormRow, Modal, inputClass } from '../components/Modal'
 import { todayISO } from '../lib/id'
+import { useAutoOpenFromQuery } from '../lib/useAutoOpenFromQuery'
 
 const GRID_DAYS = 28
 
@@ -62,9 +63,9 @@ export function Habits() {
             key={t}
             onClick={() => setTab(t)}
             className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors ${
-              tab === t ? 'text-white' : 'text-ink-secondary hover:text-ink-primary'
+              tab === t ? '' : 'text-ink-secondary hover:text-ink-primary'
             }`}
-            style={tab === t ? { backgroundColor: 'var(--series-1)' } : undefined}
+            style={tab === t ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
           >
             {t}
           </button>
@@ -86,6 +87,8 @@ function HabitsTab() {
   const [name, setName] = useState('')
   const days = useMemo(() => last28Days(), [])
   const today = todayISO()
+
+  useAutoOpenFromQuery(() => setOpen(true))
 
   function submit(e: React.FormEvent) {
     e.preventDefault()

@@ -21,9 +21,9 @@ export function Reviews() {
             key={t}
             onClick={() => setTab(t)}
             className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors ${
-              tab === t ? 'text-white' : 'text-ink-secondary hover:text-ink-primary'
+              tab === t ? '' : 'text-ink-secondary hover:text-ink-primary'
             }`}
-            style={tab === t ? { backgroundColor: 'var(--series-1)' } : undefined}
+            style={tab === t ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
           >
             {t}
           </button>
@@ -85,7 +85,7 @@ function WeeklyFocusTab() {
                 setPriorities(next)
               }}
               placeholder={`Priority ${i + 1}`}
-              className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-brand-1"
+              className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-accent"
             />
           ))}
         </div>
@@ -95,7 +95,7 @@ function WeeklyFocusTab() {
           onChange={(e) => setNotes(e.target.value)}
           rows={3}
           placeholder="Anything to keep in mind this week…"
-          className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-brand-1"
+          className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-accent"
         />
         <div className="mt-3 flex justify-end">
           <Button onClick={save}>Save week</Button>
@@ -198,7 +198,7 @@ function MonthlyReviewTab() {
               value={wins}
               onChange={(e) => setWins(e.target.value)}
               rows={4}
-              className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-brand-1"
+              className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-accent"
             />
           </div>
           <div>
@@ -207,7 +207,7 @@ function MonthlyReviewTab() {
               value={challenges}
               onChange={(e) => setChallenges(e.target.value)}
               rows={4}
-              className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-brand-1"
+              className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-accent"
             />
           </div>
           <div>
@@ -216,7 +216,7 @@ function MonthlyReviewTab() {
               value={focusNext}
               onChange={(e) => setFocusNext(e.target.value)}
               rows={4}
-              className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-brand-1"
+              className="w-full rounded-lg border border-line-border bg-surface-1 px-3 py-2 text-sm text-ink-primary outline-none focus:border-accent"
             />
           </div>
         </div>

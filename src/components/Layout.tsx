@@ -117,8 +117,8 @@ export function Layout() {
       <aside className="hidden w-64 shrink-0 flex-col border-r border-line-border bg-surface-1 px-3 py-4 md:flex">
         <div className="mb-4 flex items-center gap-2 px-2">
           <div
-            className="flex h-8 w-8 items-center justify-center rounded-lg text-white"
-            style={{ backgroundColor: 'var(--series-1)' }}
+            className="flex h-8 w-8 items-center justify-center rounded-lg"
+            style={{ backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' }}
           >
             <Brain size={18} />
           </div>
@@ -158,15 +158,15 @@ export function Layout() {
                       }`
                     }
                     style={({ isActive }) =>
-                      isActive ? { boxShadow: 'inset 2px 0 0 var(--series-1)' } : undefined
+                      isActive ? { boxShadow: 'inset 2px 0 0 var(--brand-accent)' } : undefined
                     }
                   >
                     <Icon size={17} />
                     <span className="flex-1 truncate">{label}</span>
                     {badge && inboxCount > 0 && (
                       <span
-                        className="tabular rounded-full px-1.5 py-0.5 text-[10px] font-semibold text-white"
-                        style={{ backgroundColor: 'var(--series-2)' }}
+                        className="tabular rounded-full px-1.5 py-0.5 text-[10px] font-semibold"
+                        style={{ backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' }}
                       >
                         {inboxCount}
                       </span>
