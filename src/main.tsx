@@ -12,7 +12,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 )
 
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
+// Service workers require an http(s) origin; skip registration entirely under
+// Electron's file:// protocol (also avoids a stale SW hijacking file:// loads).
+if ('serviceWorker' in navigator && import.meta.env.PROD && window.location.protocol !== 'file:') {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {})
   })
