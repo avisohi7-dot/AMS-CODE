@@ -10,6 +10,7 @@ import {
   GraduationCap,
   Inbox as InboxIcon,
   LayoutDashboard,
+  LayoutGrid,
   Library,
   ListTodo,
   Moon,
@@ -36,6 +37,7 @@ const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: Luc
       { to: '/inbox', label: 'Inbox', icon: InboxIcon, badge: true },
       { to: '/reviews', label: 'Reviews', icon: CalendarRange },
       { to: '/calendar', label: 'Calendar', icon: CalendarDays },
+      { to: '/widgets', label: 'Widgets', icon: LayoutGrid },
     ],
   },
   {

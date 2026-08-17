@@ -1,5 +1,5 @@
 import type { Exercise, FoodItem, Meal, Task, WorkoutDay } from '../types'
-import { todayISO } from './id'
+import { selectTasksToday, selectWorkoutToday } from './widgetSelectors'
 
 export interface WidgetTask {
   title: string
@@ -41,12 +41,6 @@ export interface WidgetData {
   mealsToday: WidgetMeal[]
 }
 
-const PRIORITY_RANK: Record<Task['priority'], number> = { high: 0, medium: 1, low: 2 }
-
-function todaysWeekdayName(): string {
-  return new Date().toLocaleDateString('en-GB', { weekday: 'long' })
-}
-
 export function buildWidgetData(
   tasks: Task[],
   workoutDays: WorkoutDay[],
@@ -54,16 +48,14 @@ export function buildWidgetData(
   meals: Meal[],
   foodItems: FoodItem[]
 ): WidgetData {
-  const today = todayISO()
+  const tasksToday: WidgetTask[] = selectTasksToday(tasks).map((t) => ({
+    title: t.title,
+    priority: t.priority,
+    status: t.status,
+    dueDate: t.dueDate,
+  }))
 
-  const tasksToday: WidgetTask[] = tasks
-    .filter((t) => t.status !== 'done' && (t.dueDate === today || (t.dueDate !== null && t.dueDate < today)))
-    .sort((a, b) => PRIORITY_RANK[a.priority] - PRIORITY_RANK[b.priority])
-    .slice(0, 8)
-    .map((t) => ({ title: t.title, priority: t.priority, status: t.status, dueDate: t.dueDate }))
-
-  const weekday = todaysWeekdayName()
-  const matchedDay = workoutDays.find((w) => w.dayOfWeek.trim().toLowerCase() === weekday.toLowerCase())
+  const matchedDay = selectWorkoutToday(workoutDays)
   const workoutToday: WidgetWorkout | null = matchedDay
     ? {
         name: matchedDay.name,

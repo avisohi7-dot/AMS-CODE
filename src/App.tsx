@@ -19,6 +19,7 @@ import { Learning } from './pages/Learning'
 import { Papers } from './pages/Papers'
 import { Calendar } from './pages/Calendar'
 import { Fitness } from './pages/Fitness'
+import { Widgets } from './pages/Widgets'
 import { WidgetExporter } from './components/WidgetExporter'
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="inbox" element={<InboxPage />} />
           <Route path="reviews" element={<Reviews />} />
           <Route path="calendar" element={<Calendar />} />
+          <Route path="widgets" element={<Widgets />} />
           <Route path="projects" element={<Projects />} />
           <Route path="areas" element={<Areas />} />
           <Route path="resources" element={<Resources />} />
