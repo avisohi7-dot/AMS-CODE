@@ -1,0 +1,16 @@
+{
+  "name": "Second Brain OS",
+  "short_name": "Second Brain",
+  "description": "Your personal knowledge operating system — tasks, projects, notes, habits, and goals in one workspace.",
+  "start_url": "/AMS-CODE/",
+  "scope": "/AMS-CODE/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
