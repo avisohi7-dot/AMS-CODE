@@ -1,13 +1,14 @@
 import { useMemo, useState } from 'react'
 import { Archive, Pencil, Plus, Trash2 } from 'lucide-react'
 import { useBrainStore } from '../store'
-import type { JournalEntry } from '../types'
-import { Button, Card, EmptyState, IconButton, PageHeader } from '../components/ui'
+import type { Habit, HabitLog, JournalEntry } from '../types'
+import { Button, Card, EmptyState, IconButton, PageHeader, ProgressBar } from '../components/ui'
 import { FormRow, Modal, inputClass } from '../components/Modal'
 import { todayISO } from '../lib/id'
 import { useAutoOpenFromQuery } from '../lib/useAutoOpenFromQuery'
 
 const GRID_DAYS = 28
+const CARD_DAYS = 10
 
 const MOOD_LABEL: Record<number, string> = {
   1: 'Rough',
@@ -49,8 +50,15 @@ function currentStreak(dates: Set<string>): number {
   return streak
 }
 
+const TABS = [
+  { key: 'cards', label: 'Cards' },
+  { key: 'grid', label: 'Grid' },
+  { key: 'journal', label: 'Journal' },
+] as const
+type HabitsPageTab = (typeof TABS)[number]['key']
+
 export function Habits() {
-  const [tab, setTab] = useState<'habits' | 'journal'>('habits')
+  const [tab, setTab] = useState<HabitsPageTab>('cards')
   return (
     <div>
       <PageHeader
@@ -58,21 +66,105 @@ export function Habits() {
         description="Small daily actions and how they felt."
       />
       <div className="mb-5 inline-flex rounded-lg border border-line-border p-0.5">
-        {(['habits', 'journal'] as const).map((t) => (
+        {TABS.map(({ key, label }) => (
           <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors ${
-              tab === t ? '' : 'text-ink-secondary hover:text-ink-primary'
+            key={key}
+            onClick={() => setTab(key)}
+            className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+              tab === key ? '' : 'text-ink-secondary hover:text-ink-primary'
             }`}
-            style={tab === t ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
+            style={tab === key ? { backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' } : undefined}
           >
-            {t}
+            {label}
           </button>
         ))}
       </div>
-      {tab === 'habits' ? <HabitsTab /> : <JournalTab />}
+      {tab === 'cards' ? <DailyCardsTab /> : tab === 'grid' ? <HabitsTab /> : <JournalTab />}
     </div>
+  )
+}
+
+function DailyCardsTab() {
+  const habits = useBrainStore((s) => s.habits.filter((h) => !h.archived))
+  const habitLogs = useBrainStore((s) => s.habitLogs)
+  const toggleHabitLog = useBrainStore((s) => s.toggleHabitLog)
+
+  const days = useMemo(() => {
+    const list: string[] = []
+    for (let i = 0; i < CARD_DAYS; i++) {
+      const d = new Date()
+      d.setDate(d.getDate() - i)
+      list.push(d.toISOString().slice(0, 10))
+    }
+    return list
+  }, [])
+
+  if (habits.length === 0) {
+    return <EmptyState title="No habits yet" description="Add a habit on the Grid tab to start tracking daily cards." />
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      {days.map((date, i) => (
+        <DayCard
+          key={date}
+          date={date}
+          label={i === 0 ? 'Today' : i === 1 ? 'Yesterday' : 'This day'}
+          habits={habits}
+          habitLogs={habitLogs}
+          toggleHabitLog={toggleHabitLog}
+        />
+      ))}
+    </div>
+  )
+}
+
+function DayCard({
+  date,
+  label,
+  habits,
+  habitLogs,
+  toggleHabitLog,
+}: {
+  date: string
+  label: string
+  habits: Habit[]
+  habitLogs: HabitLog[]
+  toggleHabitLog: (habitId: string, date: string) => void
+}) {
+  const done = habits.filter((h) => habitLogs.some((l) => l.habitId === h.id && l.date === date)).length
+  const pct = habits.length ? Math.round((done / habits.length) * 100) : 0
+  const dateLabel = new Date(date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+
+  return (
+    <Card className="p-4">
+      <p className="text-xs font-medium text-ink-muted">{label}</p>
+      <div className="mb-1 flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-ink-primary">{dateLabel}</h3>
+        <span className="tabular text-xs text-ink-secondary">{pct}%</span>
+      </div>
+      <ProgressBar value={pct} accent="var(--status-good)" />
+      <ul className="mt-3 space-y-1">
+        {habits.map((h) => {
+          const checked = habitLogs.some((l) => l.habitId === h.id && l.date === date)
+          return (
+            <li key={h.id}>
+              <label className="flex cursor-pointer items-center gap-2.5 rounded-lg px-1 py-1.5 hover:bg-surface-plane">
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={() => toggleHabitLog(h.id, date)}
+                  className="h-4 w-4 accent-[var(--brand-accent)]"
+                />
+                <span className={`truncate text-sm ${checked ? 'text-ink-muted line-through' : 'text-ink-primary'}`}>
+                  {h.name}
+                </span>
+              </label>
+            </li>
+          )
+        })}
+      </ul>
+    </Card>
   )
 }
 
