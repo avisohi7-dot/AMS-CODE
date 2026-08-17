@@ -19,31 +19,35 @@ import { Learning } from './pages/Learning'
 import { Papers } from './pages/Papers'
 import { Calendar } from './pages/Calendar'
 import { Fitness } from './pages/Fitness'
+import { WidgetExporter } from './components/WidgetExporter'
 
 export default function App() {
   return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route index element={<Dashboard />} />
-        <Route path="inbox" element={<InboxPage />} />
-        <Route path="reviews" element={<Reviews />} />
-        <Route path="calendar" element={<Calendar />} />
-        <Route path="projects" element={<Projects />} />
-        <Route path="areas" element={<Areas />} />
-        <Route path="resources" element={<Resources />} />
-        <Route path="archive" element={<ArchivePage />} />
-        <Route path="tasks" element={<Tasks />} />
-        <Route path="notes" element={<Notes />} />
-        <Route path="habits" element={<Habits />} />
-        <Route path="goals" element={<Goals />} />
-        <Route path="fitness" element={<Fitness />} />
-        <Route path="media" element={<Media />} />
-        <Route path="learning" element={<Learning />} />
-        <Route path="papers" element={<Papers />} />
-        <Route path="tools" element={<Tools />} />
-        <Route path="contacts" element={<Contacts />} />
-        <Route path="finance" element={<Finance />} />
-      </Route>
-    </Routes>
+    <>
+      <WidgetExporter />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Dashboard />} />
+          <Route path="inbox" element={<InboxPage />} />
+          <Route path="reviews" element={<Reviews />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="areas" element={<Areas />} />
+          <Route path="resources" element={<Resources />} />
+          <Route path="archive" element={<ArchivePage />} />
+          <Route path="tasks" element={<Tasks />} />
+          <Route path="notes" element={<Notes />} />
+          <Route path="habits" element={<Habits />} />
+          <Route path="goals" element={<Goals />} />
+          <Route path="fitness" element={<Fitness />} />
+          <Route path="media" element={<Media />} />
+          <Route path="learning" element={<Learning />} />
+          <Route path="papers" element={<Papers />} />
+          <Route path="tools" element={<Tools />} />
+          <Route path="contacts" element={<Contacts />} />
+          <Route path="finance" element={<Finance />} />
+        </Route>
+      </Routes>
+    </>
   )
 }

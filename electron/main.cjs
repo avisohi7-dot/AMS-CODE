@@ -1,7 +1,23 @@
-const { app, BrowserWindow, shell } = require('electron')
+const { app, BrowserWindow, shell, ipcMain } = require('electron')
 const path = require('node:path')
+const fs = require('node:fs')
 
 const isDev = !app.isPackaged
+
+function widgetDataPath() {
+  return path.join(app.getPath('home'), 'Library', 'Application Support', 'SecondBrainOS', 'widget-data.json')
+}
+
+ipcMain.handle('write-widget-data', (_event, data) => {
+  if (process.platform !== 'darwin') return
+  try {
+    const filePath = widgetDataPath()
+    fs.mkdirSync(path.dirname(filePath), { recursive: true })
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8')
+  } catch (err) {
+    console.error('Failed to write widget data', err)
+  }
+})
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -17,6 +33,7 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
+      preload: path.join(__dirname, 'preload.cjs'),
     },
   })
 
