@@ -24,6 +24,7 @@ import type {
 } from './types'
 import { makeId } from './lib/id'
 import {
+  makeBusinessLawExtras,
   seedAreas,
   seedContacts,
   seedFinanceSettings,
@@ -148,11 +149,16 @@ interface BrainState {
   resetDemoData: () => void
 }
 
+const BUSINESS_LAW_PROJECT_TITLE = 'ACA Business Law Exam Prep'
+
 function freshSeed() {
   const areas = seedAreas()
   const projects = seedProjects()
   const resources = seedResources()
   const tasks = seedTasks(projects)
+  const businessLaw = makeBusinessLawExtras()
+  projects.unshift(businessLaw.project)
+  tasks.unshift(...businessLaw.tasks)
   const notes = seedNotes()
   const habits = seedHabits()
   const habitLogs = seedHabitLogs(habits)
@@ -484,6 +490,21 @@ export const useBrainStore = create<BrainState>()(
 
       resetDemoData: () => set({ ...freshSeed() }),
     }),
-    { name: 'second-brain-os-storage' }
+    {
+      name: 'second-brain-os-storage',
+      version: 1,
+      migrate: (persistedState, version) => {
+        const state = persistedState as BrainState
+        if (version < 1 && Array.isArray(state.projects) && Array.isArray(state.tasks)) {
+          const alreadyHasIt = state.projects.some((p) => p.title === BUSINESS_LAW_PROJECT_TITLE)
+          if (!alreadyHasIt) {
+            const businessLaw = makeBusinessLawExtras()
+            state.projects = [businessLaw.project, ...state.projects]
+            state.tasks = [...businessLaw.tasks, ...state.tasks]
+          }
+        }
+        return state
+      },
+    }
   )
 )

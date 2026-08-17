@@ -414,4 +414,55 @@ export function seedPapers(): Paper[] {
   ]
 }
 
+export function makeBusinessLawExtras(): { project: Project; tasks: Task[] } {
+  const projectId = makeId()
+  const now = new Date().toISOString()
+
+  const project: Project = {
+    id: projectId,
+    title: 'ACA Business Law Exam Prep',
+    description:
+      '2-week study plan for the ACA Business Law exam (target 29–30 Aug 2026). Daily: Kaplan learn → timed ICAEW question bank → review/error log.',
+    area: 'Learning',
+    status: 'active',
+    dueDate: '2026-08-29',
+    createdAt: now,
+    archived: false,
+  }
+
+  const days: { date: string; title: string; priority: Task['priority'] }[] = [
+    { date: '2026-08-11', title: 'Legal system fundamentals (sources of law, courts, precedent)', priority: 'medium' },
+    { date: '2026-08-12', title: 'Contract formation (offer/acceptance/consideration/intention)', priority: 'medium' },
+    { date: '2026-08-13', title: 'Contract terms + incorporation/interpretation', priority: 'medium' },
+    { date: '2026-08-14', title: 'Exclusion clauses + unfair terms / consumer protection', priority: 'medium' },
+    { date: '2026-08-15', title: 'Mixed timed set + weak-topic repair (long weekend session)', priority: 'medium' },
+    { date: '2026-08-16', title: 'Mixed timed set + re-do wrong Qs + Top Rules & Traps sheet', priority: 'medium' },
+    { date: '2026-08-17', title: 'Misrepresentation + remedies', priority: 'medium' },
+    { date: '2026-08-18', title: 'Duress / undue influence / mistake', priority: 'medium' },
+    { date: '2026-08-19', title: 'Agency (authority, duties, liability)', priority: 'medium' },
+    { date: '2026-08-20', title: 'Employment basics', priority: 'medium' },
+    { date: '2026-08-21', title: 'Tort / negligence / vicarious liability / occupiers', priority: 'medium' },
+    { date: '2026-08-22', title: 'Big mixed timed set + Kaplan weakest-area repair (long session)', priority: 'high' },
+    { date: '2026-08-23', title: 'Mini-mock mixed set + reattempt wrong Qs + polish Top Rules & Traps', priority: 'high' },
+    { date: '2026-08-24', title: 'Consolidation night — mixed timed set + heavy review', priority: 'high' },
+    { date: '2026-08-25', title: 'Weak Area #1 repair + targeted timed QB', priority: 'high' },
+    { date: '2026-08-26', title: 'Mixed timed set + review', priority: 'high' },
+    { date: '2026-08-27', title: 'Weak Area #2 repair + targeted timed QB', priority: 'high' },
+    { date: '2026-08-28', title: 'Error log + Top Rules & Traps + light confidence set', priority: 'high' },
+    { date: '2026-08-29', title: 'ACA Business Law exam', priority: 'high' },
+  ]
+
+  const tasks: Task[] = days.map(({ date, title, priority }) => ({
+    id: makeId(),
+    title,
+    status: 'todo',
+    priority,
+    projectId,
+    dueDate: date,
+    createdAt: now,
+  }))
+
+  return { project, tasks }
+}
+
 export { LIFE_AREAS }
