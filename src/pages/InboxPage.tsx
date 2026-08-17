@@ -38,10 +38,10 @@ export function InboxPage() {
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm text-ink-primary">{item.content}</p>
                 <p className="mt-0.5 text-xs text-ink-muted">
-                  {new Date(item.createdAt).toLocaleString(undefined, {
-                    month: 'short',
+                  {new Date(item.createdAt).toLocaleString('en-GB', {
                     day: 'numeric',
-                    hour: 'numeric',
+                    month: 'short',
+                    hour: '2-digit',
                     minute: '2-digit',
                   })}
                 </p>

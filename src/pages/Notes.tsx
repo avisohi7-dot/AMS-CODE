@@ -135,7 +135,7 @@ export function Notes() {
               )}
               <div className="mt-3 flex items-center justify-between">
                 <span className="text-xs text-ink-muted">
-                  Updated {new Date(n.updatedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                  Updated {new Date(n.updatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                 </span>
                 <div className="flex gap-1.5">
                   <IconButton label="Edit" onClick={() => openEdit(n)}>

@@ -215,7 +215,7 @@ export function Button({
 export function fmtDate(iso: string | null): string {
   if (!iso) return 'No date'
   const d = new Date(iso + 'T00:00:00')
-  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
 }
 
 export function daysUntil(iso: string | null): number | null {

@@ -19,16 +19,16 @@ export function ClockWidget() {
   const minuteAngle = minutes * 6 + seconds * 0.1
   const secondAngle = seconds * 6
 
-  const timeLabel = now.toLocaleTimeString(undefined, {
+  const timeLabel = now.toLocaleTimeString('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
     hour12: false,
   })
-  const dateLabel = now.toLocaleDateString(undefined, {
+  const dateLabel = now.toLocaleDateString('en-GB', {
     weekday: 'short',
-    month: 'short',
     day: 'numeric',
+    month: 'short',
   })
 
   return (

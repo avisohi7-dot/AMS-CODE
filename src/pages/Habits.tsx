@@ -236,10 +236,10 @@ function JournalTab() {
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-ink-primary">
-                    {new Date(e.date + 'T00:00:00').toLocaleDateString(undefined, {
+                    {new Date(e.date + 'T00:00:00').toLocaleDateString('en-GB', {
                       weekday: 'short',
-                      month: 'short',
                       day: 'numeric',
+                      month: 'short',
                     })}
                   </span>
                   <span

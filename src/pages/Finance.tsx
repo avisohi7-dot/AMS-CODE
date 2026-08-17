@@ -25,7 +25,7 @@ function categoryColor(category: string, allCategories: string[]): string {
 }
 
 function fmtCurrency(amount: number, currency: string) {
-  return new Intl.NumberFormat(undefined, { style: 'currency', currency, maximumFractionDigits: 0 }).format(amount)
+  return new Intl.NumberFormat('en-GB', { style: 'currency', currency, maximumFractionDigits: 0 }).format(amount)
 }
 
 type FormState = {

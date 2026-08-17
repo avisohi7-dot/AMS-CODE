@@ -14,7 +14,7 @@ const TABS: { key: CalTab; label: string }[] = [
   { key: 'notes', label: 'Notes' },
 ]
 
-const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
 interface DayEvent {
   id: string

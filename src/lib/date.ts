@@ -21,14 +21,14 @@ export function formatWeekLabel(weekStartISO: string): string {
   const start = new Date(weekStartISO + 'T00:00:00')
   const end = new Date(start)
   end.setDate(end.getDate() + 6)
-  const fmt = (d: Date) => d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  const fmt = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
   return `${fmt(start)} – ${fmt(end)}`
 }
 
 export function formatMonthLabel(monthISO: string): string {
   const [y, m] = monthISO.split('-').map(Number)
   const d = new Date(y, m - 1, 1)
-  return d.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })
+  return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
 }
 
 export function isDateInWeek(dateISO: string, weekStartISO: string): boolean {
@@ -45,7 +45,8 @@ export function isDateInMonth(dateISO: string, monthISO: string): boolean {
 export function monthGrid(monthISO: string): string[] {
   const [y, m] = monthISO.split('-').map(Number)
   const firstOfMonth = new Date(y, m - 1, 1)
-  const startOffset = firstOfMonth.getDay() // 0 = Sunday
+  const day = firstOfMonth.getDay() // 0 = Sunday
+  const startOffset = day === 0 ? 6 : day - 1 // Monday-first grid
   const gridStart = new Date(y, m - 1, 1 - startOffset)
   const days: string[] = []
   for (let i = 0; i < 42; i++) {

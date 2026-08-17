@@ -365,7 +365,7 @@ export function seedTransactions(): Transaction[] {
 }
 
 export function seedFinanceSettings(): FinanceSettings {
-  return { monthlyBudget: 2400, currency: 'USD' }
+  return { monthlyBudget: 2400, currency: 'GBP' }
 }
 
 export function seedTools(): Tool[] {
