@@ -22,6 +22,7 @@ export function Dashboard() {
   const habits = useBrainStore((s) => s.habits)
   const habitLogs = useBrainStore((s) => s.habitLogs)
   const goals = useBrainStore((s) => s.goals)
+  const inbox = useBrainStore((s) => s.inbox)
   const cycleTaskStatus = useBrainStore((s) => s.cycleTaskStatus)
 
   const activeProjects = projects.filter((p) => !p.archived && p.status !== 'done')
@@ -61,7 +62,15 @@ export function Dashboard() {
         description="Your second brain, at a glance — projects, tasks, habits, and goals in one place."
       />
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
+        <Link to="/inbox">
+          <StatTile
+            label="Inbox"
+            value={inbox.length}
+            hint={inbox.length ? 'Waiting to be sorted' : 'All clear'}
+            accent="var(--series-4)"
+          />
+        </Link>
         <StatTile label="Active projects" value={activeProjects.length} accent="var(--series-1)" />
         <StatTile
           label="Open tasks"

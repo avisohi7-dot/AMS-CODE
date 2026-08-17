@@ -93,3 +93,57 @@ export interface Goal {
   targetDate: string | null
   createdAt: string
 }
+
+export interface InboxItem {
+  id: ID
+  content: string
+  createdAt: string
+}
+
+export interface WeeklyFocus {
+  id: ID
+  weekStart: string // yyyy-mm-dd, Monday
+  priorities: string[] // up to 3
+  notes: string
+}
+
+export interface MonthlyReview {
+  id: ID
+  month: string // yyyy-mm
+  wins: string
+  challenges: string
+  focusNext: string
+  createdAt: string
+}
+
+export type MediaType = 'book' | 'article' | 'video' | 'podcast'
+export type MediaStatus = 'want' | 'in-progress' | 'done'
+
+export interface MediaItem {
+  id: ID
+  title: string
+  type: MediaType
+  status: MediaStatus
+  rating: number // 0-5, 0 = unrated
+  url: string
+  notes: string
+  createdAt: string
+  finishedAt: string | null
+}
+
+export type TransactionType = 'income' | 'expense'
+
+export interface Transaction {
+  id: ID
+  date: string // yyyy-mm-dd
+  description: string
+  category: string
+  type: TransactionType
+  amount: number
+  createdAt: string
+}
+
+export interface FinanceSettings {
+  monthlyBudget: number
+  currency: string
+}

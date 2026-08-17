@@ -2,26 +2,38 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type {
   Area,
+  FinanceSettings,
   Goal,
   Habit,
   HabitLog,
+  InboxItem,
   JournalEntry,
+  MediaItem,
+  MonthlyReview,
   Note,
   Project,
   Resource,
   Task,
+  Transaction,
+  WeeklyFocus,
 } from './types'
 import { makeId } from './lib/id'
 import {
   seedAreas,
+  seedFinanceSettings,
   seedGoals,
   seedHabitLogs,
   seedHabits,
+  seedInbox,
   seedJournal,
+  seedMedia,
+  seedMonthlyReviews,
   seedNotes,
   seedProjects,
   seedResources,
   seedTasks,
+  seedTransactions,
+  seedWeeklyFocus,
 } from './lib/seed'
 
 interface BrainState {
@@ -34,6 +46,12 @@ interface BrainState {
   habitLogs: HabitLog[]
   journal: JournalEntry[]
   goals: Goal[]
+  inbox: InboxItem[]
+  weeklyFocus: WeeklyFocus[]
+  monthlyReviews: MonthlyReview[]
+  media: MediaItem[]
+  transactions: Transaction[]
+  financeSettings: FinanceSettings
   theme: 'light' | 'dark' | 'system'
 
   setTheme: (t: 'light' | 'dark' | 'system') => void
@@ -71,6 +89,27 @@ interface BrainState {
   updateGoal: (id: string, patch: Partial<Goal>) => void
   deleteGoal: (id: string) => void
 
+  addInboxItem: (content: string) => void
+  deleteInboxItem: (id: string) => void
+  convertInboxItemToTask: (id: string) => void
+  convertInboxItemToNote: (id: string) => void
+  convertInboxItemToResource: (id: string) => void
+
+  upsertWeeklyFocus: (weekStart: string, patch: Partial<Omit<WeeklyFocus, 'id' | 'weekStart'>>) => void
+
+  addMonthlyReview: (r: Omit<MonthlyReview, 'id' | 'createdAt'>) => void
+  updateMonthlyReview: (id: string, patch: Partial<MonthlyReview>) => void
+  deleteMonthlyReview: (id: string) => void
+
+  addMedia: (m: Omit<MediaItem, 'id' | 'createdAt'>) => void
+  updateMedia: (id: string, patch: Partial<MediaItem>) => void
+  deleteMedia: (id: string) => void
+
+  addTransaction: (t: Omit<Transaction, 'id' | 'createdAt'>) => void
+  updateTransaction: (id: string, patch: Partial<Transaction>) => void
+  deleteTransaction: (id: string) => void
+  updateFinanceSettings: (patch: Partial<FinanceSettings>) => void
+
   resetDemoData: () => void
 }
 
@@ -84,7 +123,29 @@ function freshSeed() {
   const habitLogs = seedHabitLogs(habits)
   const journal = seedJournal()
   const goals = seedGoals()
-  return { areas, projects, resources, tasks, notes, habits, habitLogs, journal, goals }
+  const inbox = seedInbox()
+  const weeklyFocus = seedWeeklyFocus()
+  const monthlyReviews = seedMonthlyReviews()
+  const media = seedMedia()
+  const transactions = seedTransactions()
+  const financeSettings = seedFinanceSettings()
+  return {
+    areas,
+    projects,
+    resources,
+    tasks,
+    notes,
+    habits,
+    habitLogs,
+    journal,
+    goals,
+    inbox,
+    weeklyFocus,
+    monthlyReviews,
+    media,
+    transactions,
+    financeSettings,
+  }
 }
 
 const TASK_STATUS_CYCLE: Task['status'][] = ['todo', 'in-progress', 'done']
@@ -199,6 +260,127 @@ export const useBrainStore = create<BrainState>()(
       updateGoal: (id, patch) =>
         set((s) => ({ goals: s.goals.map((g) => (g.id === id ? { ...g, ...patch } : g)) })),
       deleteGoal: (id) => set((s) => ({ goals: s.goals.filter((g) => g.id !== id) })),
+
+      addInboxItem: (content) =>
+        set((s) => ({
+          inbox: [{ id: makeId(), content, createdAt: new Date().toISOString() }, ...s.inbox],
+        })),
+      deleteInboxItem: (id) => set((s) => ({ inbox: s.inbox.filter((i) => i.id !== id) })),
+      convertInboxItemToTask: (id) =>
+        set((s) => {
+          const item = s.inbox.find((i) => i.id === id)
+          if (!item) return s
+          return {
+            inbox: s.inbox.filter((i) => i.id !== id),
+            tasks: [
+              {
+                id: makeId(),
+                title: item.content,
+                status: 'todo',
+                priority: 'medium',
+                projectId: null,
+                dueDate: null,
+                createdAt: new Date().toISOString(),
+              },
+              ...s.tasks,
+            ],
+          }
+        }),
+      convertInboxItemToNote: (id) =>
+        set((s) => {
+          const item = s.inbox.find((i) => i.id === id)
+          if (!item) return s
+          return {
+            inbox: s.inbox.filter((i) => i.id !== id),
+            notes: [
+              {
+                id: makeId(),
+                title: item.content.slice(0, 60),
+                content: item.content,
+                tags: [],
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+              },
+              ...s.notes,
+            ],
+          }
+        }),
+      convertInboxItemToResource: (id) =>
+        set((s) => {
+          const item = s.inbox.find((i) => i.id === id)
+          if (!item) return s
+          return {
+            inbox: s.inbox.filter((i) => i.id !== id),
+            resources: [
+              {
+                id: makeId(),
+                title: item.content.slice(0, 60),
+                url: '',
+                notes: item.content,
+                tags: [],
+                createdAt: new Date().toISOString(),
+                archived: false,
+              },
+              ...s.resources,
+            ],
+          }
+        }),
+
+      upsertWeeklyFocus: (weekStart, patch) =>
+        set((s) => {
+          const existing = s.weeklyFocus.find((w) => w.weekStart === weekStart)
+          if (existing) {
+            return {
+              weeklyFocus: s.weeklyFocus.map((w) =>
+                w.weekStart === weekStart ? { ...w, ...patch } : w
+              ),
+            }
+          }
+          return {
+            weeklyFocus: [
+              { id: makeId(), weekStart, priorities: ['', '', ''], notes: '', ...patch },
+              ...s.weeklyFocus,
+            ],
+          }
+        }),
+
+      addMonthlyReview: (r) =>
+        set((s) => ({
+          monthlyReviews: [
+            { ...r, id: makeId(), createdAt: new Date().toISOString() },
+            ...s.monthlyReviews,
+          ],
+        })),
+      updateMonthlyReview: (id, patch) =>
+        set((s) => ({
+          monthlyReviews: s.monthlyReviews.map((r) => (r.id === id ? { ...r, ...patch } : r)),
+        })),
+      deleteMonthlyReview: (id) =>
+        set((s) => ({ monthlyReviews: s.monthlyReviews.filter((r) => r.id !== id) })),
+
+      addMedia: (m) =>
+        set((s) => ({
+          media: [{ ...m, id: makeId(), createdAt: new Date().toISOString() }, ...s.media],
+        })),
+      updateMedia: (id, patch) =>
+        set((s) => ({ media: s.media.map((m) => (m.id === id ? { ...m, ...patch } : m)) })),
+      deleteMedia: (id) => set((s) => ({ media: s.media.filter((m) => m.id !== id) })),
+
+      addTransaction: (t) =>
+        set((s) => ({
+          transactions: [
+            { ...t, id: makeId(), createdAt: new Date().toISOString() },
+            ...s.transactions,
+          ],
+        })),
+      updateTransaction: (id, patch) =>
+        set((s) => ({
+          transactions: s.transactions.map((t) => (t.id === id ? { ...t, ...patch } : t)),
+        })),
+      deleteTransaction: (id) =>
+        set((s) => ({ transactions: s.transactions.filter((t) => t.id !== id) })),
+      updateFinanceSettings: (patch) =>
+        set((s) => ({ financeSettings: { ...s.financeSettings, ...patch } })),
 
       resetDemoData: () => set({ ...freshSeed() }),
     }),

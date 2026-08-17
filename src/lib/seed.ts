@@ -1,16 +1,23 @@
 import type {
   Area,
+  FinanceSettings,
   Goal,
   Habit,
   HabitLog,
+  InboxItem,
   JournalEntry,
   LifeArea,
+  MediaItem,
+  MonthlyReview,
   Note,
   Project,
   Resource,
   Task,
+  Transaction,
+  WeeklyFocus,
 } from '../types'
 import { makeId, todayISO } from './id'
+import { currentMonthISO, currentWeekStartISO } from './date'
 
 const LIFE_AREAS: LifeArea[] = [
   'Health',
@@ -239,6 +246,121 @@ export function seedGoals(): Goal[] {
     { id: makeId(), title: 'Call parents weekly', area: 'Relationships', status: 'in-progress', progress: 80, targetDate: null, createdAt: daysAgoISO(150) },
     { id: makeId(), title: 'Declutter home office', area: 'Personal', status: 'not-started', progress: 0, targetDate: daysFromNowISO(21), createdAt: daysAgoISO(3) },
   ]
+}
+
+export function seedInbox(): InboxItem[] {
+  return [
+    { id: makeId(), content: 'Look into a standing desk for the home office', createdAt: daysAgoISO(1) },
+    { id: makeId(), content: 'Podcast rec from Sam — "Deep Questions"', createdAt: daysAgoISO(0) },
+    { id: makeId(), content: 'Ask accountant about Q3 estimated taxes', createdAt: daysAgoISO(2) },
+  ]
+}
+
+export function seedWeeklyFocus(): WeeklyFocus[] {
+  return [
+    {
+      id: makeId(),
+      weekStart: currentWeekStartISO(),
+      priorities: [
+        'Finish portfolio site case studies',
+        'Long run — 14 miles',
+        'Close out Q3 budget export',
+      ],
+      notes: 'Keep mornings for deep work on the site before runs get long.',
+    },
+  ]
+}
+
+export function seedMonthlyReviews(): MonthlyReview[] {
+  return [
+    {
+      id: makeId(),
+      month: currentMonthISO(),
+      wins: 'Shipped the homepage wireframe. Training block is on schedule.',
+      challenges: 'Budget review keeps slipping — need a dedicated block, not leftover time.',
+      focusNext: 'Ship the portfolio site and lock the marathon taper plan.',
+      createdAt: daysAgoISO(3),
+    },
+  ]
+}
+
+export function seedMedia(): MediaItem[] {
+  return [
+    {
+      id: makeId(),
+      title: 'Atomic Habits',
+      type: 'book',
+      status: 'in-progress',
+      rating: 0,
+      url: '',
+      notes: 'Reading a chapter most evenings.',
+      createdAt: daysAgoISO(20),
+      finishedAt: null,
+    },
+    {
+      id: makeId(),
+      title: 'Deep Work',
+      type: 'book',
+      status: 'done',
+      rating: 5,
+      url: '',
+      notes: 'Reread for the third time — still the best framing on focus.',
+      createdAt: daysAgoISO(90),
+      finishedAt: daysAgoISO(60),
+    },
+    {
+      id: makeId(),
+      title: 'How I structure a marathon training block',
+      type: 'video',
+      status: 'done',
+      rating: 4,
+      url: 'https://example.com/marathon-video',
+      notes: 'Good baseline for the 12-week plan.',
+      createdAt: daysAgoISO(15),
+      finishedAt: daysAgoISO(14),
+    },
+    {
+      id: makeId(),
+      title: 'Deep Questions with Cal Newport',
+      type: 'podcast',
+      status: 'want',
+      rating: 0,
+      url: '',
+      notes: 'Recommended by Sam.',
+      createdAt: daysAgoISO(0),
+      finishedAt: null,
+    },
+    {
+      id: makeId(),
+      title: 'A field guide to index funds',
+      type: 'article',
+      status: 'want',
+      rating: 0,
+      url: 'https://example.com/index-funds-guide',
+      notes: '',
+      createdAt: daysAgoISO(5),
+      finishedAt: null,
+    },
+  ]
+}
+
+export function seedTransactions(): Transaction[] {
+  return [
+    { id: makeId(), date: daysAgoISO(1), description: 'Paycheck', category: 'Income', type: 'income', amount: 3200, createdAt: daysAgoISO(1) },
+    { id: makeId(), date: daysAgoISO(2), description: 'Rent', category: 'Housing', type: 'expense', amount: 1450, createdAt: daysAgoISO(2) },
+    { id: makeId(), date: daysAgoISO(3), description: 'Groceries', category: 'Food', type: 'expense', amount: 96.4, createdAt: daysAgoISO(3) },
+    { id: makeId(), date: daysAgoISO(4), description: 'Running shoes', category: 'Health', type: 'expense', amount: 140, createdAt: daysAgoISO(4) },
+    { id: makeId(), date: daysAgoISO(5), description: 'Electric bill', category: 'Housing', type: 'expense', amount: 78.2, createdAt: daysAgoISO(5) },
+    { id: makeId(), date: daysAgoISO(6), description: 'Dinner out', category: 'Food', type: 'expense', amount: 62, createdAt: daysAgoISO(6) },
+    { id: makeId(), date: daysAgoISO(7), description: 'Freelance invoice', category: 'Income', type: 'income', amount: 450, createdAt: daysAgoISO(7) },
+    { id: makeId(), date: daysAgoISO(8), description: 'Index fund contribution', category: 'Savings', type: 'expense', amount: 400, createdAt: daysAgoISO(8) },
+    { id: makeId(), date: daysAgoISO(9), description: 'Phone bill', category: 'Subscriptions', type: 'expense', amount: 55, createdAt: daysAgoISO(9) },
+    { id: makeId(), date: daysAgoISO(10), description: 'Gas', category: 'Transport', type: 'expense', amount: 48.5, createdAt: daysAgoISO(10) },
+  ]
+}
+
+export function seedFinanceSettings(): FinanceSettings {
+  return { monthlyBudget: 2400, currency: 'USD' }
 }
 
 export { LIFE_AREAS }
