@@ -357,6 +357,32 @@ function SpotifyWidgetPreview() {
   )
 }
 
+const SPOTIFY_PLAYLIST_ID = '3ti1CFhBtYmwsYENQmZN3a'
+
+function SpotifyPlaylistWidget() {
+  return (
+    <div
+      className="flex w-full max-w-[340px] shrink-0 flex-col rounded-[22px] border border-line-border p-4 shadow-lg"
+      style={{
+        background:
+          'linear-gradient(160deg, var(--surface-1), color-mix(in srgb, var(--brand-accent) 8%, var(--surface-1)))',
+      }}
+    >
+      <p className="mb-2 text-[13px] font-semibold text-ink-primary">Recommended Playlist</p>
+      <iframe
+        title="Spotify playlist"
+        src={`https://open.spotify.com/embed/playlist/${SPOTIFY_PLAYLIST_ID}?utm_source=generator&theme=0`}
+        width="100%"
+        height="360"
+        style={{ minHeight: 360, borderRadius: 12 }}
+        frameBorder={0}
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      />
+    </div>
+  )
+}
+
 export function Widgets() {
   return (
     <div>
@@ -369,6 +395,7 @@ export function Widgets() {
         <WorkoutWidgetPreview />
         <MealsWidgetPreview />
         <SpotifyWidgetPreview />
+        <SpotifyPlaylistWidget />
       </div>
       <p className="mt-6 max-w-xl text-xs text-ink-muted">
         The first three mirror the native macOS widgets you can add to Notification Center — see{' '}
