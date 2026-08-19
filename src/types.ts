@@ -258,4 +258,10 @@ export interface Assignment {
   createdAt: string
 }
 
-export type ClockStyle = 'analog' | 'digital' | 'minimal'
+export type ClockStyle =
+  | 'analog'
+  | 'analog-roman'
+  | 'analog-numbers'
+  | 'analog-modern'
+  | 'digital'
+  | 'minimal'

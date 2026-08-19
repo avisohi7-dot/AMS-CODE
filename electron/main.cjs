@@ -6,7 +6,7 @@ const { registerSpotifyHandlers } = require('./spotify.cjs')
 const isDev = !app.isPackaged
 
 function widgetDataPath() {
-  return path.join(app.getPath('home'), 'Library', 'Application Support', 'SecondBrainOS', 'widget-data.json')
+  return path.join(app.getPath('home'), 'Library', 'Application Support', 'Success Portal', 'widget-data.json')
 }
 
 ipcMain.handle('write-widget-data', (_event, data) => {

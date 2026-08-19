@@ -33,7 +33,7 @@ struct WidgetMeal: Codable {
     let items: [WidgetFoodItem]
 }
 
-struct SecondBrainWidgetData: Codable {
+struct SuccessPortalWidgetData: Codable {
     let generatedAt: String
     let tasksToday: [WidgetTask]
     let workoutToday: WidgetWorkout?
@@ -41,12 +41,12 @@ struct SecondBrainWidgetData: Codable {
 }
 
 enum WidgetDataStore {
-    // Written by the Second Brain OS Electron app to a plain (non-sandboxed) path.
-    static func load() -> SecondBrainWidgetData? {
+    // Written by the Success Portal Electron app to a plain (non-sandboxed) path.
+    static func load() -> SuccessPortalWidgetData? {
         let url = FileManager.default
             .homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Application Support/SecondBrainOS/widget-data.json")
+            .appendingPathComponent("Library/Application Support/Success Portal/widget-data.json")
         guard let data = try? Data(contentsOf: url) else { return nil }
-        return try? JSONDecoder().decode(SecondBrainWidgetData.self, from: data)
+        return try? JSONDecoder().decode(SuccessPortalWidgetData.self, from: data)
     }
 }

@@ -16,7 +16,10 @@ const ACCENT_PRESETS = [
 ]
 
 const CLOCK_STYLES: { key: ClockStyle; label: string; description: string }[] = [
-  { key: 'analog', label: 'Analog', description: 'Classic clock face with hands' },
+  { key: 'analog', label: 'Classic', description: 'Ticks with thin hands' },
+  { key: 'analog-roman', label: 'Roman', description: 'Roman numerals, serif' },
+  { key: 'analog-numbers', label: 'Numbered', description: 'All 12 numbers shown' },
+  { key: 'analog-modern', label: 'Modern', description: 'Bold coloured hands' },
   { key: 'digital', label: 'Digital', description: 'Large bold time display' },
   { key: 'minimal', label: 'Minimal', description: 'Compact time and date' },
 ]

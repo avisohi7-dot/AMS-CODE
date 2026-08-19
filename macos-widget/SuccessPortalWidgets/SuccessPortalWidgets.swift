@@ -3,22 +3,22 @@ import SwiftUI
 
 private let brandAccent = Color(red: 0.82, green: 0.204, blue: 0.180) // #d1342e
 
-struct SecondBrainEntry: TimelineEntry {
+struct SuccessPortalEntry: TimelineEntry {
     let date: Date
-    let data: SecondBrainWidgetData?
+    let data: SuccessPortalWidgetData?
 }
 
-struct SecondBrainProvider: TimelineProvider {
-    func placeholder(in context: Context) -> SecondBrainEntry {
-        SecondBrainEntry(date: Date(), data: nil)
+struct SuccessPortalProvider: TimelineProvider {
+    func placeholder(in context: Context) -> SuccessPortalEntry {
+        SuccessPortalEntry(date: Date(), data: nil)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SecondBrainEntry) -> Void) {
-        completion(SecondBrainEntry(date: Date(), data: WidgetDataStore.load()))
+    func getSnapshot(in context: Context, completion: @escaping (SuccessPortalEntry) -> Void) {
+        completion(SuccessPortalEntry(date: Date(), data: WidgetDataStore.load()))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SecondBrainEntry>) -> Void) {
-        let entry = SecondBrainEntry(date: Date(), data: WidgetDataStore.load())
+    func getTimeline(in context: Context, completion: @escaping (Timeline<SuccessPortalEntry>) -> Void) {
+        let entry = SuccessPortalEntry(date: Date(), data: WidgetDataStore.load())
         let nextRefresh = Calendar.current.date(byAdding: .minute, value: 15, to: Date()) ?? Date().addingTimeInterval(900)
         completion(Timeline(entries: [entry], policy: .after(nextRefresh)))
     }
@@ -27,7 +27,7 @@ struct SecondBrainProvider: TimelineProvider {
 // MARK: - Today's Tasks
 
 struct TasksWidgetView: View {
-    var entry: SecondBrainEntry
+    var entry: SuccessPortalEntry
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -54,7 +54,7 @@ struct TasksWidgetView: View {
             Spacer()
         }
         .padding()
-        .widgetURL(URL(string: "secondbrainos://tasks"))
+        .widgetURL(URL(string: "successportal://tasks"))
     }
 
     private func priorityColor(_ priority: String) -> Color {
@@ -70,12 +70,12 @@ struct TasksWidget: Widget {
     let kind = "TasksWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: SecondBrainProvider()) { entry in
+        StaticConfiguration(kind: kind, provider: SuccessPortalProvider()) { entry in
             TasksWidgetView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
         .configurationDisplayName("Today's Tasks")
-        .description("Tasks due today from Second Brain OS.")
+        .description("Tasks due today from Success Portal.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -83,7 +83,7 @@ struct TasksWidget: Widget {
 // MARK: - Today's Workout
 
 struct WorkoutWidgetView: View {
-    var entry: SecondBrainEntry
+    var entry: SuccessPortalEntry
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -115,7 +115,7 @@ struct WorkoutWidgetView: View {
             Spacer()
         }
         .padding()
-        .widgetURL(URL(string: "secondbrainos://fitness"))
+        .widgetURL(URL(string: "successportal://fitness"))
     }
 }
 
@@ -123,12 +123,12 @@ struct WorkoutWidget: Widget {
     let kind = "WorkoutWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: SecondBrainProvider()) { entry in
+        StaticConfiguration(kind: kind, provider: SuccessPortalProvider()) { entry in
             WorkoutWidgetView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
         .configurationDisplayName("Today's Workout")
-        .description("Your gym plan for today from Second Brain OS.")
+        .description("Your gym plan for today from Success Portal.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
@@ -136,7 +136,7 @@ struct WorkoutWidget: Widget {
 // MARK: - Today's Meals
 
 struct MealsWidgetView: View {
-    var entry: SecondBrainEntry
+    var entry: SuccessPortalEntry
 
     var totalCalories: Int {
         entry.data?.mealsToday.flatMap { $0.items }.reduce(0) { $0 + $1.calories } ?? 0
@@ -169,7 +169,7 @@ struct MealsWidgetView: View {
             Spacer()
         }
         .padding()
-        .widgetURL(URL(string: "secondbrainos://fitness"))
+        .widgetURL(URL(string: "successportal://fitness"))
     }
 }
 
@@ -177,18 +177,18 @@ struct MealsWidget: Widget {
     let kind = "MealsWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: SecondBrainProvider()) { entry in
+        StaticConfiguration(kind: kind, provider: SuccessPortalProvider()) { entry in
             MealsWidgetView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
         .configurationDisplayName("Today's Meals")
-        .description("Your diet plan for today from Second Brain OS.")
+        .description("Your diet plan for today from Success Portal.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
 
 @main
-struct SecondBrainWidgetBundle: WidgetBundle {
+struct SuccessPortalWidgetBundle: WidgetBundle {
     var body: some Widget {
         TasksWidget()
         WorkoutWidget()
