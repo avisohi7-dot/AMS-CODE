@@ -81,8 +81,10 @@ interface BrainState {
   meals: Meal[]
   foodItems: FoodItem[]
   theme: 'light' | 'dark' | 'system'
+  spotifyClientId: string
 
   setTheme: (t: 'light' | 'dark' | 'system') => void
+  setSpotifyClientId: (id: string) => void
 
   addProject: (p: Omit<Project, 'id' | 'createdAt' | 'archived'>) => void
   updateProject: (id: string, patch: Partial<Project>) => void
@@ -242,8 +244,10 @@ export const useBrainStore = create<BrainState>()(
     (set) => ({
       ...freshSeed(),
       theme: 'dark',
+      spotifyClientId: '',
 
       setTheme: (t) => set({ theme: t }),
+      setSpotifyClientId: (id) => set({ spotifyClientId: id }),
 
       addProject: (p) =>
         set((s) => ({

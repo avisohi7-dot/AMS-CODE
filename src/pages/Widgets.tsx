@@ -1,7 +1,9 @@
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
+import { Music, Pause, Play, SkipBack, SkipForward } from 'lucide-react'
 import { useBrainStore } from '../store'
-import { PageHeader } from '../components/ui'
+import { Button, PageHeader } from '../components/ui'
 import { selectTasksToday, selectWorkoutToday } from '../lib/widgetSelectors'
+import { getPlaybackState, pause as spotifyPause, play as spotifyPlay, skipNext, skipPrevious, type SpotifyPlaybackState } from '../lib/spotify'
 
 const PRIORITY_COLOR: Record<string, string> = {
   high: 'var(--status-critical)',
@@ -163,6 +165,198 @@ function MealsWidgetPreview() {
   )
 }
 
+const POLL_MS = 5000
+
+function formatMs(ms: number): string {
+  const totalSeconds = Math.floor(ms / 1000)
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`
+}
+
+function SpotifyWidgetPreview() {
+  const clientId = useBrainStore((s) => s.spotifyClientId)
+  const setSpotifyClientId = useBrainStore((s) => s.setSpotifyClientId)
+
+  const [clientIdInput, setClientIdInput] = useState(clientId)
+  const [connected, setConnected] = useState<boolean | null>(null)
+  const [connecting, setConnecting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [state, setState] = useState<SpotifyPlaybackState | null>(null)
+
+  const available = typeof window !== 'undefined' && !!window.electronAPI
+
+  useEffect(() => {
+    if (!available) return
+    window.electronAPI!.spotifyIsConnected().then(setConnected)
+  }, [available])
+
+  useEffect(() => {
+    if (!connected) return
+    let cancelled = false
+    async function poll() {
+      try {
+        const s = await getPlaybackState()
+        if (!cancelled) setState(s)
+      } catch {
+        // transient network/API hiccup — keep last known state, try again next tick
+      }
+    }
+    poll()
+    const interval = setInterval(poll, POLL_MS)
+    return () => {
+      cancelled = true
+      clearInterval(interval)
+    }
+  }, [connected])
+
+  async function handleConnect() {
+    if (!clientIdInput.trim()) return
+    setConnecting(true)
+    setError(null)
+    setSpotifyClientId(clientIdInput.trim())
+    try {
+      await window.electronAPI!.spotifyConnect(clientIdInput.trim())
+      setConnected(true)
+    } catch {
+      setError('Connection failed or timed out — try again.')
+    } finally {
+      setConnecting(false)
+    }
+  }
+
+  async function handleDisconnect() {
+    await window.electronAPI!.spotifyDisconnect()
+    setConnected(false)
+    setState(null)
+  }
+
+  async function handleToggle() {
+    if (!state) return
+    setState({ ...state, isPlaying: !state.isPlaying })
+    try {
+      if (state.isPlaying) await spotifyPause()
+      else await spotifyPlay()
+    } catch {
+      setError('Nothing to play — open Spotify on a device first.')
+    }
+  }
+
+  async function handleNext() {
+    try {
+      await skipNext()
+      setTimeout(() => getPlaybackState().then(setState).catch(() => {}), 400)
+    } catch {
+      // ignore — next poll will reconcile
+    }
+  }
+
+  async function handlePrevious() {
+    try {
+      await skipPrevious()
+      setTimeout(() => getPlaybackState().then(setState).catch(() => {}), 400)
+    } catch {
+      // ignore — next poll will reconcile
+    }
+  }
+
+  if (!available) {
+    return (
+      <MacWidgetCard size="medium" title="Spotify">
+        <p className="text-xs text-ink-muted">Available in the desktop app only.</p>
+      </MacWidgetCard>
+    )
+  }
+
+  if (!connected) {
+    return (
+      <MacWidgetCard size="medium" title="Spotify">
+        <div className="space-y-2">
+          <input
+            value={clientIdInput}
+            onChange={(e) => setClientIdInput(e.target.value)}
+            placeholder="Spotify Client ID"
+            className="w-full rounded-lg border border-line-border bg-surface-1 px-2 py-1.5 text-xs text-ink-primary outline-none focus:border-accent"
+          />
+          <Button
+            className="w-full justify-center text-xs"
+            onClick={handleConnect}
+          >
+            {connecting ? 'Waiting for Spotify…' : 'Connect Spotify'}
+          </Button>
+          {error && <p className="text-[11px] text-status-critical">{error}</p>}
+          <p className="text-[10px] leading-snug text-ink-muted">
+            Needs a free Spotify Developer app — see{' '}
+            <code className="rounded bg-surface-plane px-1 py-0.5">macos-widget/README.md</code>.
+          </p>
+        </div>
+      </MacWidgetCard>
+    )
+  }
+
+  return (
+    <MacWidgetCard size="medium" title="Spotify">
+      <div className="flex items-center gap-3">
+        {state?.albumArt ? (
+          <img src={state.albumArt} alt="" className="h-12 w-12 shrink-0 rounded-md object-cover" />
+        ) : (
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-surface-plane text-ink-muted">
+            <Music size={18} />
+          </div>
+        )}
+        <div className="min-w-0 flex-1">
+          {state ? (
+            <>
+              <p className="truncate text-[12px] font-medium text-ink-primary">{state.trackName}</p>
+              <p className="truncate text-[11px] text-ink-muted">{state.artistName}</p>
+              <p className="tabular mt-0.5 text-[10px] text-ink-muted">
+                {formatMs(state.progressMs)} / {formatMs(state.durationMs)}
+              </p>
+            </>
+          ) : (
+            <p className="text-[11px] text-ink-muted">Nothing playing</p>
+          )}
+        </div>
+      </div>
+      <div className="mt-3 flex items-center justify-center gap-4">
+        <button
+          type="button"
+          onClick={handlePrevious}
+          className="text-ink-secondary hover:text-ink-primary"
+          aria-label="Previous"
+        >
+          <SkipBack size={16} />
+        </button>
+        <button
+          type="button"
+          onClick={handleToggle}
+          disabled={!state}
+          className="flex h-8 w-8 items-center justify-center rounded-full disabled:opacity-40"
+          style={{ backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' }}
+          aria-label={state?.isPlaying ? 'Pause' : 'Play'}
+        >
+          {state?.isPlaying ? <Pause size={15} /> : <Play size={15} />}
+        </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          className="text-ink-secondary hover:text-ink-primary"
+          aria-label="Next"
+        >
+          <SkipForward size={16} />
+        </button>
+      </div>
+      <button
+        type="button"
+        onClick={handleDisconnect}
+        className="mt-2 w-full text-center text-[10px] text-ink-muted hover:text-ink-secondary"
+      >
+        Disconnect
+      </button>
+    </MacWidgetCard>
+  )
+}
+
 export function Widgets() {
   return (
     <div>
@@ -174,9 +368,10 @@ export function Widgets() {
         <TasksWidgetPreview />
         <WorkoutWidgetPreview />
         <MealsWidgetPreview />
+        <SpotifyWidgetPreview />
       </div>
       <p className="mt-6 max-w-xl text-xs text-ink-muted">
-        These mirror the native macOS widgets you can add to Notification Center — see{' '}
+        The first three mirror the native macOS widgets you can add to Notification Center — see{' '}
         <code className="rounded bg-surface-plane px-1 py-0.5">macos-widget/README.md</code> in the project for
         Xcode setup instructions.
       </p>

@@ -72,6 +72,39 @@ minutes, so:
 - If a widget shows nothing, open Second Brain OS at least once so it writes
   the initial file.
 
+## Spotify widget setup (in-app, no Xcode needed)
+
+The Spotify widget lives on the **Widgets** page inside Second Brain OS
+itself (not one of the Notification Center widgets above) and lets you see
+and control what's playing. It needs a free Spotify Developer app to talk to
+Spotify's API on your behalf:
+
+1. Go to [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)
+   and log in with your Spotify account.
+2. Click **Create app**. Name it anything (e.g. "Second Brain OS"). App
+   description can be anything too.
+3. **Redirect URI**: enter exactly `http://127.0.0.1:17654/callback` and
+   click **Add**. This has to match exactly — it's the fixed local address
+   the desktop app briefly listens on during login.
+4. Which API/SDKs are you planning to use? Check **Web API**.
+5. Save. On the app's page, click **Settings** and copy the **Client ID**
+   (you don't need the Client Secret — this app uses the more secure PKCE
+   flow, which doesn't need one).
+6. In Second Brain OS, go to **Widgets**, paste the Client ID into the
+   Spotify card, and click **Connect Spotify**. Your browser opens Spotify's
+   login/consent page; after approving, you'll see a "Spotify connected"
+   page you can close, and the widget switches to showing what's playing.
+
+Requires **Spotify Premium** — play/pause/skip control is blocked by
+Spotify's API for Free accounts. The widget controls whatever device your
+Spotify is actively playing on (phone, another computer, speaker) via
+Spotify Connect — it doesn't play audio itself.
+
+**Where the token is stored**: encrypted on disk (via Electron's
+`safeStorage`, backed by macOS Keychain) at
+`~/Library/Application Support/second-brain-os/spotify-tokens.enc`. Click
+**Disconnect** in the widget to remove it.
+
 ## Troubleshooting
 
 - **Widget shows nothing / stale data**: open the Electron app, make any

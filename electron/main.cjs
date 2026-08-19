@@ -1,6 +1,7 @@
 const { app, BrowserWindow, shell, ipcMain } = require('electron')
 const path = require('node:path')
 const fs = require('node:fs')
+const { registerSpotifyHandlers } = require('./spotify.cjs')
 
 const isDev = !app.isPackaged
 
@@ -51,6 +52,7 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  registerSpotifyHandlers()
   createWindow()
 
   app.on('activate', () => {
