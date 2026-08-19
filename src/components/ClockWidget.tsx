@@ -1,15 +1,53 @@
 import { useEffect, useState } from 'react'
 import { Card } from './ui'
+import { useBrainStore } from '../store'
 
 const TICKS = Array.from({ length: 60 }, (_, i) => i)
 
 export function ClockWidget() {
+  const clockStyle = useBrainStore((s) => s.clockStyle)
   const [now, setNow] = useState(() => new Date())
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000)
     return () => clearInterval(id)
   }, [])
+
+  const dateLabel = now.toLocaleDateString('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  })
+
+  if (clockStyle === 'digital') {
+    const timeLabel = now.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+    return (
+      <Card className="flex flex-col items-center justify-center gap-1 p-5">
+        <div className="tabular text-4xl font-bold text-ink-primary" style={{ color: 'var(--brand-accent)' }}>
+          {timeLabel}
+        </div>
+        <div className="text-xs text-ink-muted">{dateLabel}</div>
+      </Card>
+    )
+  }
+
+  if (clockStyle === 'minimal') {
+    const timeLabel = now.toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+    return (
+      <Card className="flex flex-col items-center justify-center gap-0.5 p-5">
+        <div className="tabular text-2xl font-semibold text-ink-primary">{timeLabel}</div>
+        <div className="text-xs text-ink-muted">{dateLabel}</div>
+      </Card>
+    )
+  }
 
   const hours = now.getHours() % 12
   const minutes = now.getMinutes()
@@ -24,11 +62,6 @@ export function ClockWidget() {
     minute: '2-digit',
     second: '2-digit',
     hour12: false,
-  })
-  const dateLabel = now.toLocaleDateString('en-GB', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short',
   })
 
   return (

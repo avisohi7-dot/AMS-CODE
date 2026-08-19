@@ -15,6 +15,7 @@ import {
   ListTodo,
   Moon,
   NotebookText,
+  Palette,
   PlayCircle,
   School,
   ScrollText,
@@ -76,6 +77,10 @@ const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: Luc
       { to: '/contacts', label: 'Contacts', icon: Users },
       { to: '/finance', label: 'Finance', icon: Wallet },
     ],
+  },
+  {
+    label: 'Settings',
+    items: [{ to: '/customisation', label: 'Customisation', icon: Palette }],
   },
 ]
 
@@ -141,8 +146,8 @@ export function Layout() {
             <Brain size={18} />
           </div>
           <div>
-            <div className="text-sm font-semibold leading-tight text-ink-primary">Second Brain</div>
-            <div className="text-xs leading-tight text-ink-muted">OS</div>
+            <div className="text-sm font-semibold leading-tight text-ink-primary">Success</div>
+            <div className="text-xs leading-tight text-ink-muted">Portal</div>
           </div>
         </div>
 

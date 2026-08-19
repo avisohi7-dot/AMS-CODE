@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import type {
   Area,
   Assignment,
+  ClockStyle,
   Contact,
   Course,
   CourseTask,
@@ -91,9 +92,13 @@ interface BrainState {
   assignments: Assignment[]
   theme: 'light' | 'dark' | 'system'
   spotifyClientId: string
+  customAccent: string | null
+  clockStyle: ClockStyle
 
   setTheme: (t: 'light' | 'dark' | 'system') => void
   setSpotifyClientId: (id: string) => void
+  setCustomAccent: (color: string | null) => void
+  setClockStyle: (style: ClockStyle) => void
 
   addProject: (p: Omit<Project, 'id' | 'createdAt' | 'archived'>) => void
   updateProject: (id: string, patch: Partial<Project>) => void
@@ -274,9 +279,13 @@ export const useBrainStore = create<BrainState>()(
       ...freshSeed(),
       theme: 'dark',
       spotifyClientId: '',
+      customAccent: null,
+      clockStyle: 'analog',
 
       setTheme: (t) => set({ theme: t }),
       setSpotifyClientId: (id) => set({ spotifyClientId: id }),
+      setCustomAccent: (color) => set({ customAccent: color }),
+      setClockStyle: (style) => set({ clockStyle: style }),
 
       addProject: (p) =>
         set((s) => ({

@@ -116,7 +116,7 @@ function waitForCallback() {
       res.end(
         error
           ? '<html><body style="font-family:sans-serif;background:#0d0d0d;color:#fff;text-align:center;padding-top:80px"><h2>Spotify connection failed</h2><p>You can close this tab and try again.</p></body></html>'
-          : '<html><body style="font-family:sans-serif;background:#0d0d0d;color:#fff;text-align:center;padding-top:80px"><h2>Spotify connected</h2><p>You can close this tab and go back to Second Brain OS.</p></body></html>'
+          : '<html><body style="font-family:sans-serif;background:#0d0d0d;color:#fff;text-align:center;padding-top:80px"><h2>Spotify connected</h2><p>You can close this tab and go back to Success Portal.</p></body></html>'
       )
       server.close()
       if (error) reject(new Error(error))

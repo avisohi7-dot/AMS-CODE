@@ -257,3 +257,5 @@ export interface Assignment {
   dueDate: string | null
   createdAt: string
 }
+
+export type ClockStyle = 'analog' | 'digital' | 'minimal'

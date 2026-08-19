@@ -21,12 +21,15 @@ import { Papers } from './pages/Papers'
 import { Calendar } from './pages/Calendar'
 import { Fitness } from './pages/Fitness'
 import { Widgets } from './pages/Widgets'
+import { Customisation } from './pages/Customisation'
 import { WidgetExporter } from './components/WidgetExporter'
+import { AccentEffect } from './components/AccentEffect'
 
 export default function App() {
   return (
     <>
       <WidgetExporter />
+      <AccentEffect />
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Dashboard />} />
@@ -34,6 +37,7 @@ export default function App() {
           <Route path="reviews" element={<Reviews />} />
           <Route path="calendar" element={<Calendar />} />
           <Route path="widgets" element={<Widgets />} />
+          <Route path="customisation" element={<Customisation />} />
           <Route path="projects" element={<Projects />} />
           <Route path="areas" element={<Areas />} />
           <Route path="resources" element={<Resources />} />

@@ -9,7 +9,7 @@ export function HeroBanner({ subtitle }: { subtitle: string }) {
       >
         <Brain size={28} />
       </div>
-      <h1 className="text-3xl font-bold text-white sm:text-4xl">Second Brain OS</h1>
+      <h1 className="text-3xl font-bold text-white sm:text-4xl">Success Portal</h1>
       <p className="mx-auto mt-2 max-w-md text-sm text-white/70">{subtitle}</p>
     </div>
   )

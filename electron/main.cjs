@@ -27,7 +27,7 @@ function createWindow() {
     minWidth: 960,
     minHeight: 640,
     backgroundColor: '#0d0d0d',
-    title: 'Second Brain OS',
+    title: 'Success Portal',
     icon: path.join(__dirname, 'icon.png'),
     autoHideMenuBar: true,
     webPreferences: {

@@ -2,9 +2,9 @@
   "name": "second-brain-os",
   "private": true,
   "version": "0.1.0",
-  "description": "A personal Second Brain OS dashboard for organizing projects, areas, resources, tasks, habits, and more using the PARA method.",
+  "description": "Success Portal — a personal dashboard for organizing projects, areas, resources, tasks, habits, and more using the PARA method.",
   "author": {
-    "name": "Second Brain OS",
+    "name": "Success Portal",
     "email": "avisohi7@gmail.com"
   },
   "type": "module",
@@ -44,7 +44,7 @@
   },
   "build": {
     "appId": "com.secondbrainos.app",
-    "productName": "Second Brain OS",
+    "productName": "Success Portal",
     "directories": {
       "buildResources": "build",
       "output": "release"
