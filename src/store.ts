@@ -2,7 +2,10 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type {
   Area,
+  Assignment,
   Contact,
+  Course,
+  CourseTask,
   Exercise,
   FinanceSettings,
   FoodItem,
@@ -30,7 +33,10 @@ import { makeId } from './lib/id'
 import {
   makeBusinessLawExtras,
   seedAreas,
+  seedAssignments,
   seedContacts,
+  seedCourses,
+  seedCourseTasks,
   seedExercises,
   seedFinanceSettings,
   seedFoodItems,
@@ -80,6 +86,9 @@ interface BrainState {
   exercises: Exercise[]
   meals: Meal[]
   foodItems: FoodItem[]
+  courses: Course[]
+  courseTasks: CourseTask[]
+  assignments: Assignment[]
   theme: 'light' | 'dark' | 'system'
   spotifyClientId: string
 
@@ -176,6 +185,20 @@ interface BrainState {
   toggleFoodItem: (id: string) => void
   deleteFoodItem: (id: string) => void
 
+  addCourse: (c: Omit<Course, 'id' | 'createdAt' | 'archived'>) => void
+  updateCourse: (id: string, patch: Partial<Course>) => void
+  deleteCourse: (id: string) => void
+  archiveCourse: (id: string, archived: boolean) => void
+
+  addCourseTask: (t: Omit<CourseTask, 'id' | 'createdAt' | 'done'>) => void
+  toggleCourseTask: (id: string) => void
+  deleteCourseTask: (id: string) => void
+
+  addAssignment: (a: Omit<Assignment, 'id' | 'createdAt'>) => void
+  updateAssignment: (id: string, patch: Partial<Assignment>) => void
+  deleteAssignment: (id: string) => void
+  cycleAssignmentStatus: (id: string) => void
+
   resetDemoData: () => void
 }
 
@@ -209,6 +232,9 @@ function freshSeed() {
   const exercises = seedExercises(workoutDays)
   const meals = seedMeals()
   const foodItems = seedFoodItems(meals)
+  const courses = seedCourses()
+  const courseTasks = seedCourseTasks(courses)
+  const assignments = seedAssignments(courses)
   return {
     areas,
     projects,
@@ -234,6 +260,9 @@ function freshSeed() {
     exercises,
     meals,
     foodItems,
+    courses,
+    courseTasks,
+    assignments,
   }
 }
 
@@ -584,11 +613,65 @@ export const useBrainStore = create<BrainState>()(
       deleteFoodItem: (id) =>
         set((s) => ({ foodItems: s.foodItems.filter((f) => f.id !== id) })),
 
+      addCourse: (c) =>
+        set((s) => ({
+          courses: [
+            { ...c, id: makeId(), createdAt: new Date().toISOString(), archived: false },
+            ...s.courses,
+          ],
+        })),
+      updateCourse: (id, patch) =>
+        set((s) => ({ courses: s.courses.map((c) => (c.id === id ? { ...c, ...patch } : c)) })),
+      deleteCourse: (id) =>
+        set((s) => ({
+          courses: s.courses.filter((c) => c.id !== id),
+          courseTasks: s.courseTasks.filter((t) => t.courseId !== id),
+          assignments: s.assignments.filter((a) => a.courseId !== id),
+        })),
+      archiveCourse: (id, archived) =>
+        set((s) => ({ courses: s.courses.map((c) => (c.id === id ? { ...c, archived } : c)) })),
+
+      addCourseTask: (t) =>
+        set((s) => ({
+          courseTasks: [
+            { ...t, id: makeId(), done: false, createdAt: new Date().toISOString() },
+            ...s.courseTasks,
+          ],
+        })),
+      toggleCourseTask: (id) =>
+        set((s) => ({
+          courseTasks: s.courseTasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
+        })),
+      deleteCourseTask: (id) =>
+        set((s) => ({ courseTasks: s.courseTasks.filter((t) => t.id !== id) })),
+
+      addAssignment: (a) =>
+        set((s) => ({
+          assignments: [
+            { ...a, id: makeId(), createdAt: new Date().toISOString() },
+            ...s.assignments,
+          ],
+        })),
+      updateAssignment: (id, patch) =>
+        set((s) => ({
+          assignments: s.assignments.map((a) => (a.id === id ? { ...a, ...patch } : a)),
+        })),
+      deleteAssignment: (id) =>
+        set((s) => ({ assignments: s.assignments.filter((a) => a.id !== id) })),
+      cycleAssignmentStatus: (id) =>
+        set((s) => ({
+          assignments: s.assignments.map((a) => {
+            if (a.id !== id) return a
+            const next = TASK_STATUS_CYCLE[(TASK_STATUS_CYCLE.indexOf(a.status) + 1) % 3]
+            return { ...a, status: next }
+          }),
+        })),
+
       resetDemoData: () => set({ ...freshSeed() }),
     }),
     {
       name: 'second-brain-os-storage',
-      version: 2,
+      version: 3,
       migrate: (persistedState, version) => {
         const state = persistedState as BrainState
         if (version < 1 && Array.isArray(state.projects) && Array.isArray(state.tasks)) {
@@ -606,6 +689,12 @@ export const useBrainStore = create<BrainState>()(
           const meals = seedMeals()
           state.meals = meals
           state.foodItems = seedFoodItems(meals)
+        }
+        if (version < 3 && !Array.isArray(state.courses)) {
+          const courses = seedCourses()
+          state.courses = courses
+          state.courseTasks = seedCourseTasks(courses)
+          state.assignments = seedAssignments(courses)
         }
         return state
       },

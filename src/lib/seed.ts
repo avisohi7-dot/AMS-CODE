@@ -1,6 +1,10 @@
 import type {
   Area,
+  Assignment,
+  AssignmentType,
   Contact,
+  Course,
+  CourseTask,
   Exercise,
   FinanceSettings,
   FoodItem,
@@ -20,6 +24,7 @@ import type {
   Resource,
   SphereTopic,
   Task,
+  TaskStatus,
   Tool,
   Transaction,
   WeeklyFocus,
@@ -546,6 +551,54 @@ export function makeBusinessLawExtras(): { project: Project; tasks: Task[] } {
   }))
 
   return { project, tasks }
+}
+
+export function seedCourses(): Course[] {
+  return [
+    { id: makeId(), title: 'Physics', semester: '6th semester', teacher: 'Robin Jersey', studentId: 'KRA33333', createdAt: daysAgoISO(20), archived: false },
+    { id: makeId(), title: 'Higher Mathematics', semester: '6th semester', teacher: 'Robin Jersey', studentId: 'KRA33333', createdAt: daysAgoISO(20), archived: false },
+  ]
+}
+
+export function seedCourseTasks(courses: Course[]): CourseTask[] {
+  const physics = courses[0].id
+  const maths = courses[1].id
+  const mk = (courseId: string, title: string): CourseTask => ({
+    id: makeId(),
+    courseId,
+    title,
+    done: false,
+    createdAt: daysAgoISO(5),
+  })
+  return [
+    mk(physics, 'Plan new learning strategy'),
+    mk(physics, 'Check for moodle updates'),
+    mk(physics, 'Plan a meeting for sports club'),
+    mk(physics, 'Connect with the director of the engineering program'),
+    mk(maths, 'Buy new notebooks'),
+    mk(maths, 'Create a club blank'),
+    mk(maths, 'Ask Pr. Jadon to analyse my work'),
+  ]
+}
+
+export function seedAssignments(courses: Course[]): Assignment[] {
+  const physics = courses[0].id
+  const maths = courses[1].id
+  const mk = (courseId: string, title: string, type: AssignmentType, status: TaskStatus, dueDate: string | null): Assignment => ({
+    id: makeId(),
+    courseId,
+    title,
+    type,
+    status,
+    dueDate,
+    createdAt: daysAgoISO(5),
+  })
+  return [
+    mk(physics, 'Research analysis (Python)', 'Research', 'in-progress', '2026-12-14'),
+    mk(physics, 'Create an mg graph', 'Assignment', 'todo', '2026-12-16'),
+    mk(maths, 'Matrices problem set', 'Homework', 'todo', '2026-12-14'),
+    mk(maths, 'Higher Mathematics project', 'Project', 'todo', '2026-12-18'),
+  ]
 }
 
 export { LIFE_AREAS }

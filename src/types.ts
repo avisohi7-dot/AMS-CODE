@@ -227,3 +227,33 @@ export interface FoodItem {
   done: boolean
   createdAt: string
 }
+
+export interface Course {
+  id: ID
+  title: string // e.g. "Physics"
+  semester: string // free text, e.g. "8th semester"
+  teacher: string
+  studentId: string
+  createdAt: string
+  archived: boolean
+}
+
+export interface CourseTask {
+  id: ID
+  courseId: ID
+  title: string
+  done: boolean
+  createdAt: string
+}
+
+export type AssignmentType = 'Assignment' | 'Project' | 'Research' | 'Homework'
+
+export interface Assignment {
+  id: ID
+  courseId: ID
+  title: string
+  type: AssignmentType
+  status: TaskStatus
+  dueDate: string | null
+  createdAt: string
+}

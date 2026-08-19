@@ -16,6 +16,7 @@ import { Finance } from './pages/Finance'
 import { Tools } from './pages/Tools'
 import { Contacts } from './pages/Contacts'
 import { Learning } from './pages/Learning'
+import { Courses } from './pages/Courses'
 import { Papers } from './pages/Papers'
 import { Calendar } from './pages/Calendar'
 import { Fitness } from './pages/Fitness'
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="fitness" element={<Fitness />} />
           <Route path="media" element={<Media />} />
           <Route path="learning" element={<Learning />} />
+          <Route path="courses" element={<Courses />} />
           <Route path="papers" element={<Papers />} />
           <Route path="tools" element={<Tools />} />
           <Route path="contacts" element={<Contacts />} />
