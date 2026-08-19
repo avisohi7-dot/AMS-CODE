@@ -3,7 +3,8 @@ import { Music, Pause, Play, SkipBack, SkipForward } from 'lucide-react'
 import { useBrainStore } from '../store'
 import { Button, PageHeader } from '../components/ui'
 import { selectTasksToday, selectWorkoutToday } from '../lib/widgetSelectors'
-import { getPlaybackState, pause as spotifyPause, play as spotifyPlay, skipNext, skipPrevious, type SpotifyPlaybackState } from '../lib/spotify'
+import { formatMs, RECOMMENDED_PLAYLIST_ID } from '../lib/spotify'
+import { useSpotifyPlayback } from '../hooks/useSpotifyPlayback'
 
 const PRIORITY_COLOR: Record<string, string> = {
   high: 'var(--status-critical)',
@@ -165,14 +166,6 @@ function MealsWidgetPreview() {
   )
 }
 
-const POLL_MS = 5000
-
-function formatMs(ms: number): string {
-  const totalSeconds = Math.floor(ms / 1000)
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`
-}
 
 function SpotifyWidgetPreview() {
   const clientId = useBrainStore((s) => s.spotifyClientId)
@@ -182,33 +175,14 @@ function SpotifyWidgetPreview() {
   const [connected, setConnected] = useState<boolean | null>(null)
   const [connecting, setConnecting] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [state, setState] = useState<SpotifyPlaybackState | null>(null)
 
   const available = typeof window !== 'undefined' && !!window.electronAPI
+  const { state, toggle, next: handleNext, previous: handlePrevious } = useSpotifyPlayback(connected === true)
 
   useEffect(() => {
     if (!available) return
     window.electronAPI!.spotifyIsConnected().then(setConnected)
   }, [available])
-
-  useEffect(() => {
-    if (!connected) return
-    let cancelled = false
-    async function poll() {
-      try {
-        const s = await getPlaybackState()
-        if (!cancelled) setState(s)
-      } catch {
-        // transient network/API hiccup — keep last known state, try again next tick
-      }
-    }
-    poll()
-    const interval = setInterval(poll, POLL_MS)
-    return () => {
-      cancelled = true
-      clearInterval(interval)
-    }
-  }, [connected])
 
   async function handleConnect() {
     if (!clientIdInput.trim()) return
@@ -228,36 +202,6 @@ function SpotifyWidgetPreview() {
   async function handleDisconnect() {
     await window.electronAPI!.spotifyDisconnect()
     setConnected(false)
-    setState(null)
-  }
-
-  async function handleToggle() {
-    if (!state) return
-    setState({ ...state, isPlaying: !state.isPlaying })
-    try {
-      if (state.isPlaying) await spotifyPause()
-      else await spotifyPlay()
-    } catch {
-      setError('Nothing to play — open Spotify on a device first.')
-    }
-  }
-
-  async function handleNext() {
-    try {
-      await skipNext()
-      setTimeout(() => getPlaybackState().then(setState).catch(() => {}), 400)
-    } catch {
-      // ignore — next poll will reconcile
-    }
-  }
-
-  async function handlePrevious() {
-    try {
-      await skipPrevious()
-      setTimeout(() => getPlaybackState().then(setState).catch(() => {}), 400)
-    } catch {
-      // ignore — next poll will reconcile
-    }
   }
 
   if (!available) {
@@ -329,7 +273,7 @@ function SpotifyWidgetPreview() {
         </button>
         <button
           type="button"
-          onClick={handleToggle}
+          onClick={toggle}
           disabled={!state}
           className="flex h-8 w-8 items-center justify-center rounded-full disabled:opacity-40"
           style={{ backgroundColor: 'var(--brand-accent)', color: 'var(--brand-accent-ink)' }}
@@ -357,8 +301,6 @@ function SpotifyWidgetPreview() {
   )
 }
 
-const SPOTIFY_PLAYLIST_ID = '3ti1CFhBtYmwsYENQmZN3a'
-
 function SpotifyPlaylistWidget() {
   return (
     <div
@@ -371,7 +313,7 @@ function SpotifyPlaylistWidget() {
       <p className="mb-2 text-[13px] font-semibold text-ink-primary">Recommended Playlist</p>
       <iframe
         title="Spotify playlist"
-        src={`https://open.spotify.com/embed/playlist/${SPOTIFY_PLAYLIST_ID}?utm_source=generator&theme=0`}
+        src={`https://open.spotify.com/embed/playlist/${RECOMMENDED_PLAYLIST_ID}?utm_source=generator&theme=0`}
         width="100%"
         height="360"
         style={{ minHeight: 360, borderRadius: 12 }}

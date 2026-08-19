@@ -30,6 +30,7 @@ import {
 import { useEffect, useState } from 'react'
 import { useBrainStore } from '../store'
 import { QuickCaptureModal } from './QuickCapture'
+import { SpotifyMiniPlayer } from './SpotifyMiniPlayer'
 
 const NAV_GROUPS: { label: string; items: { to: string; label: string; icon: LucideIcon; end?: boolean; badge?: boolean }[] }[] = [
   {
@@ -136,7 +137,7 @@ export function Layout() {
   }, [])
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen overflow-hidden">
       <aside className="hidden w-64 shrink-0 flex-col border-r border-line-border bg-surface-1 px-3 py-4 md:flex">
         <div className="mb-4 flex items-center gap-2 px-2">
           <div
@@ -200,7 +201,10 @@ export function Layout() {
             </div>
           ))}
         </nav>
-        <div className="mt-4 flex items-center justify-between px-2">
+        <div className="mt-3">
+          <SpotifyMiniPlayer />
+        </div>
+        <div className="flex items-center justify-between px-2">
           <span className="text-xs text-ink-muted">Local &amp; private</span>
           <ThemeToggle />
         </div>
@@ -208,7 +212,7 @@ export function Layout() {
 
       <MobileNav />
 
-      <main className="min-w-0 flex-1 px-4 pb-16 pt-4 md:px-8 md:pb-8 md:pt-8">
+      <main className="min-w-0 flex-1 overflow-y-auto px-4 pb-16 pt-4 md:px-8 md:pb-8 md:pt-8">
         <Outlet />
       </main>
 
