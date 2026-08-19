@@ -6,7 +6,8 @@ const fs = require('node:fs')
 
 const REDIRECT_PORT = 17654
 const REDIRECT_URI = `http://127.0.0.1:${REDIRECT_PORT}/callback`
-const SCOPES = 'user-read-playback-state user-modify-playback-state user-read-currently-playing'
+const SCOPES =
+  'user-read-playback-state user-modify-playback-state user-read-currently-playing playlist-read-private playlist-read-collaborative'
 const TOKEN_ENDPOINT = 'https://accounts.spotify.com/api/token'
 const AUTHORIZE_ENDPOINT = 'https://accounts.spotify.com/authorize'
 
