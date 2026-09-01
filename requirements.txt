@@ -1,0 +1,6 @@
+moviepy>=2.1.2
+pillow
+numpy
+requests
+python-dotenv
+gTTS
