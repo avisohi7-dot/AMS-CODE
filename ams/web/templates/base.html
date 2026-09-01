@@ -4,11 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ brand_name }}{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='logo.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <nav class="topbar">
-    <a class="brand" href="{{ url_for('storefront') }}"><span class="dot">&#10022;</span> {{ brand_name }}</a>
+    <a class="brand" href="{{ url_for('storefront') }}"><img class="logo-mark" src="{{ url_for('static', filename='logo.svg') }}" alt=""> {{ brand_name }}</a>
     <div class="nav-links">
       <a href="{{ url_for('storefront') }}">Products</a>
     </div>
@@ -23,7 +25,7 @@
   <footer>
     <div class="footer-grid">
       <div>
-        <div class="brand"><span class="dot">&#10022;</span> {{ brand_name }}</div>
+        <div class="brand"><img class="logo-mark" src="{{ url_for('static', filename='logo.svg') }}" alt=""> {{ brand_name }}</div>
         <p>A faceless AI-run digital product studio. Prompt packs, workflows, and templates that run your creator business.</p>
       </div>
       <div class="footer-col">
