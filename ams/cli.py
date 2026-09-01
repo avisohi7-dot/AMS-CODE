@@ -85,5 +85,19 @@ def etsy_list(book_dir: str, taxonomy_id: int, price: float | None, quantity: in
     click.echo("It is NOT public. Review it in Etsy's Shop Manager and publish it yourself when ready.")
 
 
+@cli.command()
+@click.option("--host", default="127.0.0.1", show_default=True)
+@click.option("--port", default=5000, show_default=True)
+@click.option("--debug", is_flag=True, help="Enable Flask debug/reload mode")
+def serve(host: str, port: int, debug: bool):
+    """Run the storefront + admin dashboard web app."""
+    from ams import config
+    from ams.web.app import app
+
+    if config.ADMIN_PASSWORD == "change-me":
+        click.echo("WARNING: AMS_ADMIN_PASSWORD is not set — using the insecure default. Set it in .env.")
+    app.run(host=host, port=port, debug=debug)
+
+
 if __name__ == "__main__":
     cli()

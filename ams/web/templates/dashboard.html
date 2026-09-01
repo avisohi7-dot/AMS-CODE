@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — {{ brand_name }}{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="admin-header">
+    <h1>Dashboard</h1>
+    <p>Catalog and pipeline status for {{ brand_name }}.</p>
+  </div>
+
+  <div class="metrics">
+    <div class="metric-card">
+      <div class="label">Total products</div>
+      <div class="value">{{ products|length }}</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Ebooks generated</div>
+      <div class="value">{{ ebooks|length }}</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Etsy drafts pending review</div>
+      <div class="value">{{ etsy_drafts_count }}</div>
+    </div>
+    <div class="metric-card">
+      <div class="label">Catalog value (list price)</div>
+      <div class="value">${{ "%.2f"|format(catalog_value) }}</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Generated ebooks</h2>
+    {% if ebooks %}
+    <table>
+      <thead>
+        <tr><th>Title</th><th>Price</th><th>Generated</th><th>Etsy status</th></tr>
+      </thead>
+      <tbody>
+        {% for b in ebooks %}
+        <tr>
+          <td>{{ b.title }}</td>
+          <td>${{ "%.2f"|format(b.price) }}</td>
+          <td>{{ b.generated_at[:10] }}</td>
+          <td>
+            {% if b.etsy_status %}
+            <a class="status status-draft" href="{{ b.etsy_edit_url }}" target="_blank" rel="noopener">{{ b.etsy_status }}</a>
+            {% else %}
+            <span class="status">not listed</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p style="color: var(--text-muted);">No ebooks generated yet — run <code>ams.cli generate</code>.</p>
+    {% endif %}
+  </div>
+
+  <div class="panel">
+    <h2>All products</h2>
+    <table>
+      <thead>
+        <tr><th>Type</th><th>Title</th><th>Price</th><th>Format</th><th>Featured</th><th>Source</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for p in products %}
+        <tr>
+          <td>{{ product_types.get(p.type, p.type) }}</td>
+          <td>{{ p.title }}</td>
+          <td>${{ "%.2f"|format(p.price) }}</td>
+          <td>{{ p.format }}</td>
+          <td>{{ "Yes" if p.featured else "" }}</td>
+          <td>{{ p.get("source", "curated") }}</td>
+          <td>
+            {% if p.get("source") != "generated" %}
+            <form method="post" action="{{ url_for('delete_product', product_id=p.id) }}" onsubmit="return confirm('Delete this product?');">
+              <button class="btn-danger" type="submit">Delete</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <h2>Add a product</h2>
+    <form class="add-product" method="post" action="{{ url_for('add_product') }}">
+      <div>
+        <label for="type">Type</label>
+        <select id="type" name="type" required>
+          {% for key, label in product_types.items() %}
+          {% if key != "ebook" %}<option value="{{ key }}">{{ label }}</option>{% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      <div class="full">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" required></textarea>
+      </div>
+      <div>
+        <label for="price">Price (USD)</label>
+        <input type="number" id="price" name="price" step="0.01" min="0" required>
+      </div>
+      <div>
+        <label for="format">Format</label>
+        <input type="text" id="format" name="format" placeholder="e.g. PDF + Notion" required>
+      </div>
+      <div class="full checkbox-row">
+        <input type="checkbox" id="featured" name="featured">
+        <label for="featured" style="margin: 0;">Featured</label>
+      </div>
+      <div class="full">
+        <button class="btn btn-accent" type="submit">Add product</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

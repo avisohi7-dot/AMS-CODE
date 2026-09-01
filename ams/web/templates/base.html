@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ brand_name }}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav class="topbar">
+    <a class="brand" href="{{ url_for('storefront') }}"><span class="dot">&#10022;</span> {{ brand_name }}</a>
+    <div class="nav-links">
+      <a href="{{ url_for('storefront') }}">Products</a>
+    </div>
+    <div class="nav-links">
+      <a href="{{ url_for('dashboard') }}">Sign in</a>
+      <a class="btn btn-accent" href="{{ url_for('storefront') }}">Browse tools</a>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="brand"><span class="dot">&#10022;</span> {{ brand_name }}</div>
+        <p>A faceless AI-run digital product studio. Prompt packs, workflows, and templates that run your creator business.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Store</h4>
+        <a href="{{ url_for('storefront') }}">All products</a>
+        <a href="{{ url_for('storefront') }}#prompt_pack">Prompt packs</a>
+        <a href="{{ url_for('storefront') }}#ai_workflow">Workflows</a>
+      </div>
+      <div class="footer-col">
+        <h4>Admin</h4>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('dashboard') }}">Sign in</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

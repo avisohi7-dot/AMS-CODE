@@ -1,0 +1,38 @@
+[
+  {
+    "id": "viral-content-prompt-pack",
+    "type": "prompt_pack",
+    "title": "Viral Content Prompt Pack",
+    "description": "50 prompts that turn one idea into a week of posts.",
+    "price": 29.0,
+    "format": "PDF + Notion",
+    "featured": true
+  },
+  {
+    "id": "ai-newsletter-system",
+    "type": "ai_workflow",
+    "title": "AI Newsletter System",
+    "description": "Publish a newsletter in 15 minutes without writing.",
+    "price": 49.0,
+    "format": "PDF + Airtable",
+    "featured": true
+  },
+  {
+    "id": "creator-finance-tracker",
+    "type": "template",
+    "title": "Creator Finance Tracker",
+    "description": "Know exactly what your content business earns.",
+    "price": 19.0,
+    "format": "Notion",
+    "featured": false
+  },
+  {
+    "id": "faceless-brand-playbook",
+    "type": "mini_guide",
+    "title": "Faceless Brand Playbook",
+    "description": "Build a trusted brand without showing your face.",
+    "price": 39.0,
+    "format": "PDF",
+    "featured": false
+  }
+]

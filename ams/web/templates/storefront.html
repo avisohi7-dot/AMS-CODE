@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+  <section class="hero">
+    <h1>AI tools for creator businesses</h1>
+    <p>{{ brand_tagline }}</p>
+  </section>
+
+  <div class="pills">
+    <button class="pill active" data-type="all">All</button>
+    {% for t in types %}
+    <button class="pill" data-type="{{ t }}">{{ type_labels.get(t, t) }}</button>
+    {% endfor %}
+  </div>
+
+  <div class="grid">
+    {% for p in products %}
+    <div class="card" data-type="{{ p.type }}">
+      <div class="card-top">
+        <span class="badge">{{ type_labels.get(p.type, p.type) }}</span>
+        {% if p.featured %}<span class="badge badge-featured">Featured</span>{% endif %}
+      </div>
+      <h3>{{ p.title }}</h3>
+      <p class="desc">{{ p.description }}</p>
+      <div class="card-footer">
+        <span class="price">${{ "%.2f"|format(p.price) }}</span>
+        <span class="format">{{ p.format }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  const pills = document.querySelectorAll(".pill");
+  const cards = document.querySelectorAll(".card");
+  pills.forEach((pill) => {
+    pill.addEventListener("click", () => {
+      pills.forEach((p) => p.classList.remove("active"));
+      pill.classList.add("active");
+      const type = pill.dataset.type;
+      cards.forEach((card) => {
+        card.style.display = type === "all" || card.dataset.type === type ? "" : "none";
+      });
+    });
+  });
+</script>
+{% endblock %}

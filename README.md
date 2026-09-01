@@ -84,6 +84,29 @@ Usage:
 The listing's edit URL is printed and saved to `<book-dir>/etsy_listing.json`. It stays
 a private draft until you publish it from Etsy directly.
 
+## Storefront + admin dashboard
+
+`ams.cli serve` runs a small web app with two pages:
+
+- **`/`** — a public storefront listing every product in `products.json` plus every
+  ebook the pipeline has generated (auto-discovered from `output/*/metadata.json`),
+  with category filter pills.
+- **`/admin/dashboard`** — catalog and pipeline metrics (products, ebooks generated,
+  Etsy drafts pending review, catalog value), a table of generated ebooks with their
+  Etsy status, and a form to add/remove hand-curated products. Protected by HTTP
+  Basic Auth (`AMS_ADMIN_USERNAME` / `AMS_ADMIN_PASSWORD` in `.env` — **set a real
+  password before deploying this anywhere public**; it defaults to `change-me`).
+
+```bash
+.venv/bin/python -m ams.cli serve --port 5000
+# storefront:  http://127.0.0.1:5000/
+# dashboard:   http://127.0.0.1:5000/admin/dashboard
+```
+
+Non-ebook products (prompt packs, AI workflows, mini-guides, templates) are managed
+by hand in `products.json` or via the dashboard's "Add a product" form — this repo
+doesn't yet generate content for those categories, only ebooks.
+
 ## Notes
 
 - The cover generator produces a clean text-based placeholder cover, good enough to list

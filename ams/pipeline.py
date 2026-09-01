@@ -1,24 +1,19 @@
 """Orchestrates one end-to-end run: topic -> outline -> chapters -> epub/pdf/cover/metadata."""
 
 import json
-import re
 from pathlib import Path
 
 from ams import compile as compiler
 from ams import cover as cover_gen
 from ams import llm
-
-
-def _slugify(text: str) -> str:
-    slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
-    return slug[:60] or "book"
+from ams.util import slugify
 
 
 def generate_book(topic: str, num_chapters: int = 8, author: str = "Anonymous", output_dir: str = "output") -> Path:
     outline = llm.generate_outline(topic, num_chapters)
     title, subtitle = outline["title"], outline.get("subtitle", "")
 
-    book_dir = Path(output_dir) / _slugify(title)
+    book_dir = Path(output_dir) / slugify(title, fallback="book")
     book_dir.mkdir(parents=True, exist_ok=True)
     (book_dir / "outline.json").write_text(json.dumps(outline, indent=2))
 
