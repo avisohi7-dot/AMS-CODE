@@ -50,6 +50,40 @@ output/a-30-day-plan-to-escape-freelance-feast-or-famine/
   metadata.json
 ```
 
+## Selling on Etsy
+
+Connects to your Etsy shop via OAuth and creates **draft** listings — files and cover
+uploaded, but nothing goes public or costs a listing fee until you review and publish
+it yourself in Etsy's Shop Manager.
+
+Setup (one-time):
+
+```bash
+# 1. Create an app at https://www.etsy.com/developers/your-apps
+#    Register the redirect URI you'll use (default: http://localhost:3945/oauth/redirect —
+#    it doesn't need to be a live server).
+# 2. Add ETSY_API_KEY / ETSY_SHARED_SECRET / ETSY_REDIRECT_URI to .env
+
+.venv/bin/python -m ams.cli etsy-auth
+# opens an authorize URL for you to visit; paste back the redirected URL it gives you
+
+.venv/bin/python -m ams.cli etsy-whoami
+# prints your numeric shop_id -> add it to .env as ETSY_SHOP_ID
+```
+
+Usage:
+
+```bash
+# Find the Etsy category (taxonomy_id) to list under, once
+.venv/bin/python -m ams.cli etsy-taxonomy --query "ebook"
+
+# Create a draft listing for a generated book
+.venv/bin/python -m ams.cli etsy-list --book-dir output/my-book --taxonomy-id 2078
+```
+
+The listing's edit URL is printed and saved to `<book-dir>/etsy_listing.json`. It stays
+a private draft until you publish it from Etsy directly.
+
 ## Notes
 
 - The cover generator produces a clean text-based placeholder cover, good enough to list

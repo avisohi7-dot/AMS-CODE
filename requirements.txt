@@ -5,3 +5,4 @@ markdown>=3.6
 ebooklib>=0.18
 xhtml2pdf>=0.2.16
 Pillow>=10.0.0
+requests>=2.31.0

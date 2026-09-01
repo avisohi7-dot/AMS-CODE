@@ -3,5 +3,6 @@ __pycache__/
 .venv/
 venv/
 .env
+.etsy_token.json
 output/*
 !output/.gitkeep
